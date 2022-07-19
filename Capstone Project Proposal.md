@@ -1,4 +1,4 @@
-## Capstone Project Proposal: Snowbird Carpool App
+# Capstone Project Proposal: Snowbird Carpool App
 
 
 
@@ -20,13 +20,13 @@ Document update history
 
 
 
-### I. Project Backgrounds
+## I. Project Backgrounds
 
-#### 1. Porblem
+### 1. Porblem
 
 The employees working in Snowbird Clinic would like to reduce the number of vehicles that come into the canyon in the winter. The number of vehicles is better limited to 1-3. Therefore an intra carpool app would be helpful. The app will focus on supporting daily carpool planning and suggesting, and be used by employees of Snowbird Clinic only.
 
-#### 2. Similar Products on the Market
+### 2. Similar Products on the Market
 
 There are lots of similar carpool apps on the market. We took a look at 4 of them below. Some of them are quite popular with 7.1k and 3k comments in Apple's App Store, some of them have just a few users.
 
@@ -51,9 +51,9 @@ Almost every carpool app has its pros and cons. Although among these apps, BlaBl
 
 
 
-### II. Objectives and Content
+## II. Objectives and Content
 
-#### 1. Objectives
+### 1. Objectives
 
 - Our carpool web app will be used on both PC and mobile browsers.
 - The app will do authorization and authentication, and will be used by employees working in the Snowbird Clinic only.
@@ -62,7 +62,7 @@ Almost every carpool app has its pros and cons. Although among these apps, BlaBl
 - Ideally, the app will use APIs like Google Maps to offer users a map with real-time gps tracking.
 - Ideally, the app will calculate and suggest the daily best carpool plan to the users. And the admins will be able to edit the plan.
 
-#### 2. Features
+### 2. Features
 
 - User system
   - A user must sign up and log in to use this app.
@@ -82,7 +82,7 @@ Almost every carpool app has its pros and cons. Although among these apps, BlaBl
 
 
 
-### III. Tools and Resources
+## III. Tools and Resources
 
 - JavaScript, HTML, CSS
 - React
@@ -95,7 +95,7 @@ Almost every carpool app has its pros and cons. Although among these apps, BlaBl
 
 
 
-### IV. Milestones
+## IV. Milestones
 
 - **Stage 1:** Make a blueprint
 - **Stage 2:** The design of the models and views
