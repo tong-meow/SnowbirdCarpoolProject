@@ -1,0 +1,13 @@
+<hr>
+<label>Carpool</label>
+<p></p>
+<p>Start time: {{ startTime }}</p>
+<p>Driver: {{ driver }}</p>
+<p>Passengers: </p>
+<p *ngFor="let passenger of passengers">{{ passenger }}</p>
+<p>Seats Remaining: {{ getRemainingSeats() }}</p>
+<button
+    class="btn btn-primary"
+    [disabled]="carFull"
+    (click)="onJoinCarpool()">Join Carpool</button>
+<p></p>

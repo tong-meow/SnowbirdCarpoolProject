@@ -1,0 +1,11 @@
+<!-- <label>Add a Carpool</label> -->
+<button
+    class="btn btn-primary"
+    (click)="onCreateCarpool()">Add Carpool</button>
+<p *ngIf="carpoolCreated; else noCarpool">Carpool was created</p>
+<ng-template #noCarpool>
+    <p>
+        There are no carpools today!
+    </p>
+</ng-template>
+<app-carpool *ngFor="let carpool of carpools"></app-carpool>
