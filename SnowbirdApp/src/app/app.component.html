@@ -1,5 +1,10 @@
 <div class="container">
   <div class="row">
+    <br>
+    <router-outlet></router-outlet>
+  </div>
+  <div class="row">
+    <br><br>
     <h4>Carpools</h4>
     <hr>
     <app-addcarpool (newCarpool)="onCarpoolAdded($event)"></app-addcarpool>
