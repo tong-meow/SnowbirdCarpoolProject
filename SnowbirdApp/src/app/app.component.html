@@ -2,6 +2,12 @@
   <div class="row">
     <h4>Carpools</h4>
     <hr>
-    <app-carpools></app-carpools>
+    <app-addcarpool (newCarpool)="onCarpoolAdded($event)"></app-addcarpool>
+    <app-carpool
+      *ngFor="let carpool of carpools"
+      [element]="carpool"
+      [driver]="carpool.driver">
+      <p>{{ carpool.driver }}</p>
+    </app-carpool>
   </div>
 </div>

@@ -1,13 +1,24 @@
 <hr>
-<label>Carpool</label>
-<p></p>
-<p>Start time: {{ startTime }}</p>
-<p>Driver: {{ driver }}</p>
-<p>Passengers: </p>
-<p *ngFor="let passenger of passengers">{{ passenger }}</p>
-<p>Seats Remaining: {{ getRemainingSeats() }}</p>
-<button
+<!-- <label>Carpool</label> -->
+<!-- <p></p> -->
+<div
+  class="panel panel-default">
+  <!--<div class="panel-heading">{{ element.name }}</div>-->
+  <div class="panel-heading" #heading>Driver: {{ driver }}</div>
+  <div class="panel-body">
+    <!-- <p>Passengers: {{ element.passengers }}</p> -->
+    <p>Passengers: </p>
+    <p *ngFor="let passenger of element.passengers">{{ passenger }}</p>
+    <p>Start time: {{ element.startTime }}</p>
+    <p>Seats Remaining: {{ getRemainingSeats() }}</p>
+    <p></p>
+    <button
     class="btn btn-primary"
     [disabled]="carFull"
     (click)="onJoinCarpool()">Join Carpool</button>
-<p></p>
+  </div>
+</div>
+
+
+
+

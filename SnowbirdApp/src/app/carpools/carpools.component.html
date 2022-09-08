@@ -1,11 +1,23 @@
-<!-- <label>Add a Carpool</label> -->
-<button
-    class="btn btn-primary"
-    (click)="onCreateCarpool()">Add Carpool</button>
-<p *ngIf="carpoolCreated; else noCarpool">Carpool was created</p>
-<ng-template #noCarpool>
-    <p>
-        There are no carpools today!
-    </p>
-</ng-template>
-<app-carpool *ngFor="let carpool of carpools"></app-carpool>
+<div class="row">
+    <div class="col-xs-12">
+        <!-- <label>Create a new carpool</label>
+        <br>
+        <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="driver">
+        <br>
+        <button
+            class="btn btn-primary"
+            (click)="onCreateCarpool()">Add</button>
+        <p *ngIf="carpoolCreated; else noCarpool">Carpool was created</p>
+        <ng-template #noCarpool>
+            <p>
+                There are no carpools today!
+            </p>
+        </ng-template> -->
+        <app-carpool 
+            *ngFor="let carpool of carpools"
+            [element]="carpool"></app-carpool>
+    </div>
+</div>

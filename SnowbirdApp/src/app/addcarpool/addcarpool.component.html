@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-xs-12">
+        <label>Create a new carpool</label>
+        <br><br>
+        <p>Driver: </p>
+        <input
+            type="text"
+            class="form-control"
+            #driverName>
+        <br>
+        <p>Start Time: </p>
+        <input
+            type="text"
+            class="form-control"
+            #startTime>
+        <br>
+        <p>Total Seats Available: </p>
+        <input
+            type="number"
+            class="form-control"
+            #seatsAvailable>
+        <br>
+
+        <button
+            class="btn btn-primary"
+            (click)="onCreateCarpool(driverName, startTime, seatsAvailable)">Add</button>
+        <p></p>
+        <p *ngIf="carpoolCreated; else noCarpool">A carpool was created!</p>
+        <ng-template #noCarpool>
+            <p>
+                There are no carpools today!
+            </p>
+        </ng-template>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-carpool',
@@ -6,10 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./carpool.component.css']
 })
 export class CarpoolComponent implements OnInit {
-  startTime = "07:30";
-  driver = "Joanne";
-  passengers = [];
-  totalSeats = 4;
+  @Input() element: {driver: string, passengers: string[], startTime: string, totalSeats: number};
+  @Input() driver: string;
+  // newPassenger: string;
+  // startTime = "07:30";
+  // totalSeats = 4;
   carFull = false;
 
   constructor() { }
@@ -17,15 +18,19 @@ export class CarpoolComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   onJoinCarpool() {
-    this.passengers.push("Ben");
-    if (this.passengers.length == this.totalSeats) {
+    this.element.passengers.push("User");
+    if (this.element.passengers.length == this.element.totalSeats) {
       this.carFull = true;
     }
+    
   }
 
   getRemainingSeats() {
-    return (this.totalSeats - this.passengers.length);
+    return (this.element.totalSeats - this.element.passengers.length);
   }
+
+  
 
 }

@@ -7,8 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CarpoolsComponent implements OnInit {
   carpoolCreated = false;
-  // carpoolDate = ;
-  newCarpool = 0;
+  // newCarpool = 0;
   carpools = [];
 
   constructor() { }
@@ -16,10 +15,10 @@ export class CarpoolsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  onCreateCarpool() {
-    this.carpoolCreated = true;
-    this.newCarpool += 1;
-    this.carpools.push(this.newCarpool);
-  }
+  // onCreateCarpool() {
+  //   this.carpoolCreated = true;
+  //   this.newCarpool += 1;
+  //   this.carpools.push(this.newCarpool);
+  // }
 
 }
