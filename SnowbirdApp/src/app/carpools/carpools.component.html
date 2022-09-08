@@ -1,23 +1,25 @@
 <div class="row">
     <div class="col-xs-12">
-        <!-- <label>Create a new carpool</label>
-        <br>
-        <input
-            type="text"
-            class="form-control"
-            [(ngModel)]="driver">
-        <br>
-        <button
-            class="btn btn-primary"
-            (click)="onCreateCarpool()">Add</button>
-        <p *ngIf="carpoolCreated; else noCarpool">Carpool was created</p>
-        <ng-template #noCarpool>
-            <p>
-                There are no carpools today!
-            </p>
-        </ng-template> -->
-        <app-carpool 
-            *ngFor="let carpool of carpools"
-            [element]="carpool"></app-carpool>
+        <div class="row">
+            <br><br>
+            <h4>Carpools</h4>
+            <p *ngIf="noCarpoolsToday"></p>
+                <p>
+                    There are no carpools today!
+                </p>
+            <hr>
+            <app-addcarpool (newCarpool)="onCarpoolAdded()"></app-addcarpool>
+            <!-- <app-carpool
+              *ngFor="let carpool of carpools"
+              [element]="carpool"
+              [driver]="carpool.driver">
+              <p>{{ carpool.driver }}</p>
+            </app-carpool> -->
+            <app-carpool
+                *ngFor="let carpool of carpools"
+                [carpoolObj]="carpool">
+            </app-carpool>
+            
+          </div>
     </div>
 </div>

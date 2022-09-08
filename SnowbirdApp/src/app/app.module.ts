@@ -20,7 +20,7 @@ const appRoutes: Routes = [
   // path: what get entered in the url after the domain, e.g. localhost:4200/user
   { path: '', pathMatch:'full', redirectTo: 'login' },
   { path: 'login', component: LogInComponent }, // current main page: daily carpools
-  { path: 'home', component: CarpoolComponent }
+  { path: 'home', component: CarpoolsComponent }
 ];
 
 @NgModule({

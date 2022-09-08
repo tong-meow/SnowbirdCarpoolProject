@@ -1,5 +1,5 @@
 <div class="flex-container">
-    <div class="row">
+    <!-- <div class="row">
       <div class="login-wrapper">
         <button type="button" class="large-button" (click)="authService.SigninWithGoogle()">
           <span class="large-button__icon">
@@ -19,6 +19,21 @@
           </span>
           <span class="large-button__text">Sign in with Google</span>
         </button>
+      </div>
+    </div> -->
+    <div class="card shadow">
+      <div class="card-body">
+        <form>
+          <div class="row mt-2">
+            <a (click)="authService.SigninWithGoogle()" style="text-decoration: none;cursor: pointer;">
+                <div class="card shadow text-center">
+                    <div class="card-body">
+                        <img src="../../../assets/icons8-google-48.png" alt="" height="24px" width="24px"> Sign In with Google
+                    </div>
+                </div>
+            </a>
+          </div>
+        </form>
       </div>
     </div>
   </div>
