@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output } from '@angular/core';
 import { Carpool } from '../model/carpool';
 import { CpdataService } from '../shared/cpdata.service';
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-carpool',
@@ -27,10 +28,8 @@ export class CarpoolComponent implements OnInit {
 
   onJoinCarpool() {
     this.carpoolObj.passengers.push("User");
-    if (this.carpoolObj.passengers.length == this.carpoolObj.totalSeats) {
-      this.carFull = true;
-    }
-    this.cpdataService.updateCarpool(this.carpoolObj);
+    console.log("in onJoinCarpool");
+    this.cpdataService.updateCarpoolPassengers(this.carpoolObj, this.carpoolObj.passengers);
   }
 
   // onJoinCarpool() {
@@ -40,7 +39,20 @@ export class CarpoolComponent implements OnInit {
   //   }
   // }
 
+  onCancelCarpool() {
+    if (window.confirm('Delete this carpool?')) {
+      this.cpdataService.deleteCarpool(this.carpoolObj);
+    }
+  }
+
   getRemainingSeats() {
+    console.log("no. of passengers: " + this.carpoolObj.passengers.length);
+    console.log("no. of seats: " + this.carpoolObj.totalSeats);
+
+    if (this.carpoolObj.passengers.length == this.carpoolObj.totalSeats) {
+      this.carFull = true;
+      console.log("setting bool car is full");
+    }
     return (this.carpoolObj.totalSeats - this.carpoolObj.passengers.length);
   }
 

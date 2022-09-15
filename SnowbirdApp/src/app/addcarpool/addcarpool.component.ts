@@ -10,7 +10,6 @@ import { CpdataService } from '../shared/cpdata.service';
 export class AddcarpoolComponent implements OnInit {
   // @Output() newCarpool = new EventEmitter<{driver: string, passengers: string[], startTime: string, totalSeats: number}>();
   @Output() newCarpool = new EventEmitter<{}>();
-  // carpoolCreated = false;
   // totalSeats = 4;
   // carpools = [];
   carpoolObj: Carpool = {
@@ -47,7 +46,6 @@ export class AddcarpoolComponent implements OnInit {
       return;
     }
 
-    // this.carpoolCreated = true;
     this.carpoolObj.id = '';
     this.carpoolObj.driver = nameInput.value;
     this.carpoolObj.passengers = [];

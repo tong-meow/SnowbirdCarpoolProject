@@ -2,9 +2,9 @@
 <!-- <label>Carpool</label> -->
 <!-- <p></p> -->
 <div
-  class="panel panel-default">
+  class="panel panel-default" >
   <!--<div class="panel-heading">{{ element.name }}</div>-->
-  <div class="panel-heading" #heading>Driver: {{ carpoolObj.driver }}</div>
+  <div class="panel-heading" [routerLink]="['/carpools', carpoolObj.id]" #heading>Driver: {{ carpoolObj.driver }}</div>
   <div class="panel-body">
     <p>Passengers: </p>
     <p *ngFor="let passenger of carpoolObj.passengers">{{ passenger }}</p>
@@ -15,6 +15,10 @@
     class="btn btn-primary"
     [disabled]="carFull"
     (click)="onJoinCarpool()">Join Carpool</button>
+    <p></p>
+    <button
+    class="btn btn-primary"
+    (click)="onCancelCarpool()">Cancel Carpool</button>
   </div>
 </div>
 

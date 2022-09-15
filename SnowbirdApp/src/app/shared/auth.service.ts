@@ -28,7 +28,7 @@ export class AuthService {
         return this.afAuth.signInWithPopup(provider)
             .then((res) => {
                 this.ngZone.run(() => {
-                    this.router.navigate(['home']);
+                    this.router.navigate(['carpools']);
                 })
             }).catch((error) => {
                 window.alert(error)

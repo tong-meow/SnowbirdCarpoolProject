@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  title = "SnowbirdApp";
   // carpools = [{driver: 'Joanne', passengers: ['Tong', 'Ann'], startTime: '08:00', totalSeats: 4}];
   carpools = [];
   

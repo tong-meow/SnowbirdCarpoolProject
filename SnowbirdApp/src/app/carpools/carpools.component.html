@@ -4,9 +4,9 @@
             <br><br>
             <h4>Carpools</h4>
             <p *ngIf="noCarpoolsToday"></p>
-                <p>
+                <!-- <p>
                     There are no carpools today!
-                </p>
+                </p> -->
             <hr>
             <app-addcarpool (newCarpool)="onCarpoolAdded()"></app-addcarpool>
             <!-- <app-carpool
@@ -17,9 +17,10 @@
             </app-carpool> -->
             <app-carpool
                 *ngFor="let carpool of carpools"
-                [carpoolObj]="carpool">
+                [carpoolObj]="carpool"
+                >
             </app-carpool>
-            
+
           </div>
     </div>
 </div>
