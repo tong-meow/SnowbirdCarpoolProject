@@ -28,7 +28,7 @@ export class CarpoolComponent implements OnInit {
 
   onJoinCarpool() {
     this.carpoolObj.passengers.push("User");
-    console.log("in onJoinCarpool");
+    // console.log("in onJoinCarpool");
     this.cpdataService.updateCarpoolPassengers(this.carpoolObj, this.carpoolObj.passengers);
   }
 
@@ -46,12 +46,12 @@ export class CarpoolComponent implements OnInit {
   }
 
   getRemainingSeats() {
-    console.log("no. of passengers: " + this.carpoolObj.passengers.length);
-    console.log("no. of seats: " + this.carpoolObj.totalSeats);
+    // console.log("no. of passengers: " + this.carpoolObj.passengers.length);
+    // console.log("no. of seats: " + this.carpoolObj.totalSeats);
 
     if (this.carpoolObj.passengers.length == this.carpoolObj.totalSeats) {
       this.carFull = true;
-      console.log("setting bool car is full");
+      // console.log("setting bool car is full");
     }
     return (this.carpoolObj.totalSeats - this.carpoolObj.passengers.length);
   }

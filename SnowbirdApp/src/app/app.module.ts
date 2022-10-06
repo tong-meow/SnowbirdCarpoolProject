@@ -21,18 +21,10 @@ import { PlatformModule } from '@angular/cdk/platform';
 const appRoutes: Routes = [
   // path: what get entered in the url after the domain, e.g. localhost:4200/user
   { path: '', pathMatch:'full', redirectTo: 'login' },
-  { path: 'login', component: LogInComponent }, // current main page: daily carpools
-  { path: 'carpools', 
-    component: CarpoolsComponent,
-    // children: [
-    //   {
-    //     // path: ':id',
-    //     path: '1',
-    //     component: CarpoolDetailsComponent,
-    //   },
-    // ]
- },
-  { path: 'carpools/:id', component: CarpoolDetailsComponent }
+  { path: 'login', component: LogInComponent }, // Google login
+  { path: 'carpools', component: CarpoolsComponent }, // daily carpools
+  { path: 'carpools/:id', component: CarpoolDetailsComponent }, // one carpool
+  { path: 'profile', component: UserComponent }, // user profile
 ];
 
 @NgModule({
