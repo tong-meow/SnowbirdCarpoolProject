@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserComponent } from './user/user.component';
 import { LogInComponent } from './log-in/log-in.component';
 import { CarpoolDetailsComponent } from './carpool-details/carpool-details.component';
+import { PlatformModule } from '@angular/cdk/platform';
 
 // routes are stored as an array, each element is a JS object
 const appRoutes: Routes = [
@@ -50,7 +51,8 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
     AngularFireAuthModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    PlatformModule
   ],
   providers: [],
   bootstrap: [AppComponent]

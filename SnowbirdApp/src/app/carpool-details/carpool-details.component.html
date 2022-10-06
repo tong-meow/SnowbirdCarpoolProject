@@ -8,6 +8,9 @@
             <p *ngFor="let passenger of carpoolObj.passengers">{{ passenger }}</p>
             <p>Start time: {{ carpoolObj.startTime }}</p>
             <p>Seats Remaining: {{ getRemainingSeats() }}</p>
+            <button
+            class="btn btn-primary"
+            (click)="onShowRoute()">Show route</button>
             <p></p>
         </div>
     </div>
