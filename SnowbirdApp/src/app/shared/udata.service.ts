@@ -3,8 +3,10 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { collection, getFirestore, query, where, getDocs } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment.prod';
-import { GoogleAccount } from '../model/googleAccount';
+// models
 import { User } from '../model/user';
+// services
+import { GudataService } from './gudata.service';
 
 
 @Injectable({
@@ -12,116 +14,132 @@ import { User } from '../model/user';
 })
 
 export class UdataService {
+
+    /*  USER
+        1. this user is the one who currently logged in
+        2. it can be accessed by any components
+        3. if a visitor hasn't logged in, this user should be 'undefined'
+    */
+    user: User;
+
+    // other member variables
     app = initializeApp(environment.firebase);
     db = getFirestore(this.app);
-    private hasThisUser: boolean;
-    private uid;
-    private displayName;
-    private email;
-    private photoURL;
+    userExists: boolean;
 
-    constructor(private afs: AngularFirestore) { }
+    constructor(private afs: AngularFirestore,
+                private gudataService: GudataService) { }
 
-    // // Firestore data converter
-    // accountConverter = {
-    //     toFirestore: (user: User) => {
-    //         return {
-    //             uid: user.uid,
-    //             email: user.email,
-    //             photoURL: user.photoURL,
-    //             type: 1,
-    //             name: user.name,
-    //             phone: user.phone,
-    //             address: user.address,
-    //             hasCar: user.hasCar,
-    //             carMake: user.carMake,
-    //             carModel: user.carModel,
-    //             carLicense: user.carLicense,
-    //             carSeatsAvail: user.carSeatsAvail
-    //             };
-    //     },
-    //     fromFirestore: (snapshot, options) => {
-    //         const data = snapshot.data(options);
-    //         const user: User = {
-    //             uid: data.uid,
-    //             email: data.email,
-    //             photoURL: data.photoURL,
-    //             type: data.type,
-    //             name: data.name,
-    //             phone: data.phone,
-    //             address: data.address,
-    //             hasCar: data.hasCar,
-    //             carMake: data.carMake,
-    //             carModel: data.carModel,
-    //             carLicense: data.carLicense,
-    //             carSeatsAvail: data.carSeatsAvail
-    //         };
-    //         return user;
-    //     }
-    // };
 
     // Check if a user exists
-    async userExists(uid: string) {
+    async checkUser() {
+        // get the uid from the Google Account
+        var uid = this.gudataService.account.uid;
         // set the ref
-        const accountsRef = collection(this.db, "Users");
+        const usersRef = collection(this.db, "Users");
         // make a query
-        const q = query(accountsRef, where("uid", "==", uid));
+        const q = query(usersRef, where("uid", "==", uid));
         // fetch from the db
-        const querySnapshot = await getDocs(q);
-        if (querySnapshot.size > 0) {
-            console.log("User found.");
-            this.hasThisUser = true;
+        const res = await getDocs(q);
+        // if the user already exists in the db
+        if (res.size > 0) {
+            console.log("[UDATA SERVICE] User found.");
+            // assign the USER member variable
+            await this.assignUser(uid).then(res => {
+                this.userExists = true;
+            })
+            .catch(error => {
+                console.log("[UDATA SERVICE] " + error);
+            });
         }
+        // if the user doesnt exist, set userExists to false
         else {
-            console.log("User not found.");
-            this.hasThisUser = false;
+            console.log("[UDATA SERVICE] User not found.");
+            this.userExists = false;
         }
+    }
+
+    // Assign the USER member variable
+    async assignUser(uid: string){
+        const usersRef = collection(this.db, "Users");
+        const q = query(usersRef, where("uid", "==", uid));
+        await getDocs(q).then(res => {
+            if (res.size == 0) {
+                console.log("[UDATA SERVICE] User not found.");
+            }
+            else {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    const user: User = {
+                        uid: doc["uid"],
+                        email: doc["email"],
+                        photoURL: doc["photoURL"],
+                        type: doc["type"],
+                        name: doc["name"],
+                        phone: doc["phone"],
+                        address: doc["address"],
+                        hasCar: doc["hasCar"],
+                        carMake: doc["carMake"],
+                        carModel: doc["carModel"],
+                        carLicense: doc["carLicense"],
+                        carSeatsAvail: doc["carSeatsAvail"]
+                    };
+                    this.user = user;
+                    console.log("[UDATA SERVICE] USER is set.");
+                }
+            }
+        })
+        .catch(error => {
+            console.log("[UDATA SERVICE] " + error);
+        });
     }
 
     // Add a new user with Google Account data
-    addUser(user: User) {
-        const u: User = {
-            uid: user.uid,
+    async addUser(user: User) {
+        return this.afs.collection('/Users').doc(user.uid)
+            .set({ 
+                uid: user.uid,
+                email: user.email,
+                photoURL: user.photoURL,
+                type: 1,
+                name: user.name,
+                phone: user.phone,
+                address: user.address,
+                hasCar: false,
+                carMake: '',
+                carModel: '',
+                carLicense: '',
+                carSeatsAvail: 0 
+            })
+            .then(res => {
+                console.log("User added: " + user.name);
+                this.user = user;
+                console.log("[UDATA SERVICE] USER is set.");
+            })
+            .catch(error => {
+                console.log("[UDATA SERVICE] " + error);
+            });
+    }
+
+    // Update a new user
+    async updateUser(user: User){
+        await this.afs.collection('/Users').doc(user.uid).update({
             email: user.email,
-            photoURL: user.photoURL,
-            type: 1,
+            type: user.type,
             name: user.name,
             phone: user.phone,
             address: user.address,
-            hasCar: false,
-            carMake: '',
-            carModel: '',
-            carLicense: '',
-            carSeatsAvail: 0
-        };
-        console.log("User added: " + user.name);
-        return this.afs.collection('/Users').add(u);
-    }
-
-    passAccountValue(account: GoogleAccount) {
-        this.uid = account.uid;
-        this.displayName = account.displayName;
-        this.email = account.email;
-        this.photoURL = account.photoURL;
-    }
-
-    getUid(){
-        return this.uid;
-    }
-
-    getEmail(){
-        return this.email;
-    }
-
-    getPhotoURL(){
-        return this.photoURL;
-    }
-
-    getDisplayName(){
-        return this.displayName;
-    }
-
-    hasCurrentUser(){
-        return this.hasThisUser;
+            hasCar: user.hasCar,
+            carMake: user.carMake,
+            carModel: user.carModel,
+            carLicense: user.carLicense,
+            carSeatsAvail: user.carSeatsAvail
+        }).then(res => {
+            this.user = user;
+            console.log("[UDATA SERVICE] USER is set.");
+        }).catch(error => {
+            console.log("[UDATA SERVICE] " + error);
+        });
     }
 }

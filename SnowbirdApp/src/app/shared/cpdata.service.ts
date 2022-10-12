@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 // import * as firebase from 'firebase/compat';
 // import * as firestore from 'firebase/firestore';
 // import 'firebase/firestore';
-import { CarpoolComponent } from '../carpool/carpool.component';
+import { CarpoolComponent } from '../components/carpool/carpool.component';
 import { Carpool } from '../model/carpool';
 import { collection, doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';

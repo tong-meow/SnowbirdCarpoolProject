@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output} from '@angular/core';
-import { Carpool } from '../model/carpool';
-import { CpdataService } from '../shared/cpdata.service';
+import { UdataService } from 'src/app/shared/udata.service';
+import { Carpool } from '../../model/carpool';
+import { CpdataService } from '../../shared/cpdata.service';
 
 @Component({
   selector: 'app-addcarpool',
@@ -25,7 +26,8 @@ export class AddcarpoolComponent implements OnInit {
   // startTime: string = '';
   // totalSeats: number = 0;
 
-  constructor(private cpdataService: CpdataService) { }
+  constructor(private cpdataService: CpdataService,
+              private udataService: UdataService) { }
 
   ngOnInit(): void {
   }
@@ -40,14 +42,14 @@ export class AddcarpoolComponent implements OnInit {
   // }
 
 
-  onCreateCarpool(nameInput:HTMLInputElement, timeInput:HTMLInputElement, seatsInput:HTMLInputElement) {
-    if (nameInput.value == '' || timeInput.value == '' || seatsInput.value == '') {
+  onCreateCarpool(timeInput:HTMLInputElement, seatsInput:HTMLInputElement) {
+    if (timeInput.value == '' || seatsInput.value == '') {
       alert('Please fill in all fields.');
       return;
     }
 
     this.carpoolObj.id = '';
-    this.carpoolObj.driver = nameInput.value;
+    this.carpoolObj.driver = this.udataService.user.name;
     this.carpoolObj.passengers = [];
     this.carpoolObj.startTime = timeInput.value;
     this.carpoolObj.totalSeats = Number(seatsInput.value);
@@ -64,8 +66,8 @@ export class AddcarpoolComponent implements OnInit {
     // });
 
     // Reset the form
-    nameInput.value == '';
-    // this.resetForm();
+    timeInput.value = '';
+    seatsInput.value = '';
   }
 
 

@@ -2,12 +2,12 @@
     <div class="col-xs-12">
         <label>Create a new carpool</label>
         <br><br>
-        <p>Driver: </p>
+        <!-- <p>Driver: </p>
         <input
             type="text"
             class="form-control"
             #driverName>
-        <br>
+        <br> -->
         <p>Start Time: </p>
         <input
             type="text"
@@ -23,7 +23,7 @@
 
         <button
             class="btn btn-primary"
-            (click)="onCreateCarpool(driverName, startTime, seatsAvailable)">Add</button>
+            (click)="onCreateCarpool(startTime, seatsAvailable)">Add</button>
         <p></p>
         <!-- <p *ngIf="carpoolCreated; else noCarpool">A carpool was created!</p>
         <ng-template #noCarpool>

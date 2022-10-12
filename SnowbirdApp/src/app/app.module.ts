@@ -8,13 +8,14 @@ import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from 'src/environments/environment.prod';
 
 import { AppComponent } from './app.component';
-import { CarpoolComponent } from './carpool/carpool.component';
-import { CarpoolsComponent } from './carpools/carpools.component';
-import { AddcarpoolComponent } from './addcarpool/addcarpool.component';
+import { CarpoolComponent } from './components/carpool/carpool.component';
+import { CarpoolsComponent } from './components/carpools/carpools.component';
+import { AddcarpoolComponent } from './components/addcarpool/addcarpool.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UserComponent } from './user/user.component';
-import { LogInComponent } from './log-in/log-in.component';
-import { CarpoolDetailsComponent } from './carpool-details/carpool-details.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { LogInComponent } from './components/log-in/log-in.component';
+import { CarpoolDetailsComponent } from './components/carpool-details/carpool-details.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 // routes are stored as an array, each element is a JS object
 const appRoutes: Routes = [
@@ -23,7 +24,7 @@ const appRoutes: Routes = [
   { path: 'login', component: LogInComponent }, // Google login
   { path: 'carpools', component: CarpoolsComponent }, // daily carpools
   { path: 'carpools/:id', component: CarpoolDetailsComponent }, // one carpool
-  { path: 'profile', component: UserComponent }, // user profile
+  { path: 'editprofile', component: EditProfileComponent }, // user profile
 ];
 
 @NgModule({
@@ -33,8 +34,9 @@ const appRoutes: Routes = [
     CarpoolsComponent,
     AddcarpoolComponent,
     CarpoolDetailsComponent,
-    UserComponent,
-    LogInComponent
+    EditProfileComponent,
+    LogInComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
