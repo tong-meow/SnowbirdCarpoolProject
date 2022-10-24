@@ -1,9 +1,12 @@
 import { Injectable, NgZone } from '@angular/core';
 import { GoogleAuthProvider } from "firebase/auth";
-import { Router } from "@angular/router";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
-import { GudataService } from 'src/app/shared/gudata.service';
+// router
+import { Router } from "@angular/router";
+// models
 import { GoogleAccount } from "../model/googleAccount";
+// services
+import { GudataService } from 'src/app/shared/gudata.service';
 import { UdataService } from './udata.service';
 
 
@@ -17,7 +20,6 @@ export class AuthService {
         public router: Router,
         public ngZone: NgZone,
         public afAuth: AngularFireAuth,
-        // private angularFireAuth: AngularFireAuth,
         private gudataService: GudataService,
         private udataService: UdataService
     ) {
@@ -31,8 +33,13 @@ export class AuthService {
         return this.afAuth.signInWithPopup(provider)
             .then((res) => {
                 this.ngZone.run(() => {
-                    this.gudataService.checkGoogleAccount(this.account);
-                    this.DirectUser();
+                    // check in the current google account
+                    this.gudataService.checkIn(this.account).then(res => {
+                        this.DirectUser();
+                    })
+                    .catch(error => {
+                        console.log("[AUTH SERVICE] " + error);
+                    })
                 })
             }).catch((error) => {
                 window.alert(error)
@@ -43,7 +50,7 @@ export class AuthService {
     SigninWithGoogle() {
         return this.OAuthProvider(new GoogleAuthProvider())
             .then(res => {
-                console.log('Successfully logged in!')
+                console.log('[AUTH SERVICE] Successfully logged in!')
             }).catch(error => {
                 console.log(error)
             });
@@ -56,15 +63,22 @@ export class AuthService {
         })
     }
 
+    // Direct the user to either edit profile page or carpools page
     async DirectUser(){
-        await this.udataService.userExists(this.account.uid);
-        var userExists = this.udataService.hasCurrentUser();
-        console.log(userExists);
-        if (!userExists) {
-            this.udataService.passAccountValue(this.account);
-            this.router.navigate(['profile']);
-        } else {
-            this.router.navigate(['carpools']);
-        }
+        // check if customed user exists
+        await this.udataService.checkUser().then(res => {
+            if (!this.udataService.userExists) {
+                this.router.navigate(['editprofile']);
+            }
+            else if (this.udataService.userExists) {
+                this.router.navigate(['carpools']);
+            }
+            else {
+                console.log('[AUTH SERVICE] User check failed.');
+            }
+        })
+        .catch(error => {
+            console.log('[AUTH SERVICE] ' + error);
+        });
     }
 }

@@ -3,11 +3,13 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 // import * as firebase from 'firebase/compat';
 // import * as firestore from 'firebase/firestore';
 // import 'firebase/firestore';
-import { CarpoolComponent } from '../carpool/carpool.component';
+import { CarpoolComponent } from '../components/carpool/carpool.component';
 import { Carpool } from '../model/carpool';
-import { collection, doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
+import { User } from '../model/user';
+import { collection, doc, setDoc, getDoc, getFirestore, query, where, getDocs, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment.prod';
+import { TransferService } from './transfer.service';
 
 
 @Injectable({
@@ -18,22 +20,24 @@ export class CpdataService {
   app = initializeApp(environment.firebase);
   db = getFirestore(this.app);
 
-  constructor(private afs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore, 
+              private transferService: TransferService) { }
 
   // Add carpool
-  addCarpool(carpool: Carpool) {
-    carpool.id = this.afs.createId();
-    console.log("new carpool has id: "+ carpool.id);
-    return this.afs.collection('/Carpools').add(carpool);
-
+  async addCarpool(carpool: Carpool) {
     // carpool.id = this.afs.createId();
-    // this.afs.collection("/Carpools").doc(carpool.id).set({
-    //   driver: carpool.driver,
-    //   passengers: carpool.passengers,
-    //   startTime: carpool.startTime,
-    //   totalSeats: carpool.totalSeats   
-    // });
-    
+    // console.log("new carpool has id: "+ carpool.id);
+    // return this.afs.collection('/Carpools').add(carpool);
+    var cpID = "";
+    await this.afs.collection('/Carpools').add(carpool)
+      .then(function(docRef) {
+        console.log("Carpool doc created with ID: ", docRef.id);
+        cpID = docRef.id;
+      })
+      .then(() => {
+        this.afs.doc('/Carpools/'+cpID).update({id: cpID});
+      })
+  
   }
 
   // Get all carpools
@@ -41,28 +45,87 @@ export class CpdataService {
     return this.afs.collection('/Carpools').snapshotChanges();
   }
 
+  async getAllCarpoolsFromDate(date: Date) {
+        var cps: Carpool[] = [];
+        var cp: Carpool;
+        const cpRef = collection(this.db, "Carpools");
+        const q = query(cpRef, where("date", "==", date));
+        await getDocs(q).then(res => {
+            if (res.size == 0) {
+                console.log("[CPDATA SERVICE] No carpools on " + date + ".");
+            }
+            else {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    cp = {
+                      id: doc["id"],
+                      driver: doc["driver"],
+                      passengers: doc["passengers"],
+                      date: doc["date"],
+                      startTime: doc["startTime"],
+                      arrivalTime: doc["arrivalTime"],
+                      direction: doc["direction"],
+                      totalSeats: doc["totalSeats"]
+                  };
+                  console.log("[CPDATA SERVICE] Carpool found.");
+                  cps.push(cp)
+              }
+              this.transferService.setData(cps);
+          }
+      })
+      .catch(error => {
+          console.log("[CPDATA SERVICE] " + error);
+      });
+  }
+
   // Delete carpool
-  deleteCarpool(carpool: Carpool) {
-    return this.afs.doc('/Carpools/'+carpool.id).delete();
+  async deleteCarpool(carpool: Carpool) {
+    await this.afs.doc('/Carpools/'+carpool.id).delete();
+    console.log("Carpool deleted: " + carpool.id);
   }
 
   // Update carpool time
-  updateCarpoolTime(carpool: Carpool, newVal: string) {
-    return this.afs.doc('/Carpools/'+carpool.id).update({startTime: newVal});
+  async updateCarpoolTime(carpool: Carpool, newVal: Date) {
+    await this.afs.doc('/Carpools/'+carpool.id).update({startTime: newVal});
   }
 
   // Update carpool passengers
-  updateCarpoolPassengers(carpool: Carpool, newVal: string[]) {
-    return this.afs.doc('/Carpools/'+carpool.id).update({passengers: newVal});
-    // Overwrite data:
-    // return this.afs.doc('Carpools/'+carpool.id).set({
-    //   driver: carpool.driver,
-    //   id: carpool.id,
-    //   passengers: newVal,
-    //   startTime: carpool.startTime,
-    //   totalSeats: carpool.totalSeats    
+  async updateCarpoolPassengers(carpool: Carpool, newVal: string[]) {
+    await this.afs.doc('/Carpools/'+carpool.id).update({passengers: newVal});
+
+    // // Overwrite data:
+    // await this.afs.doc('Carpools/'+carpool.id).set({
+    //   passengers: newVal,   
     //   });
+    console.log("[CPDATA SERVICE] Updated carpool with id: " + carpool.id);
+
   }
+
+  // Add carpool passenger
+  async addCarpoolPassenger(carpoolId: string, newPassengerId: string) {
+
+    const cpRef = doc(this.db, "Carpools", carpoolId);
+    // Atomically add a new region to the "regions" array field.
+    await updateDoc(cpRef, {
+      passengers: arrayUnion(newPassengerId)
+    });
+    console.log("[CPDATA SERVICE] Added passenger to : " + carpoolId);
+  }
+
+  // Add carpool passenger
+  async removeCarpoolPassenger(carpool: Carpool, newPassengerId: string) {
+
+    const cpRef = doc(this.db, "Carpools", carpool.id);
+    // Atomically add a new region to the "regions" array field.
+    await updateDoc(cpRef, {
+      passengers: arrayRemove(newPassengerId)
+    });
+    console.log("[CPDATA SERVICE] Removed passenger from : " + carpool.id);
+  }
+
+  
+
   // Firestore data converter
   carpoolConverter = {
     toFirestore: (cp: Carpool) => {
@@ -71,12 +134,13 @@ export class CpdataService {
             id: cp.id,
             passengers: cp.passengers,
             startTime: cp.startTime,
-            totalSeats: cp.totalSeats
+            arrivalTime: cp.arrivalTime,
+            totalSeats: cp.totalSeats,
             };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Carpool(data.id, data.driver, data.passengers, data.startTime, data.totalSeats);
+        return new Carpool(data.id, data.driver, data.passengers, data.date, data.startTime, data.arrivalTime, data.direction, data.totalSeats);
     }
   };
 
