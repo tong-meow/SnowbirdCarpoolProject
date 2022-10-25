@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="text-center">
+            <br>
+            <label >Edit My Vehicle</label>
+            <br>
+        </div>
+        <form>
+            <div class="form-row">
+                <label for="name">Car Make</label>
+                <input class="form-control" id="name" type="text" [value]="makeText" #make required>
+            </div>
+            <br>
+            <div class="form-row">
+                <label for="phone">Car Model</label>
+                <input class="form-control" id="phone" type="text" [value]="modelText" #model required>
+            </div>
+            <br>
+            <div class="form-row">
+                <label for="email">License</label>
+                <input class="form-control" id="email" type="text" [value]="licenseText" #license required>
+            </div>
+            <br>
+            <div class="form-row">
+                <label for="add">Seats Available</label>
+                <input class="form-control" id="add" type="number" [value]="seatsAvailText" #seats required>
+            </div>
+            <br>
+            <button
+                class="btn btn-primary btn-block"
+                (click)="onSaveCar(make, model, license, seats)">Save
+            </button>
+        </form>
+    </div>
+</div>

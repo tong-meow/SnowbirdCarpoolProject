@@ -9,14 +9,12 @@ export class User {
     name: string;
     phone: string;
     address: string;
-    hasCar: boolean;
 
-    // fields of vehicles
-    // carIDs -> replace with a list of IDs when we have car model
-    carMake: string;
-    carModel: string;
-    carLicense: string;
-    carSeatsAvail: number;
+    // address details
+    add: string;
+    city: string;
+    state: string;
+    zip: string;
 
     constructor(uid, email, photoURL) {
         this.uid = uid;

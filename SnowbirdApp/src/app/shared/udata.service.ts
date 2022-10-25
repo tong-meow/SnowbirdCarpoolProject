@@ -30,8 +30,7 @@ export class UdataService {
 
     constructor(private afs: AngularFirestore,
                 private gudataService: GudataService,
-                private transferService: TransferService
-                ) { }
+                private transferService: TransferService) { }
 
 
     // Check if a user exists
@@ -82,11 +81,10 @@ export class UdataService {
                         name: doc["name"],
                         phone: doc["phone"],
                         address: doc["address"],
-                        hasCar: doc["hasCar"],
-                        carMake: doc["carMake"],
-                        carModel: doc["carModel"],
-                        carLicense: doc["carLicense"],
-                        carSeatsAvail: doc["carSeatsAvail"]
+                        add: doc['add'],
+                        city: doc['city'],
+                        state: doc['state'],
+                        zip: doc['zip']
                     };
                     this.user = user;
                     console.log("[UDATA SERVICE] USER is set.");
@@ -109,11 +107,10 @@ export class UdataService {
                 name: user.name,
                 phone: user.phone,
                 address: user.address,
-                hasCar: false,
-                carMake: '',
-                carModel: '',
-                carLicense: '',
-                carSeatsAvail: 0 
+                add: user.add,
+                city: user.city,
+                state: user.state,
+                zip: user.zip
             })
             .then(res => {
                 console.log("User added: " + user.name);
@@ -133,11 +130,10 @@ export class UdataService {
             name: user.name,
             phone: user.phone,
             address: user.address,
-            hasCar: user.hasCar,
-            carMake: user.carMake,
-            carModel: user.carModel,
-            carLicense: user.carLicense,
-            carSeatsAvail: user.carSeatsAvail
+            add: user.add,
+            city: user.city,
+            state: user.state,
+            zip: user.zip
         }).then(res => {
             this.user = user;
             console.log("[UDATA SERVICE] USER is set.");
@@ -167,11 +163,10 @@ export class UdataService {
                         name: doc["name"],
                         phone: doc["phone"],
                         address: doc["address"],
-                        hasCar: doc["hasCar"],
-                        carMake: doc["carMake"],
-                        carModel: doc["carModel"],
-                        carLicense: doc["carLicense"],
-                        carSeatsAvail: doc["carSeatsAvail"]
+                        add: doc['add'],
+                        city: doc['city'],
+                        state: doc['state'],
+                        zip: doc['zip']
                     };
                     console.log("[UDATA SERVICE] User found.");
                 }

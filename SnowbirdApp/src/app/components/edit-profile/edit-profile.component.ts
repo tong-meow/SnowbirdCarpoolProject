@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment.prod';
 import { getFirestore } from "firebase/firestore";
@@ -26,7 +26,10 @@ export class EditProfileComponent implements OnInit {
     nameText: string = "";
     phoneText: string = "";
     emailText: string = "";
-    addressText: string = "";
+    addText: string = "";
+    cityText: string = "";
+    stateText: string = "";
+    zipText: string = "";
     photoURL: string = "";
 
     private account: GoogleAccount;
@@ -62,7 +65,10 @@ export class EditProfileComponent implements OnInit {
             this.nameText = this.user.name;
             this.phoneText = this.user.phone;
             this.emailText = this.user.email;
-            this.addressText = this.user.address;
+            this.addText = this.user.add;
+            this.cityText = this.user.city;
+            this.stateText = this.user.state;
+            this.zipText = this.user.zip;
             this.photoURL = this.user.photoURL;
         }
     }
@@ -71,13 +77,18 @@ export class EditProfileComponent implements OnInit {
     onSaveUser(username: HTMLInputElement,
                phone: HTMLInputElement,
                email: HTMLInputElement,
-               address: HTMLInputElement) {
+               add: HTMLInputElement,
+               city: HTMLInputElement,
+               state: HTMLInputElement,
+               zip: HTMLInputElement) {
 
-        if (username.value == '' || address.value == '' ||
-            phone.value == '' || email.value == '') {
+        if (username.value == '' || phone.value == '' || email.value == '' ||
+            add.value == '' || city.value == '' || state.value == '' || zip.value == '') {
             alert('Please fill in the forms.');
             return;
         }
+
+        var address = add.value + ", " + city.value + ", " + state.value + " " + zip.value;
 
         // if current user is undefined, save it to db
         if (this.udataService.user == undefined) {
@@ -88,12 +99,11 @@ export class EditProfileComponent implements OnInit {
                 type: 1,
                 name: username.value,
                 phone: phone.value,
-                address: address.value,
-                hasCar: false,
-                carMake: '',
-                carModel: '',
-                carLicense: '',
-                carSeatsAvail: 0
+                address: address,
+                add: add.value,
+                city: city.value,
+                state: state.value,
+                zip: zip.value
             };
             this.udataService.addUser(this.user).then(() => {
                 this.router.navigateByUrl('/carpools');
@@ -107,10 +117,14 @@ export class EditProfileComponent implements OnInit {
             this.user.email = email.value;
             this.user.name = username.value;
             this.user.phone = phone.value;
-            this.user.address = address.value;
+            this.user.address = address;
+            this.user.add = add.value;
+            this.user.city = city.value;
+            this.user.state = state.value;
+            this.user.zip = zip.value;
             this.udataService.updateUser(this.user).then(() => {
                 // route to carpools
-                this.router.navigateByUrl('/carpools');
+                this.router.navigateByUrl('/profile');
             })
             .catch(error => {
                 console.log("[EDIT PROFILE] " + error);
