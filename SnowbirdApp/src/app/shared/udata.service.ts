@@ -84,7 +84,8 @@ export class UdataService {
                         add: doc['add'],
                         city: doc['city'],
                         state: doc['state'],
-                        zip: doc['zip']
+                        zip: doc['zip'],
+                        initialized: doc['initialized']
                     };
                     this.user = user;
                     console.log("[UDATA SERVICE] USER is set.");
@@ -103,18 +104,18 @@ export class UdataService {
                 uid: user.uid,
                 email: user.email,
                 photoURL: user.photoURL,
-                type: 1,
+                type: user.type,
                 name: user.name,
                 phone: user.phone,
                 address: user.address,
                 add: user.add,
                 city: user.city,
                 state: user.state,
-                zip: user.zip
+                zip: user.zip,
+                initialized: user.initialized
             })
             .then(res => {
                 console.log("User added: " + user.name);
-                this.user = user;
                 console.log("[UDATA SERVICE] USER is set.");
             })
             .catch(error => {
@@ -133,7 +134,8 @@ export class UdataService {
             add: user.add,
             city: user.city,
             state: user.state,
-            zip: user.zip
+            zip: user.zip,
+            initialized: true
         }).then(res => {
             this.user = user;
             console.log("[UDATA SERVICE] USER is set.");
@@ -166,7 +168,8 @@ export class UdataService {
                         add: doc['add'],
                         city: doc['city'],
                         state: doc['state'],
-                        zip: doc['zip']
+                        zip: doc['zip'],
+                        initialized: doc['initialized']
                     };
                     console.log("[UDATA SERVICE] User found.");
                 }

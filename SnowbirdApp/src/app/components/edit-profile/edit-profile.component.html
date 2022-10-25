@@ -1,3 +1,6 @@
+<!-- <div class="row" 
+          [hidden]="productID == category.Lane || productID == category.Val">
+    </div> -->
 <div class="row">
     <div class="col-xs-12">
         <div class="text-center">
@@ -48,4 +51,7 @@
             </button>
         </form>
     </div>
+</div>
+<div class="fixed-bottom" style="width:100%" [hidden]="noPermission == true">
+    <app-navbar></app-navbar>
 </div>

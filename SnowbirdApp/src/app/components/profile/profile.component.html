@@ -25,5 +25,11 @@
             <button type="button" class="btn btn-primary btn-block" (click)="onEdit()">Edit</button>
             <button type="button" class="btn btn-secondary btn-block" (click)="onLogout()">Logout</button>
         </div>
+        <div class="card-body" [hidden]="this.noPermission == true">
+            <button type="button" class="btn btn-warning btn-block" (click)="onAprroveUserReg()">Approve User Registrations</button>
+        </div>
     </div>
+</div>
+<div class="fixed-bottom" style="width:100%">
+    <app-navbar></app-navbar>
 </div>

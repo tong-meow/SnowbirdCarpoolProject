@@ -95,11 +95,42 @@ export class GudataService {
 
     // Delete a google account in db
     // (Only when admin disapprove the user will this function be called)
-    deleteAccount(account: GoogleAccount) {
-        return this.afs.doc('/GoogleAccounts/'+account.uid).delete();
+    async deleteAccount(account: GoogleAccount) {
+        await this.afs.doc('/GoogleAccounts/'+account.uid).delete()
+        .then(() => {
+            console.log("[GUDATA SERVICE] Google account deleted.");
+        });
     }
 
-    getAllAccounts(){
-        return this.afs.collection('/GoogleAccounts').snapshotChanges();
+    // Get all google accounts
+    async getAllAccounts(){
+        var acs: GoogleAccount[] = [];
+        var ac: GoogleAccount;
+        const acRef = collection(this.db, "GoogleAccounts");
+        const q = query(acRef);
+        await getDocs(q).then(res => {
+            if (res.size == 0) {
+                console.log("[GUDATA SERVICE] No accounts found.");
+            }
+            else {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    ac = {
+                        uid: doc["uid"],
+                        email: doc["email"],
+                        displayName: doc["displayName"],
+                        photoURL: doc["photoURL"],
+                        emailVerified: doc["emailVerified"]
+                    };
+                    console.log("[GUDATA SERVICE] Account found: " + ac.displayName);
+                    acs.push(ac);
+                }
+                this.transferService.setData(acs);
+            }
+        })
+        .catch(error => {
+            console.log("[GUDATA SERVICE] " + error);
+        });
     }
 }

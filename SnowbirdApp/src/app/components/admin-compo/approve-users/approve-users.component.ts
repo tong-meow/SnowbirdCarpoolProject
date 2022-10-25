@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { initializeApp } from 'firebase/app';
-import { environment } from 'src/environments/environment.prod';
-import { getFirestore } from "firebase/firestore";
 // router
 import { Router } from "@angular/router";
 // models
@@ -31,36 +28,53 @@ export class ApproveUsersComponent implements OnInit {
   ngOnInit(): void {
 
     // if the user hasn't logged in, nav to login page
-    // if (this.udataService.user == undefined) {
-    //   alert('Please log in first.');
-    //   this.router.navigate(['login']);
-    //   return;
-    // }
+    if (this.udataService.user == undefined) {
+      alert('Please log in first.');
+      this.router.navigate(['login']);
+      return;
+    }
 
     // if the user is not admin
-    // if (this.udataService.user.type == 1) {
-    //   alert('Only admin accounts are authorized to view this page!');
-    //   this.router.navigate(['carpools']);
-    //   return;
-    // }
-    
-    this.getAccounts();
-    if (this.accounts.length > 0) {
-      this.noUsersToApprove = false;
+    if (this.udataService.user.type != 0) {
+      alert('Only admin accounts are authorized to view this page!');
+      this.router.navigate(['carpools']);
+      return;
     }
+    
+    this.getGoogleAccounts().then(() => {
+      this.filter().then(() => {
+        if (this.accounts.length > 0) {
+          this.noUsersToApprove = false;
+        }
+      });
+    });
   }
 
-  getAccounts(){
-    this.gudataService.getAllAccounts().subscribe({
-      next: (res) => 
-        this.accounts = res.map((e: any) => {
-          const data = e.payload.doc.data();
-          data.id = e.payload.doc.id;
-          console.log("DATA------------------\n" + data);
-          return data;
-        }),
-      error: (e) => alert('Error: Cannot fetch accounts data'),
-      complete: () => console.info('complete') 
-    });
+  async getGoogleAccounts(){
+    await this.gudataService.getAllAccounts().then(() => {
+      this.accounts = this.transferService.getData();
+      console.log(this.accounts.length + " google accounts fetched.");
+      this.transferService.clearData();
+    })
+  }
+
+  async filter(){
+    for(var i = 0; i < this.accounts.length; i++){
+      console.log("FILTER PROCESS: " + this.accounts[i].displayName);
+      await this.udataService.getUser(this.accounts[i].uid).then(() => {
+        const user = this.transferService.getData();
+        this.transferService.clearData();
+        if (user != undefined) {
+          this.accounts.splice(i, 1);
+          i--;
+        }
+      });
+    }
+    console.log(this.accounts.length + " accounts wait to be approved.");
+  }
+
+  onProcessed(account) {
+    var index = this.accounts.indexOf(account);
+    this.accounts.splice(index, 1);
   }
 }

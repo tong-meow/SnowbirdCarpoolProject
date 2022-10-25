@@ -32,6 +32,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker'
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import { NoticeComponent } from './components/notice/notice.component';
 
 // routes are stored as an array, each element is a JS object
 const appRoutes: Routes = [
@@ -43,7 +44,8 @@ const appRoutes: Routes = [
   { path: 'profile', component:ProfileComponent }, // user profile
   { path: 'editprofile', component: EditProfileComponent }, // edit profile
   { path: 'editvehicle', component: EditVehicleComponent },
-  { path: 'approveusers', component: ApproveUsersComponent }
+  { path: 'approveusers', component: ApproveUsersComponent },
+  { path: 'notice', component: NoticeComponent}
 ];
 
 @NgModule({
@@ -59,7 +61,8 @@ const appRoutes: Routes = [
     ProfileComponent,
     EditVehicleComponent,
     ApproveUsersComponent,
-    AccountToBeApprovedComponent
+    AccountToBeApprovedComponent,
+    NoticeComponent
   ],
   imports: [
     BrowserModule,

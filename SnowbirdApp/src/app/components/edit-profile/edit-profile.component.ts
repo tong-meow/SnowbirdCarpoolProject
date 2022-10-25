@@ -32,6 +32,8 @@ export class EditProfileComponent implements OnInit {
     zipText: string = "";
     photoURL: string = "";
 
+    noPermission: boolean = true;
+
     private account: GoogleAccount;
     private user: User;
 
@@ -41,26 +43,27 @@ export class EditProfileComponent implements OnInit {
     
     ngOnInit(): void {
 
-        // if the ACCOUNT is undefined, navigate to login
-        if (this.gudataService.account == undefined) {
+        // if the USER is undefined, navigate to login
+        if (this.udataService.user == undefined) {
             alert('Please log in first.');
             this.router.navigate(['login']);
             return;
         }
         else {
             this.account = this.gudataService.account;
+            this.user = this.udataService.user;
         }
 
-        // if the USER is undefined
-        if (this.udataService.user == undefined) {
+        // if the USER has not initialized yet
+        if (!this.udataService.user.initialized) {
             // set default value with google account data
             this.nameText = this.account.displayName;
             this.emailText = this.account.email;
             this.photoURL = this.account.photoURL;
         }
-        // if the USER is assigned
+        // if the USER is already initialized
         else {
-            this.user = this.udataService.user;
+            this.noPermission = false;
             // set default value with user data
             this.nameText = this.user.name;
             this.phoneText = this.user.phone;
@@ -84,51 +87,27 @@ export class EditProfileComponent implements OnInit {
 
         if (username.value == '' || phone.value == '' || email.value == '' ||
             add.value == '' || city.value == '' || state.value == '' || zip.value == '') {
-            alert('Please fill in the forms.');
+            alert('Please fill out the forms.');
             return;
         }
 
         var address = add.value + ", " + city.value + ", " + state.value + " " + zip.value;
 
-        // if current user is undefined, save it to db
-        if (this.udataService.user == undefined) {
-            this.user = {
-                uid: this.gudataService.account.uid,
-                email: email.value,
-                photoURL: this.gudataService.account.photoURL,
-                type: 1,
-                name: username.value,
-                phone: phone.value,
-                address: address,
-                add: add.value,
-                city: city.value,
-                state: state.value,
-                zip: zip.value
-            };
-            this.udataService.addUser(this.user).then(() => {
-                this.router.navigateByUrl('/carpools');
-            })
-            .catch(error => {
-                console.log("[EDIT PROFILE] " + error);
-            });
-        }
-        // if current user exists, update it
-        else {
-            this.user.email = email.value;
-            this.user.name = username.value;
-            this.user.phone = phone.value;
-            this.user.address = address;
-            this.user.add = add.value;
-            this.user.city = city.value;
-            this.user.state = state.value;
-            this.user.zip = zip.value;
-            this.udataService.updateUser(this.user).then(() => {
-                // route to carpools
-                this.router.navigateByUrl('/profile');
-            })
-            .catch(error => {
-                console.log("[EDIT PROFILE] " + error);
-            });
-        }
+        this.user.email = email.value;
+        this.user.name = username.value;
+        this.user.phone = phone.value;
+        this.user.address = address;
+        this.user.add = add.value;
+        this.user.city = city.value;
+        this.user.state = state.value;
+        this.user.zip = zip.value;
+        this.user.initialized = true;
+        this.udataService.updateUser(this.user).then(() => {
+            // route to carpools
+            this.router.navigateByUrl('/profile');
+        })
+        .catch(error => {
+            console.log("[EDIT PROFILE] " + error);
+        });
     }
 }

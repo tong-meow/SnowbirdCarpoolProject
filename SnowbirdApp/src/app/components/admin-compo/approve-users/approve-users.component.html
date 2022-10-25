@@ -1,15 +1,19 @@
 <div class="row">
     <div class="col-xs-12">
         <div class="row">
-            <p *ngIf="noUsersToApprove"></p>
-                <!-- <p>
-                    No users are waiting for approving!
-                </p> -->
+            <h2>Approve User Registration</h2>
+            <!-- <p *ngIf="noUsersToApprove">
+                No users are waiting for approving!
+            </p> -->
             <hr>
-            <app-account-to-be-approved>
+            <app-account-to-be-approved
                 *ngFor="let account of accounts"
                 [accountObj]="account"
+                (accountProcessed)="onProcessed($event)">
             </app-account-to-be-approved>
-          </div>
+        </div>
     </div>
+</div>
+<div class="fixed-bottom" style="width:100%">
+    <app-navbar></app-navbar>
 </div>

@@ -65,15 +65,19 @@ export class AuthService {
 
     // Direct the user to either edit profile page or carpools page
     async DirectUser(){
-        // check if customed user exists
         await this.udataService.checkUser().then(res => {
             if (!this.udataService.userExists) {
-                this.router.navigate(['editprofile']);
+                this.router.navigate(['notice']);
             }
-            else if (this.udataService.userExists) {
-                this.router.navigate(['carpools']);
+            else if (this.udataService.userExists){
+                if (!this.udataService.user.initialized){
+                    this.router.navigate(['editprofile']);
+                }
+                else {
+                    this.router.navigate(['carpools']);
+                }
             }
-            else {
+            else{
                 console.log('[AUTH SERVICE] User check failed.');
             }
         })
