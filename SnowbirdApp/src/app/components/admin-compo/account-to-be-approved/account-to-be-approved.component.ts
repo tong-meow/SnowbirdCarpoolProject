@@ -1,9 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { initializeApp } from 'firebase/app';
-import { environment } from 'src/environments/environment.prod';
-import { getFirestore } from "firebase/firestore";
-// router
-import { Router } from "@angular/router";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 // models
 import { GoogleAccount } from "src/app/model/googleAccount";
 import { User } from "src/app/model/user";
@@ -19,6 +14,7 @@ import { UdataService } from 'src/app/shared/udata.service';
 export class AccountToBeApprovedComponent implements OnInit {
 
   @Input() accountObj: GoogleAccount;
+  @Output() accountProcessed = new EventEmitter<{ac: GoogleAccount}>();
 
   constructor(private gudataService: GudataService,
               private udataService: UdataService) { }
@@ -39,13 +35,20 @@ export class AccountToBeApprovedComponent implements OnInit {
       city: "",
       state: "",
       zip: "",
+      initialized: false
     }
-    // this.udataService.addUser(user);
+    this.udataService.addUser(user);
+    this.accountProcessed.emit({ac: this.accountObj});
   }
 
-  onDisapprove(){
-    if (window.confirm('Disapprove this user?')) {
-      this.gudataService.deleteAccount(this.accountObj);
+  onDenied(){
+    if (window.confirm("Deny this user's registration?")) {
+      this.gudataService.deleteAccount(this.accountObj).then(() => {
+        this.accountProcessed.emit({ac: this.accountObj});
+      })
+      .catch(error => {
+        console.log(error);
+      })
     }
   }
 
@@ -62,8 +65,10 @@ export class AccountToBeApprovedComponent implements OnInit {
       city: "",
       state: "",
       zip: "",
+      initialized: false
     }
-    // this.udataService.addUser(user);
+    this.udataService.addUser(user);
+    this.accountProcessed.emit({ac: this.accountObj});
   }
 
 }

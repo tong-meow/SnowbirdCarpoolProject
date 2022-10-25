@@ -28,6 +28,9 @@ export class ProfileComponent implements OnInit {
   emailText: string = "";
   addressText: string = "";
 
+  // user type
+  noPermission: boolean = true;
+
   constructor(private gudataService: GudataService,
               private udataService: UdataService,
               private router: Router) { }
@@ -45,6 +48,10 @@ export class ProfileComponent implements OnInit {
     this.phoneText = this.udataService.user.phone;
     this.emailText = this.udataService.user.email;
     this.addressText = this.udataService.user.address;
+
+    if (this.udataService.user.type == 0) {
+      this.noPermission = false;
+    }
   }
 
   onEdit() {
@@ -56,6 +63,17 @@ export class ProfileComponent implements OnInit {
     this.gudataService.account = undefined;
     this.udataService.user = undefined;
     this.router.navigate(['login']);
+    return;
+  }
+
+  onAprroveUserReg(){
+    // incase the regular users see this button!
+    if (this.udataService.user.type != 0) {
+      alert("Your account is not authorized to view and approve new registrations!");
+      return;
+    }
+    // nav to approveusers
+    this.router.navigate(['approveusers']);
     return;
   }
 }
