@@ -1,7 +1,14 @@
 <div class="row">
     <div class="col-xs-12">
-        <label>Create a new carpool</label>
-        <br><br>
+        <p>Direction: </p>
+        <mat-radio-group [(ngModel)]="selectedDirection">
+            <mat-radio-button value="To Snowbird" color="primary">
+                To Snowbird
+            </mat-radio-button><br><br>
+            <mat-radio-button value="From Snowbird" color="primary">
+                From Snowbird
+            </mat-radio-button><br><br>
+        </mat-radio-group>
         <!-- <p>Driver: </p>
         <input
             type="text"
@@ -14,6 +21,12 @@
             class="form-control"
             #startTime>
         <br>
+        <p>Arrival Time: </p>
+        <input
+            type="text"
+            class="form-control"
+            #arrivalTime>
+        <br>
         <p>Total Seats Available: </p>
         <input
             type="number"
@@ -23,7 +36,7 @@
 
         <button
             class="btn btn-primary"
-            (click)="onCreateCarpool(startTime, seatsAvailable)">Add</button>
+            (click)="onCreateCarpool(startTime, arrivalTime, seatsAvailable)">Add</button>
         <p></p>
         <!-- <p *ngIf="carpoolCreated; else noCarpool">A carpool was created!</p>
         <ng-template #noCarpool>
