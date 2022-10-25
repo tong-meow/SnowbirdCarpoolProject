@@ -1,0 +1,29 @@
+<div class="col-10 justify-content-center">
+    <div class="text-center">
+        <br>
+        <img src="{{photoURL}}" class="rounded-circle">
+        <br>
+    </div>
+    <br>
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title"><b>My Profile</b></h4>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Name: </b>{{nameText}}</li>
+            <li class="list-group-item"><b>Phone: </b>{{phoneText}}</li>
+            <li class="list-group-item"><b>E-mail: </b>{{emailText}}</li>
+            <li class="list-group-item"><b>Address: </b>{{addressText}}</li>
+        </ul>
+        <div class="card-body">
+            <h4 class="card-title"><b>My Vehicles</b></h4>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">no data</li>
+        </ul>
+        <div class="card-body">
+            <button type="button" class="btn btn-primary btn-block" (click)="onEdit()">Edit</button>
+            <button type="button" class="btn btn-secondary btn-block" (click)="onLogout()">Logout</button>
+        </div>
+    </div>
+</div>

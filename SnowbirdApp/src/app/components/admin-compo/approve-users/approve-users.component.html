@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+            <p *ngIf="noUsersToApprove"></p>
+                <!-- <p>
+                    No users are waiting for approving!
+                </p> -->
+            <hr>
+            <app-account-to-be-approved>
+                *ngFor="let account of accounts"
+                [accountObj]="account"
+            </app-account-to-be-approved>
+          </div>
+    </div>
+</div>

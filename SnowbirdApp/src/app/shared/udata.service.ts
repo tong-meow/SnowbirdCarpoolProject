@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment.prod';
 import { User } from '../model/user';
 // services
 import { GudataService } from './gudata.service';
+import { TransferService } from './transfer.service';
 
 
 @Injectable({
@@ -28,7 +29,8 @@ export class UdataService {
     userExists: boolean;
 
     constructor(private afs: AngularFirestore,
-                private gudataService: GudataService) { }
+                private gudataService: GudataService,
+                private transferService: TransferService) { }
 
 
     // Check if a user exists
@@ -79,11 +81,10 @@ export class UdataService {
                         name: doc["name"],
                         phone: doc["phone"],
                         address: doc["address"],
-                        hasCar: doc["hasCar"],
-                        carMake: doc["carMake"],
-                        carModel: doc["carModel"],
-                        carLicense: doc["carLicense"],
-                        carSeatsAvail: doc["carSeatsAvail"]
+                        add: doc['add'],
+                        city: doc['city'],
+                        state: doc['state'],
+                        zip: doc['zip']
                     };
                     this.user = user;
                     console.log("[UDATA SERVICE] USER is set.");
@@ -106,11 +107,10 @@ export class UdataService {
                 name: user.name,
                 phone: user.phone,
                 address: user.address,
-                hasCar: false,
-                carMake: '',
-                carModel: '',
-                carLicense: '',
-                carSeatsAvail: 0 
+                add: user.add,
+                city: user.city,
+                state: user.state,
+                zip: user.zip
             })
             .then(res => {
                 console.log("User added: " + user.name);
@@ -130,15 +130,50 @@ export class UdataService {
             name: user.name,
             phone: user.phone,
             address: user.address,
-            hasCar: user.hasCar,
-            carMake: user.carMake,
-            carModel: user.carModel,
-            carLicense: user.carLicense,
-            carSeatsAvail: user.carSeatsAvail
+            add: user.add,
+            city: user.city,
+            state: user.state,
+            zip: user.zip
         }).then(res => {
             this.user = user;
             console.log("[UDATA SERVICE] USER is set.");
         }).catch(error => {
+            console.log("[UDATA SERVICE] " + error);
+        });
+    }
+
+    // Get a user with uid
+    async getUser(uid: string) {
+        var u: User;
+        const usersRef = collection(this.db, "Users");
+        const q = query(usersRef, where("uid", "==", uid));
+        await getDocs(q).then(res => {
+            if (res.size == 0) {
+                console.log("[UDATA SERVICE] User not found.");
+            }
+            else {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    u = {
+                        uid: doc["uid"],
+                        email: doc["email"],
+                        photoURL: doc["photoURL"],
+                        type: doc["type"],
+                        name: doc["name"],
+                        phone: doc["phone"],
+                        address: doc["address"],
+                        add: doc['add'],
+                        city: doc['city'],
+                        state: doc['state'],
+                        zip: doc['zip']
+                    };
+                    console.log("[UDATA SERVICE] User found.");
+                }
+                this.transferService.setData(u);
+            }
+        })
+        .catch(error => {
             console.log("[UDATA SERVICE] " + error);
         });
     }

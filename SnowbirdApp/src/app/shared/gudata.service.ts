@@ -5,6 +5,7 @@ import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment.prod';
 // models
 import { GoogleAccount } from '../model/googleAccount';
+import { TransferService } from './transfer.service';
 
 
 @Injectable({
@@ -24,7 +25,8 @@ export class GudataService {
     app = initializeApp(environment.firebase);
     db = getFirestore(this.app);
 
-    constructor(private afs: AngularFirestore) { }
+    constructor(private afs: AngularFirestore,
+                private transferService: TransferService) { }
 
     // Check the google account in
     // 1. if the account exists in db, do nothing
@@ -89,5 +91,15 @@ export class GudataService {
         .catch(error => {
             console.log("[GUDATA SERVICE] " + error);
         });
+    }
+
+    // Delete a google account in db
+    // (Only when admin disapprove the user will this function be called)
+    deleteAccount(account: GoogleAccount) {
+        return this.afs.doc('/GoogleAccounts/'+account.uid).delete();
+    }
+
+    getAllAccounts(){
+        return this.afs.collection('/GoogleAccounts').snapshotChanges();
     }
 }

@@ -19,6 +19,6 @@ export class NavbarComponent implements OnInit {
   }
 
   toEditProfile(){
-    this.router.navigate(['editprofile']);
+    this.router.navigate(['profile']);
   }
 }

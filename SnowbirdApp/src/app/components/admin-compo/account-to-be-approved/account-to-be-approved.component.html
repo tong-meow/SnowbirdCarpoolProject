@@ -1,0 +1,24 @@
+<hr>
+<!-- <label>Carpool</label> -->
+<!-- <p></p> -->
+<div
+  class="panel panel-default" >
+  <div class="panel-heading">User needs to be approved</div>
+  <div class="panel-body">
+    <p>User: {{ accountObj.displayName }}</p>
+    <p></p>
+    <p>G-mail: {{ accountObj.email }}</p>
+    <p></p>
+    <button
+    class="btn btn-primary"
+    (click)="onApprove()">Approve</button>
+    <p></p>
+    <button
+    class="btn btn-primary"
+    (click)="onApproveAsAdmin()">Set This User as Admin</button>
+    <p></p>
+    <button
+    class="btn btn-primary"
+    (click)="onDisapprove()">Disapprove</button>
+  </div>
+</div>

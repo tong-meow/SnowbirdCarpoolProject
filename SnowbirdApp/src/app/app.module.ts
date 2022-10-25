@@ -16,6 +16,10 @@ import { EditProfileComponent } from './components/edit-profile/edit-profile.com
 import { LogInComponent } from './components/log-in/log-in.component';
 import { CarpoolDetailsComponent } from './components/carpool-details/carpool-details.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { EditVehicleComponent } from './components/edit-vehicle/edit-vehicle.component';
+import { ApproveUsersComponent } from './components/admin-compo/approve-users/approve-users.component';
+import { AccountToBeApprovedComponent } from './components/admin-compo/account-to-be-approved/account-to-be-approved.component';
 
 // routes are stored as an array, each element is a JS object
 const appRoutes: Routes = [
@@ -24,7 +28,10 @@ const appRoutes: Routes = [
   { path: 'login', component: LogInComponent }, // Google login
   { path: 'carpools', component: CarpoolsComponent }, // daily carpools
   { path: 'carpools/:id', component: CarpoolDetailsComponent }, // one carpool
-  { path: 'editprofile', component: EditProfileComponent }, // user profile
+  { path: 'profile', component:ProfileComponent }, // user profile
+  { path: 'editprofile', component: EditProfileComponent }, // edit profile
+  { path: 'editvehicle', component: EditVehicleComponent },
+  { path: 'approveusers', component: ApproveUsersComponent }
 ];
 
 @NgModule({
@@ -36,7 +43,11 @@ const appRoutes: Routes = [
     CarpoolDetailsComponent,
     EditProfileComponent,
     LogInComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProfileComponent,
+    EditVehicleComponent,
+    ApproveUsersComponent,
+    AccountToBeApprovedComponent
   ],
   imports: [
     BrowserModule,

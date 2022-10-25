@@ -1,52 +1,50 @@
 <div class="row">
     <div class="col-xs-12">
-        <img src="{{photoURL}}" class="rounded-circle">
-        <br>
-        <label>Edit your profile</label>
-        <br>
+        <div class="text-center">
+            <img src="{{photoURL}}" class="rounded-circle">
+            <br>
+            <label >Edit My Profile</label>
+            <br>
+        </div>
         <form>
             <div class="form-row">
-                <label for="validationDefault01">Name</label>
-                <input class="form-control is-valid" id="validationDefault01" type="text" [value]="nameText" #username required>
-                <div class="invalid-feedback">
-                    Please enter a valid name.
-                </div>
+                <label for="name">Name</label>
+                <input class="form-control" id="name" type="text" [value]="nameText" #username required>
             </div>
             <br>
             <div class="form-row">
-                <label for="validationDefault02">Phone Number</label>
-                <input class="form-control is-valid" id="validationDefault02" type="text" [value]="phoneText" #phone required>
-                <div class="invalid-feedback">
-                    Please enter your phone number.
-                </div>
+                <label for="phone">Phone Number</label>
+                <input class="form-control" id="phone" type="text" [value]="phoneText" #phone required>
             </div>
             <br>
             <div class="form-row">
-                <label for="validationDefault03">E-mail Address</label>
-                <input class="form-control is-valid" id="validationDefault03" type="text" [value]="emailText" #email required>
-                <div class="invalid-feedback">
-                    Please enter a valid email address.
-                </div>
+                <label for="email">E-mail</label>
+                <input class="form-control" id="email" type="text" [value]="emailText" #email required>
             </div>
             <br>
             <div class="form-row">
-                <label for="validationDefault04">Home Address</label>
-                <input class="form-control is-valid" id="validationDefault04" type="text" [value]="addressText" #address required>
-                <div class="invalid-feedback">
-                    Please enter your home address.
-                </div>
+                <label for="add">Home Address</label>
+                <input class="form-control" id="add" type="text" [value]="addText" #add required>
             </div>
             <br>
             <div class="form-row">
-                <label for="validationDefault05">Zip Code</label>
-                <input class="form-control is-valid" id="validationDefault05" type="text" length="5" #zip required>
-                <div class="invalid-feedback">
-                    Please enter a valid zip code with 5 digits.
-                </div>
+                <label for="city">City</label>
+                <input class="form-control" id="city" type="text" [value]="cityText" #city required>
             </div>
+            <br>
+            <div class="form-row">
+                <label for="state">State</label>
+                <input class="form-control" id="state" type="text" [value]="stateText" #state required>
+            </div>
+            <br>
+            <div class="form-row">
+                <label for="zip">Zip Code</label>
+                <input class="form-control" id="zip" type="text" length="5" [value]="zipText" #zip required>
+            </div>
+            <br>
             <button
-                class="btn btn-primary"
-                (click)="onSaveUser(username, phone, email, address)">Save
+                class="btn btn-primary btn-block"
+                (click)="onSaveUser(username, phone, email, add, city, state, zip)">Save
             </button>
         </form>
     </div>
