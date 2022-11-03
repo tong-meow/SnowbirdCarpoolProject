@@ -17,6 +17,7 @@ import { TransferService } from 'src/app/shared/transfer.service';
 export class ApproveUsersComponent implements OnInit {
 
   noUsersToApprove: boolean = true;
+  allAccounts: GoogleAccount[] = [];
   accounts: GoogleAccount[] = [];
 
   constructor(private gudataService: GudataService,
@@ -52,21 +53,20 @@ export class ApproveUsersComponent implements OnInit {
 
   async getGoogleAccounts(){
     await this.gudataService.getAllAccounts().then(() => {
-      this.accounts = this.transferService.getData();
-      console.log(this.accounts.length + " google accounts fetched.");
+      this.allAccounts = this.transferService.getData();
+      console.log(this.allAccounts.length + " google accounts fetched.");
       this.transferService.clearData();
     })
   }
 
   async filter(){
-    for(var i = 0; i < this.accounts.length; i++){
-      console.log("FILTER PROCESS: " + this.accounts[i].displayName);
-      await this.udataService.getUser(this.accounts[i].uid).then(() => {
+    for(var i = 0; i < this.allAccounts.length; i++){
+      console.log("FILTER PROCESS: " + this.allAccounts[i].displayName);
+      await this.udataService.getUser(this.allAccounts[i].uid).then(() => {
         const user = this.transferService.getData();
         this.transferService.clearData();
-        if (user != undefined) {
-          this.accounts.splice(i, 1);
-          i--;
+        if (user == undefined) {
+          this.accounts.push(this.allAccounts[i]);
         }
       });
     }
