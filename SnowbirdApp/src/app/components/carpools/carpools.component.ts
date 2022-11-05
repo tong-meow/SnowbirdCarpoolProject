@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { Carpool } from '../../model/carpool';
 // services
 import { UdataService } from 'src/app/shared/udata.service';
+import { GudataService } from 'src/app/shared/gudata.service';
 import { CpdataService } from 'src/app/shared/cpdata.service';
 import { TransferService } from 'src/app/shared/transfer.service';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -26,17 +27,21 @@ export class CarpoolsComponent implements OnInit {
     formGroup = new FormGroup({ releasedAt: new FormControl()});
 
     constructor(private cpdataService: CpdataService,
+                private gudataService: GudataService,
                 private udataService: UdataService,
                 private transferService: TransferService,
                 private router: Router) { }
 
     ngOnInit(): void {
         // if the user hasn't logged in, nav to login page
-        if (this.udataService.user == undefined) {
-          alert('Please log in first.');
-          this.router.navigate(['login']);
-          return;
-        }
+        // if (this.udataService.user == undefined) {
+        //   alert('Please log in first.');
+        //   this.router.navigate(['login']);
+        //   return;
+        // }
+        this.gudataService.checkAccountStatus();
+        this.udataService.checkLoginStatus();
+
         // Set date as today on calendar input and get carpools from date
         this.date = new Date(); 
         this.date.setHours(0,0,0,0);

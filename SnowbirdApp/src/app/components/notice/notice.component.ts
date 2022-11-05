@@ -17,20 +17,22 @@ export class NoticeComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    if (this.gudataService.account == undefined) {
-      alert('Please log in first.');
-      this.router.navigate(['login']);
-      return;
-    }
-    else if (!this.udataService.user == undefined) {
-      if (this.udataService.user.initialized) {
-        this.router.navigate(['carpools']);
-        return;
+    // if (this.gudataService.account == undefined) {
+    //   alert('Please log in first.');
+    //   this.router.navigate(['login']);
+    //   return;
+    // }
+    this.gudataService.checkAccountStatus().then(res => {
+      if (this.udataService.user != undefined) {
+        if (this.udataService.user.initialized) {
+          this.router.navigate(['carpools']);
+          return;
+        }
+        else{
+          this.router.navigate(['editprofile']);
+          return;
+        }
       }
-      else{
-        this.router.navigate(['editprofile']);
-        return;
-      }
-    }
+    });
   }
 }

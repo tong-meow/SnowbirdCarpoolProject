@@ -1,7 +1,7 @@
 export class Vehicle {
-    // primary key
+    // primary key, id for vehicle
     id: string;
-    // owner's id, foreign key
+    // foreign key, owner's id
     uid: string;
     // others
     make: string;
