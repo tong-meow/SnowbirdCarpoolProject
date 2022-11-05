@@ -10,6 +10,7 @@ import { User } from '../../model/user';
 // services
 import { GudataService } from '../../shared/gudata.service';
 import { UdataService } from 'src/app/shared/udata.service';
+import { LocalService } from 'src/app/shared/local.service';
 
 @Component({
   selector: 'app-profile',
@@ -33,25 +34,31 @@ export class ProfileComponent implements OnInit {
 
   constructor(private gudataService: GudataService,
               private udataService: UdataService,
+              private localService: LocalService,
               private router: Router) { }
 
   ngOnInit(): void {
     // if the ACCOUNT is undefined, navigate to login
-    if (this.gudataService.account == undefined) {
-      alert('Please log in first.');
-      this.router.navigate(['login']);
-      return;
-    }
-
-    this.photoURL = this.udataService.user.photoURL;
-    this.nameText = this.udataService.user.name;
-    this.phoneText = this.udataService.user.phone;
-    this.emailText = this.udataService.user.email;
-    this.addressText = this.udataService.user.address;
-
-    if (this.udataService.user.type == 0) {
-      this.noPermission = false;
-    }
+    // if (this.gudataService.account == undefined) {
+    //   alert('Please log in first.');
+    //   this.router.navigate(['login']);
+    //   return;
+    // }
+    this.gudataService.checkAccountStatus();
+    this.udataService.checkLoginStatus().then(res => {
+      this.photoURL = this.udataService.user.photoURL;
+      this.nameText = this.udataService.user.name;
+      this.phoneText = this.udataService.user.phone;
+      this.emailText = this.udataService.user.email;
+      this.addressText = this.udataService.user.address;
+  
+      if (this.udataService.user.type == 0) {
+        this.noPermission = false;
+      }
+    })
+    .catch(error => {
+        console.log(error);
+    });
   }
 
   onEdit() {
@@ -62,6 +69,8 @@ export class ProfileComponent implements OnInit {
   onLogout() {
     this.gudataService.account = undefined;
     this.udataService.user = undefined;
+    this.localService.removeLocalData("uid");
+    this.localService.clearLocalData();
     this.router.navigate(['login']);
     return;
   }

@@ -8,6 +8,7 @@ import { GoogleAccount } from "../model/googleAccount";
 // services
 import { GudataService } from 'src/app/shared/gudata.service';
 import { UdataService } from './udata.service';
+import { LocalService } from './local.service';
 
 
 @Injectable({
@@ -21,10 +22,11 @@ export class AuthService {
         public ngZone: NgZone,
         public afAuth: AngularFireAuth,
         private gudataService: GudataService,
-        private udataService: UdataService
+        private udataService: UdataService,
+        private localService: LocalService
     ) {
-        this.afAuth.authState.subscribe(user => {
-            this.account = user;
+        this.afAuth.authState.subscribe(act => {
+            this.account = act;
         })
     }
 
@@ -33,7 +35,7 @@ export class AuthService {
         return this.afAuth.signInWithPopup(provider)
             .then((res) => {
                 this.ngZone.run(() => {
-                    // check in the current google account
+                    // STEP 1: CHECK IN THE CURRENT GOOGLE ACCOUNT
                     this.gudataService.checkIn(this.account).then(res => {
                         this.DirectUser();
                     })
@@ -59,26 +61,36 @@ export class AuthService {
     // Firebase Logout 
     SignOut() {
         return this.afAuth.signOut().then(() => {
+            this.udataService.user = undefined;
+            this.gudataService.account = undefined;
+            this.localService.removeLocalData("uid");
+            this.localService.clearLocalData();
             this.router.navigate(['login']);
         })
     }
 
-    // Direct the user to either edit profile page or carpools page
+    // STEP 2: Direct the user to either edit profile page or carpools page
     async DirectUser(){
         await this.udataService.checkUser().then(res => {
-            if (!this.udataService.userExists) {
+            if (this.udataService.user == undefined) {
                 this.router.navigate(['notice']);
             }
-            else if (this.udataService.userExists){
+            else{
+                // if the "initialized" field is false
+                // this means the current user is approved by an admin
+                // but this is the first time of logging in
                 if (!this.udataService.user.initialized){
+                    // nav to edit profile, let the user initialize the data first
                     this.router.navigate(['editprofile']);
                 }
+                // if the user has been logged in before
                 else {
+                    // add to local cache
+                    this.localService.saveLocalData("uid", this.udataService.user.uid);
+                    console.log('[AUTH SERVICE] ' + "The user data has been added to local cache.");
+                    // nav to carpools
                     this.router.navigate(['carpools']);
                 }
-            }
-            else{
-                console.log('[AUTH SERVICE] User check failed.');
             }
         })
         .catch(error => {

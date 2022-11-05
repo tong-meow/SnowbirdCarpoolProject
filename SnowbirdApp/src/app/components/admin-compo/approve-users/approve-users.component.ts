@@ -29,26 +29,31 @@ export class ApproveUsersComponent implements OnInit {
   ngOnInit(): void {
 
     // if the user hasn't logged in, nav to login page
-    if (this.udataService.user == undefined) {
-      alert('Please log in first.');
-      this.router.navigate(['login']);
-      return;
-    }
-
-    // if the user is not admin
-    if (this.udataService.user.type != 0) {
-      alert('Only admin accounts are authorized to view this page!');
-      this.router.navigate(['carpools']);
-      return;
-    }
-    
-    this.getGoogleAccounts().then(() => {
-      this.filter().then(() => {
-        if (this.accounts.length > 0) {
-          this.noUsersToApprove = false;
-        }
+    // if (this.udataService.user == undefined) {
+    //   alert('Please log in first.');
+    //   this.router.navigate(['login']);
+    //   return;
+    // }
+    this.gudataService.checkAccountStatus();
+    this.udataService.checkLoginStatus().then(res => {
+      // if the user is not admin
+      if (this.udataService.user.type != 0) {
+        alert('Only admin accounts are authorized to view this page!');
+        this.router.navigate(['carpools']);
+        return;
+      }
+      
+      this.getGoogleAccounts().then(() => {
+        this.filter().then(() => {
+          if (this.accounts.length > 0) {
+            this.noUsersToApprove = false;
+          }
+        });
       });
-    });
+    })
+    .catch(error => {
+      console.log(error);
+    })
   }
 
   async getGoogleAccounts(){

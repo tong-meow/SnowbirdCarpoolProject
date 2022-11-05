@@ -8,6 +8,9 @@ import { User } from '../model/user';
 // services
 import { GudataService } from './gudata.service';
 import { TransferService } from './transfer.service';
+import { LocalService } from './local.service';
+// router
+import { Router } from "@angular/router";
 
 
 @Injectable({
@@ -26,11 +29,13 @@ export class UdataService {
     // other member variables
     app = initializeApp(environment.firebase);
     db = getFirestore(this.app);
-    userExists: boolean;
+    // userExists: boolean;
 
     constructor(private afs: AngularFirestore,
                 private gudataService: GudataService,
-                private transferService: TransferService) { }
+                private transferService: TransferService,
+                private localService: LocalService,
+                private router: Router) { }
 
 
     // Check if a user exists
@@ -47,9 +52,9 @@ export class UdataService {
         if (res.size > 0) {
             console.log("[UDATA SERVICE] User found.");
             // assign the USER member variable
-            await this.assignUser(uid).then(res => {
-                this.userExists = true;
-            })
+            await this.assignUser(uid).then(
+                // res => { this.userExists = true; }
+            )
             .catch(error => {
                 console.log("[UDATA SERVICE] " + error);
             });
@@ -57,7 +62,7 @@ export class UdataService {
         // if the user doesnt exist, set userExists to false
         else {
             console.log("[UDATA SERVICE] User not found.");
-            this.userExists = false;
+            // this.userExists = false;
         }
     }
 
@@ -138,6 +143,7 @@ export class UdataService {
             initialized: true
         }).then(res => {
             this.user = user;
+            this.localService.saveLocalData("uid", this.user.uid);
             console.log("[UDATA SERVICE] USER is set.");
         }).catch(error => {
             console.log("[UDATA SERVICE] " + error);
@@ -179,5 +185,21 @@ export class UdataService {
         .catch(error => {
             console.log("[UDATA SERVICE] " + error);
         });
+    }
+
+    async checkLoginStatus(){
+        if (this.user == undefined) {
+            const id = this.localService.getLocalData("uid");
+            if (id != undefined) {
+                await this.getUser(id).then(res => {
+                    this.user = this.transferService.getData();
+                    this.transferService.clearData();
+                })
+            }
+            else {
+                console.log("[UDATA SERVICE] " + "This user's data is not saved in local cache.");
+                this.router.navigate(['login']);
+            }
+        }
     }
 }

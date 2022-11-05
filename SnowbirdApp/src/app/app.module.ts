@@ -36,8 +36,8 @@ import { NoticeComponent } from './components/notice/notice.component';
 
 // routes are stored as an array, each element is a JS object
 const appRoutes: Routes = [
-  // path: what get entered in the url after the domain, e.g. localhost:4200/user
-  { path: '', pathMatch:'full', redirectTo: 'login' },
+  // path: what get entered in the url after the domain
+  { path: '', pathMatch:'full', redirectTo: 'carpools' },
   { path: 'login', component: LogInComponent }, // Google login
   { path: 'carpools', component: CarpoolsComponent }, // daily carpools
   { path: 'carpools/:id', component: CarpoolDetailsComponent }, // one carpool

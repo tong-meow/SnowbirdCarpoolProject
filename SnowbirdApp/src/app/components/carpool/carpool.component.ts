@@ -3,6 +3,7 @@ import { Carpool } from '../../model/carpool';
 import { CpdataService } from '../../shared/cpdata.service';
 import { Router } from "@angular/router";
 import { UdataService } from 'src/app/shared/udata.service';
+import { GudataService } from 'src/app/shared/gudata.service';
 import { User } from '../../model/user';
 import { TransferService } from 'src/app/shared/transfer.service';
 
@@ -24,16 +25,20 @@ export class CarpoolComponent implements OnInit {
 
     constructor(private cpdataService: CpdataService,
                 private udataService: UdataService,
+                private gudataService: GudataService,
                 private transferService: TransferService,
                 private router: Router){}
 
     ngOnInit(): void {
         // if the user hasn't logged in, nav to login page
-        if (this.udataService.user == undefined) {
-            alert('Please log in first.');
-            this.router.navigate(['login']);
-            return;
-        }
+        // if (this.udataService.user == undefined) {
+        //     alert('Please log in first.');
+        //     this.router.navigate(['login']);
+        //     return;
+        // }
+        this.gudataService.checkAccountStatus();
+        this.udataService.checkLoginStatus();
+
         // this.startTime = this.carpoolObj.arrivalTime.getHours()
 
         // Get Driver User

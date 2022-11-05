@@ -3,6 +3,7 @@ import { Carpool } from '../../model/carpool';
 import { CpdataService } from 'src/app/shared/cpdata.service';
 import { ActivatedRoute, Router } from "@angular/router";
 import { UdataService } from 'src/app/shared/udata.service';
+import { GudataService } from 'src/app/shared/gudata.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import { Platform } from '@angular/cdk/platform';
 import { User } from 'src/app/model/user';
@@ -36,6 +37,7 @@ export class CarpoolDetailsComponent implements OnInit {
     constructor(private router: Router, 
                 private route: ActivatedRoute, 
                 private udataService: UdataService,
+                private gudataService: GudataService,
                 private cpdataService: CpdataService,
                 private transferService: TransferService,
                 private platform: Platform
@@ -44,11 +46,13 @@ export class CarpoolDetailsComponent implements OnInit {
 
     ngOnInit(): void {
         // if the user hasn't logged in, nav to login page
-        if (this.udataService.user == undefined) {
-          alert('Please log in first.');
-          this.router.navigate(['login']);
-          return;
-        }
+        // if (this.udataService.user == undefined) {
+        //   alert('Please log in first.');
+        //   this.router.navigate(['login']);
+        //   return;
+        // }
+        this.gudataService.checkAccountStatus();
+        this.udataService.checkLoginStatus();
 
         this.carpoolId = this.route.snapshot.paramMap.get('id');
         console.log("[CARPOOL DETAILS]")

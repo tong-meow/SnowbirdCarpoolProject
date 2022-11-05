@@ -10,6 +10,7 @@ import { User } from '../../model/user';
 // services
 import { GudataService } from '../../shared/gudata.service';
 import { UdataService } from 'src/app/shared/udata.service';
+import { LocalService } from 'src/app/shared/local.service';
 
 @Component({
     selector: 'app-edit-profile',
@@ -39,41 +40,45 @@ export class EditProfileComponent implements OnInit {
 
     constructor(private gudataService: GudataService,
                 private udataService: UdataService,
+                private localService: LocalService,
                 private router: Router) {}
     
     ngOnInit(): void {
 
-        // if the USER is undefined, navigate to login
-        if (this.udataService.user == undefined) {
-            alert('Please log in first.');
-            this.router.navigate(['login']);
-            return;
-        }
-        else {
+        this.gudataService.checkAccountStatus().then(res => {
             this.account = this.gudataService.account;
-            this.user = this.udataService.user;
-        }
+        })
+        .catch(error => {
+            console.log(error);
+        });
 
-        // if the USER has not initialized yet
-        if (!this.udataService.user.initialized) {
-            // set default value with google account data
-            this.nameText = this.account.displayName;
-            this.emailText = this.account.email;
-            this.photoURL = this.account.photoURL;
-        }
-        // if the USER is already initialized
-        else {
-            this.noPermission = false;
-            // set default value with user data
-            this.nameText = this.user.name;
-            this.phoneText = this.user.phone;
-            this.emailText = this.user.email;
-            this.addText = this.user.add;
-            this.cityText = this.user.city;
-            this.stateText = this.user.state;
-            this.zipText = this.user.zip;
-            this.photoURL = this.user.photoURL;
-        }
+        this.udataService.checkLoginStatus().then(res => {
+            this.user = this.udataService.user;
+
+            // if the USER has not initialized yet
+            if (!this.udataService.user.initialized) {
+                // set default value with google account data
+                this.nameText = this.account.displayName;
+                this.emailText = this.account.email;
+                this.photoURL = this.account.photoURL;
+            }
+            // if the USER is already initialized
+            else {
+                this.noPermission = false;
+                // set default value with user data
+                this.nameText = this.user.name;
+                this.phoneText = this.user.phone;
+                this.emailText = this.user.email;
+                this.addText = this.user.add;
+                this.cityText = this.user.city;
+                this.stateText = this.user.state;
+                this.zipText = this.user.zip;
+                this.photoURL = this.user.photoURL;
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
     }
 
     // called when click "save" button
@@ -103,7 +108,11 @@ export class EditProfileComponent implements OnInit {
         this.user.zip = zip.value;
         this.user.initialized = true;
         this.udataService.updateUser(this.user).then(() => {
-            // route to carpools
+            // update local cache
+            if (this.localService.getLocalData("uid") == undefined) {
+                this.localService.saveLocalData("uid", this.user.uid);
+            }
+            // route to profiles
             this.router.navigateByUrl('/profile');
         })
         .catch(error => {
