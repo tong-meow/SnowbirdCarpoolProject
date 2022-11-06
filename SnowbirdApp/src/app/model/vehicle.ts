@@ -1,20 +1,20 @@
 export class Vehicle {
     // primary key, id for vehicle
-    id: string;
+    license: string;
     // foreign key, owner's id
     uid: string;
     // others
+    nickname: string;
     make: string;
     model: string;
-    license: string;
     seatsAvail: number;
 
-    constructor(id, uid, make, model, license, seatsAvail) {
-        this.id = id;
+    constructor(license, uid, nickname, make, model, seatsAvail) {
+        this.license = license;
         this.uid = uid;
+        this.nickname = nickname;
         this.make = make;
         this.model = model;
-        this.license = license;
         this.seatsAvail = seatsAvail;
     }
 }

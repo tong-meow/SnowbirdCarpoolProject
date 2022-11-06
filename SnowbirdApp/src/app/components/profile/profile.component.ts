@@ -7,10 +7,13 @@ import { Router } from "@angular/router";
 // models
 import { GoogleAccount } from "../../model/googleAccount";
 import { User } from '../../model/user';
+import { Vehicle } from 'src/app/model/vehicle';
 // services
 import { GudataService } from '../../shared/gudata.service';
 import { UdataService } from 'src/app/shared/udata.service';
 import { LocalService } from 'src/app/shared/local.service';
+import { TransferService } from 'src/app/shared/transfer.service';
+import { VdataService } from 'src/app/shared/vdata.service';
 
 @Component({
   selector: 'app-profile',
@@ -29,12 +32,21 @@ export class ProfileComponent implements OnInit {
   emailText: string = "";
   addressText: string = "";
 
+  // user id
+  uid: string = "";
+
   // user type
   noPermission: boolean = true;
+
+  // vehicle components
+  creatingVehicle: boolean = false;
+  vehicles: Vehicle[] = [];
 
   constructor(private gudataService: GudataService,
               private udataService: UdataService,
               private localService: LocalService,
+              private transferService: TransferService,
+              private vdataService: VdataService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -51,7 +63,8 @@ export class ProfileComponent implements OnInit {
       this.phoneText = this.udataService.user.phone;
       this.emailText = this.udataService.user.email;
       this.addressText = this.udataService.user.address;
-  
+      this.uid = this.udataService.user.uid;
+      this.getAllVehicles(); // get the vehicles of the user, display them
       if (this.udataService.user.type == 0) {
         this.noPermission = false;
       }
@@ -59,6 +72,14 @@ export class ProfileComponent implements OnInit {
     .catch(error => {
         console.log(error);
     });
+  }
+
+  async getAllVehicles(){
+    await this.vdataService.getAllVehicles()
+    .then(() => {
+      this.vehicles = this.transferService.getData();
+      this.transferService.clearData();
+    })
   }
 
   onEdit() {
@@ -84,5 +105,23 @@ export class ProfileComponent implements OnInit {
     // nav to approveusers
     this.router.navigate(['approveusers']);
     return;
+  }
+
+  addVehicle(){
+    this.creatingVehicle = true;
+  }
+
+  async onVehicleUpdated(licenseObj){
+    if (licenseObj.license != "") {
+      window.location.reload();
+      // await this.getAllVehicles().then(res => {
+      //   window.location.reload()
+      // });
+    }
+    this.creatingVehicle = false;
+  }
+
+  async onVehicleDeleted(licenseObj){
+    await this.getAllVehicles();
   }
 }

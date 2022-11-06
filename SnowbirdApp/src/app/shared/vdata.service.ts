@@ -19,12 +19,26 @@ export class VdataService {
     db = getFirestore(this.app);
     
     constructor(private afs: AngularFirestore,
-        private udataService: UdataService,
-        private transferService: TransferService) { }
+                private udataService: UdataService,
+                private transferService: TransferService) { }
 
-    
-    async addVehicle(vehicle: Vehicle) {
 
+    async addVehicle(v: Vehicle) {
+        return this.afs.collection('/Vehicles').doc(v.license)
+        .set({ 
+            license: v.license,
+            uid: v.uid,
+            nickname: v.nickname,
+            make: v.make,
+            model: v.model,
+            seatsAvail: v.seatsAvail
+        })
+        .then(res => {
+            console.log("Vehicle added: " + v.nickname);
+        })
+        .catch(error => {
+            console.log("[VDATA SERVICE] " + error);
+        });
     }
 
     async updateVehicle(vehicle: Vehicle) {
@@ -35,7 +49,46 @@ export class VdataService {
 
     }
 
-    async deleteVehicle(id: string){
+    async deleteVehicle(v: Vehicle){
+        await this.afs.doc('/Vehicles/' + v.license).delete()
+        .then(() => {
+            console.log("[VDATA SERVICE] Vehicle deleted.");
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    }
 
+    // get all vehicles that belongs to the current user
+    async getAllVehicles(){
+        var vehicles: Vehicle[] = [];
+        var v: Vehicle;
+        const acRef = collection(this.db, "Vehicles");
+        const q = query(acRef, where("uid", "==", this.udataService.user.uid));
+        await getDocs(q).then(res => {
+            if (res.size == 0) {
+                console.log("[VDATA SERVICE] No vehicles found.");
+            }
+            else {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    v = {
+                        license: doc['license'],
+                        uid: doc['uid'],
+                        nickname: doc['nickname'],
+                        make: doc['make'],
+                        model: doc['model'],
+                        seatsAvail: doc['seatsAvail']
+                    };
+                    console.log("[VDATA SERVICE] Vehicle found: " + v.nickname);
+                    vehicles.push(v);
+                }
+                this.transferService.setData(vehicles);
+            }
+        })
+        .catch(error => {
+            console.log("[VDATA SERVICE] " + error);
+        });
     }
 }

@@ -16,10 +16,21 @@
             <li class="list-group-item"><b>Address: </b>{{addressText}}</li>
         </ul>
         <div class="card-body">
-            <h4 class="card-title"><b>My Vehicles</b></h4>
+            <h4 class="card-title">
+                <b>My Vehicles </b>
+                <button type="button" class="btn btn-default" (click)="addVehicle()">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                </button>
+            </h4>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item">no data</li>
+            <div class="card-body" [hidden]="this.creatingVehicle != true">
+                <app-add-vehicle [uid]="this.uid" (updatedVehicle)="onVehicleUpdated($event)">
+                </app-add-vehicle>
+            </div>
+            <!-- <li class="list-group-item">no data</li> -->
+            <app-vehicle *ngFor="let vehicle of vehicles" [vehicleObj]="vehicle"
+            (vehicleDeleted)="onVehicleDeleted($event)"> </app-vehicle>
         </ul>
         <div class="card-body">
             <button type="button" class="btn btn-primary btn-block" (click)="onEdit()">Edit</button>
