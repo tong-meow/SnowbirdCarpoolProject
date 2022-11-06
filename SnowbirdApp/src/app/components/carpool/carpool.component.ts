@@ -16,12 +16,14 @@ export class CarpoolComponent implements OnInit {
     // @Input() element: {driver: string, passengers: string[], startTime: string, totalSeats: number};
     @Input() carpoolObj: Carpool;
     @Output() carpoolRemoved = new EventEmitter<{carpoolId: string}>();
+    
     driver: User;
     driverName: string = null;
     passengerObjs: User[] = [];
     startTime: number = null;
     carFull = false;
     joinedCar = false;
+    isDriver = false;
 
     constructor(private cpdataService: CpdataService,
                 private udataService: UdataService,
@@ -48,6 +50,9 @@ export class CarpoolComponent implements OnInit {
                 console.log("this.driver.name:" + this.driver.name);
                 this.driverName = this.driver.name;
                 this.transferService.clearData();
+                if (this.driver.uid == this.udataService.user.uid) {
+                    this.isDriver = true;
+                }
              })
              .then(() => {
                 // Get Passengers Users array
@@ -102,8 +107,8 @@ export class CarpoolComponent implements OnInit {
     }
 
     getRemainingSeats() {
-        console.log("[CARPOOL]: Getting remaining seats");
-        console.log("no. of passengers in cp: " + this.passengerObjs.length);
+        // console.log("[CARPOOL]: Getting remaining seats");
+        // console.log("no. of passengers in cp: " + this.passengerObjs.length);
 
         if (this.passengerObjs.length == this.carpoolObj.totalSeats) {
             this.carFull = true;

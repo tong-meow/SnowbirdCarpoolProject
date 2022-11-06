@@ -1,0 +1,13 @@
+<div class="card-body">
+    <button type="button" class="btn btn-default" (click)="onEdit()">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default" (click)="onDelete()">
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+    </button>
+    <li class="list-group-item"><b>Nickname:  </b>{{this.vehicleObj.nickname}}</li>
+    <li class="list-group-item"><b>Car Make:  </b>{{this.vehicleObj.make}}</li>
+    <li class="list-group-item"><b>Car Model:  </b>{{this.vehicleObj.model}}</li>
+    <li class="list-group-item"><b>License:  </b>{{this.vehicleObj.license}}</li>
+    <li class="list-group-item"><b>Seats Available:  </b>{{this.vehicleObj.seatsAvail}}</li>
+</div>

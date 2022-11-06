@@ -4,6 +4,7 @@ import { Router } from "@angular/router";
 // services
 import { GudataService } from '../../shared/gudata.service';
 import { UdataService } from 'src/app/shared/udata.service';
+import { LocalService } from 'src/app/shared/local.service';
 
 @Component({
   selector: 'app-notice',
@@ -14,25 +15,26 @@ export class NoticeComponent implements OnInit {
 
   constructor(private gudataService: GudataService,
               private udataService: UdataService,
+              private localService: LocalService,
               private router: Router) { }
 
   ngOnInit(): void {
-    // if (this.gudataService.account == undefined) {
-    //   alert('Please log in first.');
-    //   this.router.navigate(['login']);
-    //   return;
-    // }
-    this.gudataService.checkAccountStatus().then(res => {
-      if (this.udataService.user != undefined) {
-        if (this.udataService.user.initialized) {
-          this.router.navigate(['carpools']);
-          return;
-        }
-        else{
-          this.router.navigate(['editprofile']);
-          return;
-        }
+
+    if (this.gudataService.account != undefined && this.udataService.user != undefined){
+      if (!this.udataService.user.initialized){
+        this.router.navigate(['editprofile']);
       }
-    });
+      else{
+        this.router.navigate(['carpools']);
+      }
+    }
+    else if (this.localService.getLocalData("uid") != undefined){
+      this.router.navigate(['carpools']);
+    }
+
+  }
+
+  backToLogin(){
+    this.router.navigate(['login']);
   }
 }

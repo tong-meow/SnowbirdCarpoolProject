@@ -22,7 +22,7 @@ import { CarpoolDetailsComponent } from './components/carpool-details/carpool-de
 import { NavbarComponent } from './components/navbar/navbar.component';
 
 import { ProfileComponent } from './components/profile/profile.component';
-import { EditVehicleComponent } from './components/edit-vehicle/edit-vehicle.component';
+import { AddVehicleComponent } from './components/add-vehicle/add-vehicle.component';
 import { ApproveUsersComponent } from './components/admin-compo/approve-users/approve-users.component';
 import { AccountToBeApprovedComponent } from './components/admin-compo/account-to-be-approved/account-to-be-approved.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -33,6 +33,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NoticeComponent } from './components/notice/notice.component';
+import { VehicleComponent } from './components/vehicle/vehicle.component';
 
 // routes are stored as an array, each element is a JS object
 const appRoutes: Routes = [
@@ -43,7 +44,6 @@ const appRoutes: Routes = [
   { path: 'carpools/:id', component: CarpoolDetailsComponent }, // one carpool
   { path: 'profile', component:ProfileComponent }, // user profile
   { path: 'editprofile', component: EditProfileComponent }, // edit profile
-  { path: 'editvehicle', component: EditVehicleComponent },
   { path: 'approveusers', component: ApproveUsersComponent },
   { path: 'notice', component: NoticeComponent}
 ];
@@ -59,10 +59,11 @@ const appRoutes: Routes = [
     LogInComponent,
     NavbarComponent,
     ProfileComponent,
-    EditVehicleComponent,
+    AddVehicleComponent,
     ApproveUsersComponent,
     AccountToBeApprovedComponent,
-    NoticeComponent
+    NoticeComponent,
+    VehicleComponent
   ],
   imports: [
     BrowserModule,
