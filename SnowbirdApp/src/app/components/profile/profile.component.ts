@@ -111,7 +111,7 @@ export class ProfileComponent implements OnInit {
     this.creatingVehicle = true;
   }
 
-  async onVehicleUpdated(licenseObj){
+  async onVehicleAdded(licenseObj){
     if (licenseObj.license != "") {
       window.location.reload();
       // await this.getAllVehicles().then(res => {
@@ -119,6 +119,10 @@ export class ProfileComponent implements OnInit {
       // });
     }
     this.creatingVehicle = false;
+  }
+
+  async onVehicleUpdated(licenseObj){
+    window.location.reload();
   }
 
   async onVehicleDeleted(licenseObj){

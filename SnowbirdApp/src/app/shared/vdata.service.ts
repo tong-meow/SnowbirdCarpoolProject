@@ -41,12 +41,46 @@ export class VdataService {
         });
     }
 
-    async updateVehicle(vehicle: Vehicle) {
+    async updateVehicle(v: Vehicle) {
+        await this.afs.collection('/Vehicles').doc(v.license).update({
+            license: v.license,
+            uid: v.uid,
+            nickname: v.nickname,
+            make: v.make,
+            model: v.model,
+            seatsAvail: v.seatsAvail
+        }).then(res => {
 
+        }).catch(error => {
+            console.log("[UDATA SERVICE] " + error);
+        });
     }
 
     async getVehicle(id: string) {
-
+        var v: Vehicle;
+        const usersRef = collection(this.db, "Vehicles");
+        const q = query(usersRef, where("license", "==", id));
+        await getDocs(q).then(res => {
+            if (res.size != 0) {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    v = {
+                        license: doc['license'],
+                        uid: doc['uid'],
+                        nickname: doc['nickname'],
+                        make: doc['make'],
+                        model: doc['model'],
+                        seatsAvail: doc['seatsAvail']
+                    };
+                    console.log("[VDATA SERVICE] Vehicle found.");
+                }
+                this.transferService.setData(v);
+            }
+        })
+        .catch(error => {
+            console.log("[VDATA SERVICE] " + error);
+        });
     }
 
     async deleteVehicle(v: Vehicle){

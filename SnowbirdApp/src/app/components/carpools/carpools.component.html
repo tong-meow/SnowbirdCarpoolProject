@@ -1,8 +1,8 @@
-<div class="row">
-    <div class="col-xs-12">
-        <div class="row">
+<div class="col-sm-10 justify-content-center">
+    <!-- <div class="col-sm-10 justify-content-center"> -->
+        <!-- <div class="row"> -->
             <!-- <br><br> -->
-            <h3>Select Date</h3>
+            <h3><b>Select Date</b></h3>
     
             <div [formGroup]="formGroup">
                 <mat-form-field appearance="outline">
@@ -23,7 +23,7 @@
                     There are no carpools today!
                 </p> -->
             <hr>
-            <h3>Create a new carpool</h3>
+            <h3><b>Create a new carpool</b></h3>
             <!-- Send chosen date to child component AddCarpool -->
             <app-addcarpool 
                 [date]="date"
@@ -36,7 +36,7 @@
               <p>{{ carpool.driver }}</p>
             </app-carpool> -->
             <hr>
-            <h3>Carpools</h3>
+            <h3><b>Carpools</b></h3>
             <app-carpool
                 *ngFor="let carpool of carpools"
                 [carpoolObj]="carpool"
@@ -44,8 +44,8 @@
                 >
             </app-carpool>
 
-          </div>
-    </div>
+          <!-- </div> -->
+    <!-- </div> -->
 </div>
 <div class="fixed-bottom" style="width:100%">
     <app-navbar></app-navbar>
