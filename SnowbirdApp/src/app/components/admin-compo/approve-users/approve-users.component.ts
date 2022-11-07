@@ -82,4 +82,8 @@ export class ApproveUsersComponent implements OnInit {
     var index = this.accounts.indexOf(account);
     this.accounts.splice(index, 1);
   }
+
+  onNavBack(){
+    this.router.navigate(['profile']);
+  }
 }

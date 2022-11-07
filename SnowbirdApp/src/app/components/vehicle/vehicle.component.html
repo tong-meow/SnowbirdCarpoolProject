@@ -1,13 +1,64 @@
 <div class="card-body">
-    <button type="button" class="btn btn-default" (click)="onEdit()">
+    <!-- buttons -->
+    <button type="button" class="btn btn-default" (click)="onEdit()" [hidden]="this.isEditing">
         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="btn btn-default" (click)="onSave(nickname, make, model, license, seats)" [hidden]="!this.isEditing">
+        <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span>
     </button>
     <button type="button" class="btn btn-default" (click)="onDelete()">
         <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
     </button>
+
+    <!-- information -->
+    <p [hidden]="this.isEditing">
     <li class="list-group-item"><b>Nickname:  </b>{{this.vehicleObj.nickname}}</li>
     <li class="list-group-item"><b>Car Make:  </b>{{this.vehicleObj.make}}</li>
     <li class="list-group-item"><b>Car Model:  </b>{{this.vehicleObj.model}}</li>
     <li class="list-group-item"><b>License:  </b>{{this.vehicleObj.license}}</li>
     <li class="list-group-item"><b>Seats Available:  </b>{{this.vehicleObj.seatsAvail}}</li>
+    </p>
+
+    <!-- edit -->
+    <form [hidden]="!this.isEditing">
+        <!-- <button type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span>
+        </button> -->
+        <li class="list-group-item">
+            <div class="form-group row">
+                <label for="nickname" class="col-sm-3 col-form-label">Nickname:</label>
+                <div class="col-sm-9">
+                    <input type="input" class="form-control" id="nickname" [value]="this.vehicleObj.nickname" #nickname>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="carmake" class="col-sm-3 col-form-label">Car Make:</label>
+                <div class="col-sm-9">
+                    <input type="input" class="form-control" id="carmake" [value]="this.vehicleObj.make" #make>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="carmodel" class="col-sm-3 col-form-label">Car Model:</label>
+                <div class="col-sm-9">
+                    <input type="input" class="form-control" id="carmodel" [value]="this.vehicleObj.model" #model>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="license" class="col-sm-3 col-form-label">License:</label>
+                <div class="col-sm-9">
+                    <input type="input" class="form-control" id="license" [value]="this.vehicleObj.license" #license>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="seats" class="col-sm-3 col-form-label">Seats Available:</label>
+                <div class="col-sm-9">
+                    <input type="number" class="form-control" id="seats" [value]="this.vehicleObj.seatsAvail" #seats>
+                </div>
+            </div>
+        </li>
+    </form>
 </div>

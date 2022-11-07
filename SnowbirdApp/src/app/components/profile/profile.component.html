@@ -1,10 +1,11 @@
-<div class="col-10 justify-content-center">
+<div class="col-sm-10 justify-content-center">
     <div class="text-center">
         <br>
         <img src="{{photoURL}}" class="rounded-circle">
         <br>
     </div>
     <br>
+
     <div class="card">
         <div class="card-body">
             <h4 class="card-title"><b>My Profile</b></h4>
@@ -16,6 +17,18 @@
             <li class="list-group-item"><b>Address: </b>{{addressText}}</li>
         </ul>
         <div class="card-body">
+            <button type="button" class="btn btn-primary btn-block" (click)="onEdit()">Edit</button>
+            <button type="button" class="btn btn-secondary btn-block" (click)="onLogout()">Logout</button>
+        </div>
+        <div class="card-body" [hidden]="this.noPermission == true">
+            <button type="button" class="btn btn-warning btn-block" (click)="onAprroveUserReg()">Approve User Registrations</button>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="card">
+        <div class="card-body">
             <h4 class="card-title">
                 <b>My Vehicles </b>
                 <button type="button" class="btn btn-default" (click)="addVehicle()">
@@ -25,20 +38,15 @@
         </div>
         <ul class="list-group list-group-flush">
             <div class="card-body" [hidden]="this.creatingVehicle != true">
-                <app-add-vehicle [uid]="this.uid" (updatedVehicle)="onVehicleUpdated($event)">
+                <app-add-vehicle [uid]="this.uid"
+                    (vehicleAdded)="onVehicleAdded($event)"
+                    (vehicleUpdated)="onVehicleUpdated($event)">
                 </app-add-vehicle>
             </div>
             <!-- <li class="list-group-item">no data</li> -->
             <app-vehicle *ngFor="let vehicle of vehicles" [vehicleObj]="vehicle"
             (vehicleDeleted)="onVehicleDeleted($event)"> </app-vehicle>
         </ul>
-        <div class="card-body">
-            <button type="button" class="btn btn-primary btn-block" (click)="onEdit()">Edit</button>
-            <button type="button" class="btn btn-secondary btn-block" (click)="onLogout()">Logout</button>
-        </div>
-        <div class="card-body" [hidden]="this.noPermission == true">
-            <button type="button" class="btn btn-warning btn-block" (click)="onAprroveUserReg()">Approve User Registrations</button>
-        </div>
     </div>
 </div>
 <div class="fixed-bottom" style="width:100%">

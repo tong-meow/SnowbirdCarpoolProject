@@ -1,45 +1,43 @@
-<div class="row">
-    <div class="card-body">
-        <div class="text-center">
-            <br>
-            <label >Add My Vehicle</label>
-            <br>
-        </div>
-        <form>
-            <div class="form-row">
-                <label for="nickname">Nickname</label>
-                <input class="form-control" id="nickname" type="text"
-                placeholder="Give your vehicle a nickname!" #nickname required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="make">Car Make</label>
-                <input class="form-control" id="make" type="text" #make required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="model">Car Model</label>
-                <input class="form-control" id="model" type="text" #model required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="license">License</label>
-                <input class="form-control" id="license" type="text" #license required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="seats">Seats Available</label>
-                <input class="form-control" id="seats" type="number" #seats required>
-            </div>
-            <br>
-            <button
-                class="btn btn-primary btn-block"
-                (click)="onSaveCar(nickname, make, model, license, seats)">Save This Vehicle
-            </button>
-            <button
-                class="btn btn-primary btn-block"
-                (click)="onCancel()">Cancel
-            </button>
-        </form>
+<li class="list-group-item">
+    <div class="text-center">
+        <br>
+        <label >Add My Vehicle</label>
+        <br>
     </div>
-</div>
+    <form>
+        <div class="form-row">
+            <label for="nickname">Nickname</label>
+            <input class="form-control" id="nickname" type="text"
+            placeholder="Give your vehicle a nickname!" #nickname required>
+        </div>
+        <br>
+        <div class="form-row">
+            <label for="make">Car Make</label>
+            <input class="form-control" id="make" type="text" #make required>
+        </div>
+        <br>
+        <div class="form-row">
+            <label for="model">Car Model</label>
+            <input class="form-control" id="model" type="text" #model required>
+        </div>
+        <br>
+        <div class="form-row">
+            <label for="license">License</label>
+            <input class="form-control" id="license" type="text" #license required>
+        </div>
+        <br>
+        <div class="form-row">
+            <label for="seats">Seats Available</label>
+            <input class="form-control" id="seats" type="number" #seats required>
+        </div>
+        <br>
+        <button
+            class="btn btn-primary btn-block"
+            (click)="onSaveCar(nickname, make, model, license, seats)">Save This Vehicle
+        </button>
+        <button
+            class="btn btn-primary btn-block"
+            (click)="onCancel()">Cancel
+        </button>
+    </form>
+</li>
