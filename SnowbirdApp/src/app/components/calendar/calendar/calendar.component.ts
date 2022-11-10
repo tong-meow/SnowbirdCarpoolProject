@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 // models
 import { DailySchedule } from 'src/app/model/dailySchedule';
-import { User } from 'src/app/model/user';
 // services
 import { ScheduleService } from 'src/app/shared/schedule.service';
 import { TransferService } from 'src/app/shared/transfer.service';
 import { UdataService } from 'src/app/shared/udata.service';
 import { GudataService } from 'src/app/shared/gudata.service';
-import { CpdataService } from 'src/app/shared/cpdata.service';
 
 @Component({
   selector: 'app-calendar',
@@ -16,38 +16,59 @@ import { CpdataService } from 'src/app/shared/cpdata.service';
 })
 export class CalendarComponent implements OnInit {
 
+  formGroup = new FormGroup({ releasedAt: new FormControl()});
   weeklySchedule: DailySchedule[];
+
+  date: Date;
+  today: string;
+  dateWithPipe: string;
+  pipe = new DatePipe('en-US');
+
+  onUploading: boolean = false;
 
   constructor(private scheduleService: ScheduleService,
               private transferService: TransferService,
               private udataService: UdataService,
-              private gudataService: GudataService,
-              private cpdataService: CpdataService) { }
+              private gudataService: GudataService) { }
 
   ngOnInit(): void {
 
     this.gudataService.checkAccountStatus();
     this.udataService.checkLoginStatus();
 
-    var start = new Date();
-    start.setDate(start.getDate() - 1);
-    var end = new Date(start);
-    end.setDate(start.getDate() + 7);
-    // var start = new Date("2021-11-20");
-    // var end = new Date("2021-11-26");
+    this.date = new Date(); 
+    this.date.setHours(0,0,0,0);
+    this.dateWithPipe = this.pipe.transform(this.date, 'M/d/yy');
+    this.today = this.dateWithPipe;
 
-    // fetch 1 week's schedule data from db
-    this.scheduleService.getScheduleByTimePeriod(start, end).then(res => {
+    this.getDataForAWeek(this.date);
+  }
+
+  async getDataForAWeek(date: Date){
+    var start = date;
+    var end = new Date(start);
+    end.setDate(start.getDate() + 6);
+    await this.scheduleService.getScheduleByTimePeriod(start, end).then(res => {
       this.weeklySchedule = this.transferService.getData();
       this.transferService.clearData();
-      // this.weeklySchedule.forEach(ds => {
-      //   console.log(ds);
-      // });
     });
   }
 
   formatDate(date: Date){
     var str = date.toString().split(" ");
     return str[0] + " " + str[1] + " " + str[2] + " " + str[3];
+  }
+
+  async onDateSelected(dateSelected) {
+    this.date = dateSelected;
+    await this.getDataForAWeek(this.date);
+  }
+
+  startUpload(){
+    this.onUploading = true;
+  }
+
+  stopUpload(){
+    this.onUploading = false;
   }
 }

@@ -26,12 +26,7 @@ export class VehicleComponent implements OnInit {
 
   isEditing: boolean = false;
 
-  constructor(private gudataService: GudataService,
-              private udataService: UdataService,
-              private localService: LocalService,
-              private transferService: TransferService,
-              private vdataService: VdataService,
-              private router: Router) { }
+  constructor(private vdataService: VdataService) { }
 
   ngOnInit(): void {
   }

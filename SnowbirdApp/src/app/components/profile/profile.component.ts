@@ -20,6 +20,7 @@ import { VdataService } from 'src/app/shared/vdata.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
+
 export class ProfileComponent implements OnInit {
 
   app = initializeApp(environment.firebase);

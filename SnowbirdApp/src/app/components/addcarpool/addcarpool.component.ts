@@ -18,7 +18,8 @@ import { User } from 'src/app/model/user';
 
 export class AddcarpoolComponent implements OnInit {
   // @Output() newCarpool = new EventEmitter<{driver: string, passengers: string[], startTime: string, totalSeats: number}>();
-  @Output() newCarpool = new EventEmitter<{date:Date}>();
+  @Output() newCarpool = new EventEmitter<{date: Date}>();
+  @Output() canceled = new EventEmitter<{canceled: boolean}>();
   @Input() date: Date; // from parent - carpools list
 
   selectedDirection: string;
@@ -34,7 +35,8 @@ export class AddcarpoolComponent implements OnInit {
     arrivalTime: '',
     direction: '',
     vehicle: new Vehicle("", "", "", "", "", 0),
-    totalSeats: 0
+    totalSeats: 0,
+    hasStarted: false
   }
 
   // fallback = null;
@@ -121,6 +123,10 @@ export class AddcarpoolComponent implements OnInit {
       seatsInput.value = '';
       this.selectedDirection = '';
     }
+  }
+
+  onCancelCreating(){
+    this.canceled.emit({canceled: true});
   }
 }
 

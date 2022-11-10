@@ -1,31 +1,26 @@
-<!-- <label>Carpool</label> -->
-<!-- <p></p> -->
-<div
-  class="panel panel-default" >
+<div class="panel panel-default" >
   <!--<div class="panel-heading">{{ element.name }}</div>-->
-  <div class="panel-heading" [routerLink]="['/carpools', carpoolObj.id]" #heading>Driver: {{ driverName }}</div>
+  <div class="panel-heading" [routerLink]="['/carpools', carpoolObj.id]" #heading><b>Driver: {{ driverName }}</b></div>
   <div class="panel-body">
-    <p>Vehicle: {{this.carpoolObj.vehicle.license}} ({{this.carpoolObj.vehicle.make}} {{this.carpoolObj.vehicle.model}})</p>
-    <p>Passengers: </p>
-    <p *ngFor="let passenger of passengerObjs">{{ passenger.name }}</p>
-    <p>Start time: {{ this.carpoolObj.startTime }}</p>
-    <p>Arrival time: {{ this.carpoolObj.arrivalTime }}</p>
-    <p>Seats Remaining: {{ getRemainingSeats() }}</p>
-
-    <p></p>
-    <button style="margin:5px"
-    class="btn btn-primary" 
-    [disabled]="carFull || joinedCar || isDriver"
-    (click)="onJoinCarpool()">Join</button>
-    <button style="margin:5px"
-    class="btn btn-primary"
-    [disabled]="!joinedCar"
-    (click)="onLeaveCarpool()">Leave</button>
-    <p>
-    <button style="margin:5px"
-    class="btn btn-warning"
-    (click)="onCancelCarpool()">Cancel Carpool</button>
-    </p>
+    <p><b>Vehicle: </b>{{this.carpoolObj.vehicle.license}} ({{this.carpoolObj.vehicle.make}} {{this.carpoolObj.vehicle.model}})</p>
+    <p><b>Passengers: </b></p>
+    <div *ngFor="let passenger of passengerObjs">
+      <img src="{{this.getPhoto(passenger.photoURL)}}" class="img-thumbnail rounded-circle" style="width:50px;height:50px;"> 
+      {{passenger.name}}
+    </div>
+    <br>
+    <p><b>Start Time: </b>{{ this.carpoolObj.startTime }}</p>
+    <p><b>Arrival Time: </b>{{ this.carpoolObj.arrivalTime }}</p>
+    <p><b>Seats Remaining: </b>{{ getRemainingSeats() }}</p>
+    <br>
+    <button class="btn btn-primary btn-block" 
+      [disabled]="carFull || joinedCar || isDriver"
+      (click)="onJoinCarpool()">Join</button>
+    <button class="btn btn-primary btn-block"
+      [disabled]="!joinedCar"
+      (click)="onLeaveCarpool()">Leave</button>
+    <button class="btn btn-warning btn-block"
+      (click)="onCancelCarpool()">Cancel Carpool</button>
   </div>
 </div>
 

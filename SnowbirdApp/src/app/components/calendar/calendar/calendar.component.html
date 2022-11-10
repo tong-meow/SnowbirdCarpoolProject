@@ -1,42 +1,64 @@
 <div class="col-sm-10 justify-content-center">
-    <div>
+    <h3>
+        <b>Calendar</b>
+        <span style="float: right;" (click)="startUpload()" [hidden]="this.onUploading">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+            </svg>
+        </span>
+        <span style="float: right;" (click)="stopUpload()" [hidden]="!this.onUploading">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-return-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5z"/>
+            </svg>
+        </span>
+    </h3>
+    <div [hidden]="!this.onUploading">
         <app-import-file></app-import-file>
     </div>
-</div>
-
-<br>
-
-<div class="col-sm-10 justify-content-center">
-    <h3><b>Calendar</b></h3>
     <div>
         <span class="col-sm-0">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
             </svg>
-            <span> : Driver of a carpool</span>
+            <span> : Driver</span>
         </span>
-        <span class="col-sm-3">
+        <span class="col-sm-1">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
             </svg>
-            <span> : Passenger of a carpool</span>
+            <span> : Passenger</span>
         </span>
     </div>
     <br>
+    <div [formGroup]="formGroup">
+        <mat-form-field appearance="outline">
+            <input (dateInput)="onDateSelected($event.value)"
+                    matInput formControlName="releasedAt" 
+                    [placeholder]="today"
+                    [matDatepicker]="releasedAtPicker" (click)="releasedAtPicker.open()">
+            <mat-datepicker-toggle matPrefix [for]="releasedAtPicker">
+            </mat-datepicker-toggle>
+            <mat-datepicker #releasedAtPicker 
+                            [touchUi]="true"
+                            [startAt]="date" > 
+            </mat-datepicker>
+        </mat-form-field>
+    </div>
     <div *ngFor="let ds of weeklySchedule">
-        <div class="card">
-            <div class="card-body">
-                <ul class="list-group list-group-flush"><b>{{this.formatDate(ds.date)}}</b></ul>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>{{this.formatDate(ds.date)}}</b>
+            </div>
+            <div class="panel-body">
                 <app-employee *ngFor="let e of ds.attenders" [employeeObj]="e" [date]="ds.date"></app-employee>
+                <p [hidden]="ds.attenders.length != 0">Wow, no one's working today!</p>
             </div>
         </div>
-        <br>
     </div>
-
 </div>
-
-
+<br><br><br>
 <div class="fixed-bottom" style="width:100%">
     <app-navbar></app-navbar>
 </div>
