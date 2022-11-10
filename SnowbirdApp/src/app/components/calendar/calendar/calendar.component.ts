@@ -29,11 +29,12 @@ export class CalendarComponent implements OnInit {
     this.gudataService.checkAccountStatus();
     this.udataService.checkLoginStatus();
 
-    // var start = new Date();
-    // var end = new Date(start);
-    // end.setDate(start.getDate()+6);
-    var start = new Date("2021-11-20");
-    var end = new Date("2021-11-26");
+    var start = new Date();
+    start.setDate(start.getDate() - 1);
+    var end = new Date(start);
+    end.setDate(start.getDate() + 7);
+    // var start = new Date("2021-11-20");
+    // var end = new Date("2021-11-26");
 
     // fetch 1 week's schedule data from db
     this.scheduleService.getScheduleByTimePeriod(start, end).then(res => {
