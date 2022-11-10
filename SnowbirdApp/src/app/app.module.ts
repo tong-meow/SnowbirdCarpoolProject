@@ -34,6 +34,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NoticeComponent } from './components/notice/notice.component';
 import { VehicleComponent } from './components/vehicle/vehicle.component';
+import { CalendarComponent } from './components/calendar/calendar/calendar.component';
+import { ImportFileComponent } from './components/calendar/import-file/import-file.component';
+import { EmployeeComponent } from './components/calendar/employee/employee.component';
 
 // routes are stored as an array, each element is a JS object
 const appRoutes: Routes = [
@@ -45,7 +48,8 @@ const appRoutes: Routes = [
   { path: 'profile', component:ProfileComponent }, // user profile
   { path: 'editprofile', component: EditProfileComponent }, // edit profile
   { path: 'approveusers', component: ApproveUsersComponent },
-  { path: 'notice', component: NoticeComponent}
+  { path: 'notice', component: NoticeComponent},
+  { path: 'calendar', component: CalendarComponent}
 ];
 
 @NgModule({
@@ -63,7 +67,10 @@ const appRoutes: Routes = [
     ApproveUsersComponent,
     AccountToBeApprovedComponent,
     NoticeComponent,
-    VehicleComponent
+    VehicleComponent,
+    CalendarComponent,
+    ImportFileComponent,
+    EmployeeComponent
   ],
   imports: [
     BrowserModule,

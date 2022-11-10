@@ -17,20 +17,29 @@
         <br> -->
         <p>Start Time: </p>
         <input
-            type="text"
+            type="time"
             class="form-control"
             #startTime>
         <br>
         <p>Arrival Time: </p>
         <input
-            type="text"
+            type="time"
             class="form-control"
             #arrivalTime>
+        <br>
+        <p>Vehicle: </p>
+        <select #vehicleOptions class="form-select form-select-lg"
+        (change)="onOptionsSelected(vehicleOptions.value)" aria-label="vehicle selection"
+        [disabled]="this.vehicles.length == 0">
+            <option selected [value]="">Select a car</option>
+            <option *ngFor="let v of this.vehicles" [value]="v.license">{{v.nickname}}</option>
+        </select>
         <br>
         <p>Total Seats Available: </p>
         <input
             type="number"
             class="form-control"
+            [value]="getSeats(vehicleOptions.value)"
             #seatsAvailable>
         <br>
 

@@ -6,6 +6,8 @@ import { UdataService } from 'src/app/shared/udata.service';
 import { GudataService } from 'src/app/shared/gudata.service';
 import { User } from '../../model/user';
 import { TransferService } from 'src/app/shared/transfer.service';
+import { VdataService } from 'src/app/shared/vdata.service';
+import { Vehicle } from 'src/app/model/vehicle';
 
 @Component({
     selector: 'app-carpool',
@@ -29,6 +31,7 @@ export class CarpoolComponent implements OnInit {
                 private udataService: UdataService,
                 private gudataService: GudataService,
                 private transferService: TransferService,
+                private vdataService: VdataService,
                 private router: Router){}
 
     ngOnInit(): void {
