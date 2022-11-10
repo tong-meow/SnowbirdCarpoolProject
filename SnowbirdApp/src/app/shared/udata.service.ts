@@ -187,6 +187,31 @@ export class UdataService {
         });
     }
 
+    async getUidAndPhotoByName(name: string){
+        var u: User;
+        const usersRef = collection(this.db, "Users");
+        const q = query(usersRef, where("name", "==", name));
+        await getDocs(q).then(res => {
+            if (res.size == 0) {
+                console.log("[UDATA SERVICE] User not found.");
+            }
+            else {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    var u = {
+                        uid: doc["uid"],
+                        photoURL: doc["photoURL"]
+                    }
+                    this.transferService.setData(u);
+                }
+            }
+        })
+        .catch(error => {
+            console.log("[UDATA SERVICE] " + error);
+        });
+    }
+
     async checkLoginStatus(){
         if (this.user == undefined) {
             const id = this.localService.getLocalData("uid");

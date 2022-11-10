@@ -4,6 +4,7 @@
         <img src="{{photoURL}}" class="rounded-circle">
         <br>
     </div>
+    
     <br>
 
     <div class="card">
@@ -19,9 +20,9 @@
         <div class="card-body">
             <button type="button" class="btn btn-primary btn-block" (click)="onEdit()">Edit</button>
             <button type="button" class="btn btn-secondary btn-block" (click)="onLogout()">Logout</button>
-        </div>
-        <div class="card-body" [hidden]="this.noPermission == true">
-            <button type="button" class="btn btn-warning btn-block" (click)="onAprroveUserReg()">Approve User Registrations</button>
+            <button [hidden]="this.noPermission" type="button" class="btn btn-warning btn-block" (click)="onAprroveUserReg()">
+            Approve User Registrations
+            </button>
         </div>
     </div>
 

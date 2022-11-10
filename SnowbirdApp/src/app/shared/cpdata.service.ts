@@ -66,6 +66,7 @@ export class CpdataService {
                       startTime: doc["startTime"],
                       arrivalTime: doc["arrivalTime"],
                       direction: doc["direction"],
+                      vehicle: doc["vehicle"],
                       totalSeats: doc["totalSeats"]
                   };
                   console.log("[CPDATA SERVICE] Carpool found.");
@@ -135,12 +136,13 @@ export class CpdataService {
             passengers: cp.passengers,
             startTime: cp.startTime,
             arrivalTime: cp.arrivalTime,
+            vehicle: cp.vehicle,
             totalSeats: cp.totalSeats,
             };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Carpool(data.id, data.driver, data.passengers, data.date, data.startTime, data.arrivalTime, data.direction, data.totalSeats);
+        return new Carpool(data.id, data.driver, data.passengers, data.date, data.startTime, data.arrivalTime, data.direction, data.license, data.totalSeats);
     }
   };
 
@@ -175,4 +177,7 @@ export class CpdataService {
   //   }
   // }
 
+  async checkUserStatus(uid: string, date: Date){
+    var cps: Carpool[] = [];
+  }
 }

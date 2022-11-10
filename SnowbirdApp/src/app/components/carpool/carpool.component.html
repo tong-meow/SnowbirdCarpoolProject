@@ -5,6 +5,7 @@
   <!--<div class="panel-heading">{{ element.name }}</div>-->
   <div class="panel-heading" [routerLink]="['/carpools', carpoolObj.id]" #heading>Driver: {{ driverName }}</div>
   <div class="panel-body">
+    <p>Vehicle: {{this.carpoolObj.vehicle.license}} ({{this.carpoolObj.vehicle.make}} {{this.carpoolObj.vehicle.model}})</p>
     <p>Passengers: </p>
     <p *ngFor="let passenger of passengerObjs">{{ passenger.name }}</p>
     <p>Start time: {{ this.carpoolObj.startTime }}</p>

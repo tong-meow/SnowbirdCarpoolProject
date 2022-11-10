@@ -2,6 +2,11 @@ import { Component, OnInit, EventEmitter, Input, Output} from '@angular/core';
 import { UdataService } from 'src/app/shared/udata.service';
 import { Carpool } from '../../model/carpool';
 import { CpdataService } from '../../shared/cpdata.service';
+import { ScheduleService } from 'src/app/shared/schedule.service';
+import { VdataService } from 'src/app/shared/vdata.service';
+import { TransferService } from 'src/app/shared/transfer.service';
+import { Vehicle } from 'src/app/model/vehicle';
+import { User } from 'src/app/model/user';
 // import { getAuth, User } from 'firebase/auth';
 // import { User } from '../model/user';
 
@@ -10,11 +15,16 @@ import { CpdataService } from '../../shared/cpdata.service';
   templateUrl: './addcarpool.component.html',
   styleUrls: ['./addcarpool.component.css']
 })
+
 export class AddcarpoolComponent implements OnInit {
   // @Output() newCarpool = new EventEmitter<{driver: string, passengers: string[], startTime: string, totalSeats: number}>();
   @Output() newCarpool = new EventEmitter<{date:Date}>();
   @Input() date: Date; // from parent - carpools list
+
   selectedDirection: string;
+  selectedVehicle: Vehicle;
+  vehicles: Vehicle[] = [];
+
   carpoolObj: Carpool = {
     id: '',
     driver: '',
@@ -23,6 +33,7 @@ export class AddcarpoolComponent implements OnInit {
     startTime: '',
     arrivalTime: '',
     direction: '',
+    vehicle: new Vehicle("", "", "", "", "", 0),
     totalSeats: 0
   }
 
@@ -31,9 +42,25 @@ export class AddcarpoolComponent implements OnInit {
   // carpoolObj = this.fallback || {}; // '||' returns the value to the right if the value to the left is falsy
 
   constructor(private cpdataService: CpdataService,
-              private udataService: UdataService) { }
+              private udataService: UdataService,
+              private transferService: TransferService,
+              private vdataService: VdataService) { }
 
   ngOnInit(): void {
+
+    this.udataService.checkLoginStatus().then(res => {
+      this.vdataService.getAllVehicles().then(res => {
+        this.vehicles = this.transferService.getData();
+        this.transferService.clearData();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
   }
 
   // this version is for 2way data binding with [ngModel]
@@ -44,6 +71,22 @@ export class AddcarpoolComponent implements OnInit {
   //   this.startTime = '';
   //   this.totalSeats = 0;
   // }
+
+  onOptionsSelected(value: string){
+    for(var i = 0; i < this.vehicles.length; i++){
+      if (this.vehicles[i].license == value){
+        this.selectedVehicle = this.vehicles[i];
+      }
+    }
+  }
+
+  getSeats(license: string){
+    for(var i = 0; i < this.vehicles.length; i++) {
+      if (this.vehicles[i].license == license){
+        return this.vehicles[i].seatsAvail;
+      }
+    }
+  }
 
 
   async onCreateCarpool(startTimeInput:HTMLInputElement, arrivalTimeInput:HTMLInputElement, seatsInput:HTMLInputElement) {
@@ -61,12 +104,14 @@ export class AddcarpoolComponent implements OnInit {
       this.carpoolObj.startTime = startTimeInput.value;
       this.carpoolObj.arrivalTime = arrivalTimeInput.value;
       this.carpoolObj.direction = this.selectedDirection; 
+      this.selectedVehicle.seatsAvail = Number(seatsInput.value);
+      this.carpoolObj.vehicle = this.selectedVehicle;
       this.carpoolObj.totalSeats = Number(seatsInput.value);
 
       await this.cpdataService.addCarpool(this.carpoolObj)
         .then(() => {
           // Emit event to notify carpools parent component to show carpools for date
-            this.newCarpool.emit({date: this.date});
+          this.newCarpool.emit({date: this.date});
         })
         .catch(errorHandler)
       

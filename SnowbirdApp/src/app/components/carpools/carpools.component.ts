@@ -10,6 +10,7 @@ import { GudataService } from 'src/app/shared/gudata.service';
 import { CpdataService } from 'src/app/shared/cpdata.service';
 import { TransferService } from 'src/app/shared/transfer.service';
 import { FormControl, FormGroup } from '@angular/forms';
+import { User } from 'src/app/model/user';
 
 
 @Component({

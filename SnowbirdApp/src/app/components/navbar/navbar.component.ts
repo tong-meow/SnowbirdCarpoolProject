@@ -21,4 +21,8 @@ export class NavbarComponent implements OnInit {
   toEditProfile(){
     this.router.navigate(['profile']);
   }
+
+  toCalendar(){
+    this.router.navigate(['calendar']);
+  }
 }
