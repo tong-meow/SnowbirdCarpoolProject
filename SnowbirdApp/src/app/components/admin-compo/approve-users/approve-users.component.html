@@ -1,21 +1,22 @@
-<div class="row col-xs-10">
-    <div class="row">
-        <h2>Approve User Registration</h2>
-        <!-- <p *ngIf="noUsersToApprove">
-            No users are waiting for approving!
-        </p> -->
-        <hr>
-        <app-account-to-be-approved
-            *ngFor="let account of accounts"
-            [accountObj]="account"
-            (accountProcessed)="onProcessed($event)">
-        </app-account-to-be-approved>
-    </div>
-    <div [hidden]="!noUsersToApprove">
-        <p>No new users are waiting for approvement.</p>
+<div class="col-sm-10 justify-content-center">
+    <h2>Approve User Registration</h2>
+    <!-- <p *ngIf="noUsersToApprove">
+        No users are waiting for approving!
+    </p> -->
+    <hr>
+    <app-account-to-be-approved
+        *ngFor="let account of accounts"
+        [accountObj]="account"
+        (accountProcessed)="onProcessed($event)">
+    </app-account-to-be-approved>
+    <div class="panel panel-defaut" [hidden]="!noUsersToApprove">
+        <div class="panel-body">
+            <p>No new users are waiting for approvement.</p>
+        </div>
     </div>
     <button class="btn btn-primary btn-block" (click)="onNavBack()">Back</button>
 </div>
+<br><br><br>
 <div class="fixed-bottom" style="width:100%">
     <app-navbar></app-navbar>
 </div>

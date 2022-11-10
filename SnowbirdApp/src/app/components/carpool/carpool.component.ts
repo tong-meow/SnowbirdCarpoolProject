@@ -137,7 +137,17 @@ export class CarpoolComponent implements OnInit {
               })
             .catch(errorHandlerPas)
         }
-      }
+    }
+    
+    getPhoto(url: string){
+        if (url == undefined || url == "") {
+            return "../../../../assets/avatar.png";
+        }
+        else {
+            return url;
+        }
+    }
+
 
 }
 

@@ -10,8 +10,9 @@ export class Carpool {
     direction: string;
     vehicle: Vehicle;
     totalSeats: number;
+    hasStarted: boolean;
 
-    constructor(id, driver, passengers, date, startTime, arrivalTime, direction, vehicle, totalSeats) {
+    constructor(id, driver, passengers, date, startTime, arrivalTime, direction, vehicle, totalSeats, hasStarted) {
         this.id = id;
         this.driver = driver;
         this.passengers = passengers;
@@ -21,5 +22,6 @@ export class Carpool {
         this.direction = direction;
         this.vehicle = vehicle;
         this.totalSeats = totalSeats;
+        this.hasStarted = hasStarted;
     }
 }

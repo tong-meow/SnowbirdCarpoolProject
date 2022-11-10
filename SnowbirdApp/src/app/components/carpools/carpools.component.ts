@@ -12,12 +12,12 @@ import { TransferService } from 'src/app/shared/transfer.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { User } from 'src/app/model/user';
 
-
 @Component({
   selector: 'app-carpools',
   templateUrl: './carpools.component.html',
   styleUrls: ['./carpools.component.css']
 })
+
 export class CarpoolsComponent implements OnInit {
     carpools: Carpool[] = []; 
     // noCarpoolsToday: Boolean = true;
@@ -26,6 +26,7 @@ export class CarpoolsComponent implements OnInit {
     dateWithPipe: string;
     pipe = new DatePipe('en-US');
     formGroup = new FormGroup({ releasedAt: new FormControl()});
+    onCreating: boolean = false;
 
     constructor(private cpdataService: CpdataService,
                 private gudataService: GudataService,
@@ -52,6 +53,10 @@ export class CarpoolsComponent implements OnInit {
         // Get all carpools from date
         this.getAllCarpoolsFromDate(this.date);
 
+    }
+
+    startCreating(){
+      this.onCreating = true;
     }
 
     async getAllCarpoolsFromDate(date: Date) {
@@ -87,7 +92,8 @@ export class CarpoolsComponent implements OnInit {
     // Receive event emitted from AddCarpool child component and update carpools
     async onCarpoolAdded(dateFromAddCarpool) {
         console.log("Parent received new carpool event for: ", dateFromAddCarpool)
-        await this.getAllCarpoolsFromDate(this.date)
+        await this.getAllCarpoolsFromDate(this.date);
+        this.onCreating = false;
         console.log("Carpools[] length after adding new carpool: " + this.carpools.length);
         window.location.reload()
         // this.router.navigate([this.router.url]);
@@ -97,5 +103,11 @@ export class CarpoolsComponent implements OnInit {
     async onCarpoolRemoved(carpoolId) {
       console.log("Parent received removed carpool event for carpool: " + carpoolId);
       await this.getAllCarpoolsFromDate(this.date)
+    }
+
+    onCanceled(canceld){
+      if (canceld){
+        this.onCreating = false;
+      }
     }
 }

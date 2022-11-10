@@ -1,52 +1,44 @@
 <div class="col-sm-10 justify-content-center">
-    <!-- <div class="col-sm-10 justify-content-center"> -->
-        <!-- <div class="row"> -->
-            <!-- <br><br> -->
-            <h3><b>Select Date</b></h3>
-    
-            <div [formGroup]="formGroup">
-                <mat-form-field appearance="outline">
-                    <input (dateInput)="onDateSelected($event.value)"
-                            matInput formControlName="releasedAt" 
-                            [placeholder]="today"
-                            [matDatepicker]="releasedAtPicker" (click)="releasedAtPicker.open()">
-                    <mat-datepicker-toggle matPrefix [for]="releasedAtPicker">
-                    </mat-datepicker-toggle>
-                    <mat-datepicker #releasedAtPicker 
-                                    [touchUi]="true"
-                                    [startAt]="date" > 
-                    </mat-datepicker>
-                </mat-form-field>
-                </div>
-            <!-- <p *ngIf="noCarpoolsToday"></p> -->
-                <!-- <p>
-                    There are no carpools today!
-                </p> -->
-            <hr>
-            <h3><b>Create a new carpool</b></h3>
-            <!-- Send chosen date to child component AddCarpool -->
-            <app-addcarpool 
-                [date]="date"
-                (newCarpool)="onCarpoolAdded($event)"
-            ></app-addcarpool>
-            <!-- <app-carpool
-              *ngFor="let carpool of carpools"
-              [element]="carpool"
-              [driver]="carpool.driver">
-              <p>{{ carpool.driver }}</p>
-            </app-carpool> -->
-            <hr>
-            <h3><b>Carpools</b></h3>
-            <app-carpool
-                *ngFor="let carpool of carpools"
-                [carpoolObj]="carpool"
-                (carpoolRemoved)="onCarpoolRemoved($event)"
-                >
-            </app-carpool>
+    <br>
+    <h3>
+        <b>Dashboard</b>
+        <span style="float: right;">
+            <svg (click)="startCreating()" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+            </svg>
+        </span>
+    </h3>
+    <div [formGroup]="formGroup">
+        <mat-form-field appearance="outline">
+            <input (dateInput)="onDateSelected($event.value)"
+                    matInput formControlName="releasedAt" 
+                    [placeholder]="today"
+                    [matDatepicker]="releasedAtPicker" (click)="releasedAtPicker.open()">
+            <mat-datepicker-toggle matPrefix [for]="releasedAtPicker">
+            </mat-datepicker-toggle>
+            <mat-datepicker #releasedAtPicker 
+                            [touchUi]="true"
+                            [startAt]="date" > 
+            </mat-datepicker>
+        </mat-form-field>
+    </div>
+    <!-- Send chosen date to child component AddCarpool -->
+    <app-addcarpool [hidden]="!this.onCreating" [date]="date" (newCarpool)="onCarpoolAdded($event)" (canceled)="onCanceled($event)">
+    </app-addcarpool>
 
-          <!-- </div> -->
-    <!-- </div> -->
+    <div [hidden]="carpools != undefined && carpools.length != 0" class="justify-content-center" style="margin-top: 20%; text-align: center;">
+        <p>No Carpools Today!</p>
+    </div>
+
+    <app-carpool
+        *ngFor="let carpool of carpools"
+        [carpoolObj]="carpool"
+        (carpoolRemoved)="onCarpoolRemoved($event)"
+    >
+    </app-carpool>
 </div>
+
+<br><br><br>
 <div class="fixed-bottom" style="width:100%">
     <app-navbar></app-navbar>
 </div>

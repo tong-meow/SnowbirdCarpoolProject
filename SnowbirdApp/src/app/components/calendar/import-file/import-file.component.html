@@ -1,13 +1,12 @@
-<div class="card">
-    <div class="card-body">
-        <h3><b>Import Working Schedule</b></h3>
-        <div class="card-body">
-            <input type="file" (change)="onFileChange($event)" multiple="false" />
-            <br>
-            <p>* Notice: upload duplicate files will replace the data stored in database.</p>
-        </div>
-        <div class="card-body">
-            <button type="button" class="btn btn-primary btn-block" (click)="onUpload()">Upload</button>
-        </div>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <b>Import Working Schedule</b>
+    </div>
+
+    <div class="panel-body">
+        <input type="file" (change)="onFileChange($event)" multiple="false" />
+        <br>
+        <p>* Notice: upload duplicate files will replace the data stored in database.</p>
+        <button type="button" class="btn btn-primary btn-block" (click)="onUpload()">Upload</button>
     </div>
 </div>

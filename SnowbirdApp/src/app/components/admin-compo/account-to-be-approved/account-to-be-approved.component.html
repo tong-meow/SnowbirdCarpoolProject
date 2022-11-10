@@ -1,21 +1,26 @@
 <div
   class="panel panel-default" >
-  <div class="panel-heading"><b>User Id: {{ this.accountObj.uid }}</b></div>
+  <div class="panel-heading" style="text-align: center;">
+    <img src="{{this.accountObj.photoURL}}" class="img-thumbnail rounded-circle" style="width:50px;height:50px;"> 
+    <br>
+    <p>{{ this.accountObj.displayName }}</p>
+  </div>
   <div class="panel-body">
-    <p><b>Google Account Username:</b> {{ this.accountObj.displayName }}</p>
+    <p><b>User Id:</b> {{ this.accountObj.uid }}</p>
+    <p><b>Google Account Name:</b> {{ this.accountObj.displayName }}</p>
     <p></p>
     <p><b>G-mail Address:</b> {{ this.accountObj.email }}</p>
     <p></p>
 
-    <button style="margin:5px"
-    class="btn btn-primary"
-    (click)="onApprove()">Approve</button>
-    <button style="margin:5px"
-    class="btn btn-primary"
-    (click)="onDenied()">Deny</button>
     <br>
-    <button style="margin:5px"
-    class="btn btn-warning"
-    (click)="onApproveAsAdmin()">Approve and Set as Admin</button>
+    <button class="btn btn-primary btn-block" (click)="onApprove()">
+      Approve
+    </button>
+    <button class="btn btn-primary btn-block" (click)="onDenied()">
+      Deny
+    </button>
+    <button class="btn btn-warning btn-block" (click)="onApproveAsAdmin()">
+      Approve and Set as Admin
+    </button>
   </div>
 </div>

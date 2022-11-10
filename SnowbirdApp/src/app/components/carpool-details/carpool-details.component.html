@@ -1,41 +1,60 @@
-<div style="padding-top: 15px; padding-left: 20px">
-    <!-- <h4>Carpool ID: {{ carpoolId }} </h4> -->
-    <h4>Date: {{ date }}</h4>
-    <div class="panel panel-default" >
-        <div class="panel-heading">
-            <h3>Driver: {{ driverName }}</h3></div>
-        <div class="panel-body">
-            <h3>Passengers: </h3>
-            <p *ngFor="let passenger of passengerObjs">{{ passenger.name }}</p>
-            <h3>Start time:</h3>
-            <p>{{ carpoolObj.startTime }}</p>
-            <h3>Arrival time:</h3>
-            <p>{{ carpoolObj.arrivalTime }}</p>
-            <h3>Seats Remaining:</h3>
-            <p>{{ getRemainingSeats() }}</p>
-
-            <div cdkDropListGroup>
-                <div class="route-container">
-                  <h3>Route:</h3>
-                  <p><span class="emphasized">Drag to reorder</span></p>
-                  <div
-                    cdkDropList
-                    [cdkDropListData]="addresses"
-                    class="route-list"
-                    (cdkDropListDropped)="drop($event)">
-                    <div class="route-box" *ngFor="let item of addresses" cdkDrag>{{item}}</div>
-                  </div>
-                </div>
-              </div>
-
-              
-            <button
-            class="btn btn-primary"
-            (click)="onShowRoute()">Show route</button>
-            <p></p>
-        </div>
+<div class="col-sm-10 justify-content-center">
+  <div class="panel panel-default" >
+    <div class="panel-heading" [hidden]="this.carpoolObj.hasStarted">
+      <b>Carpool Info</b>
     </div>
+    <div class="panel-heading" style="background-color: #68a36b;" [hidden]="!this.carpoolObj.hasStarted">
+      <b>This carpool is on-going...</b>
+      <span style="float: right;" (click)="pause()" [hidden]="!this.isDriver">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pause-circle" viewBox="0 0 16 16">
+          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+          <path d="M5 6.25a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5zm3.5 0a1.25 1.25 0 1 1 2.5 0v3.5a1.25 1.25 0 1 1-2.5 0v-3.5z"/>
+        </svg>
+      </span>
+    </div>
+    <div class="panel-body">
+      <P><b>Date: </b>{{ dateStr }}</P>
+      <p><b>Driver: </b>{{ driverName }}</p>
+      <p><b>Vehicle: </b>{{this.vehicle.license}} ({{this.vehicle.make}} {{this.vehicle.model}})</p>
+      <p><b>Passengers: </b></p>
+      <div *ngFor="let passenger of passengerObjs">
+        <img src="{{this.getPhoto(passenger.photoURL)}}" class="img-thumbnail rounded-circle" style="width:50px;height:50px;"> 
+        {{passenger.name}}
+      </div>
+      <br>
+      <p><b>Start Time: </b>{{ carpoolObj.startTime }}</p>
+      <p><b>Arrival Time: </b>{{ carpoolObj.arrivalTime }}</p>
+      <p><b>Seats Remaining: </b>{{ getRemainingSeats() }}</p>
+      <div cdkDropListGroup>
+        <div class="route-container">
+          <p><b>Planning Route: </b>
+          <div
+            cdkDropList
+            [cdkDropListData]="addresses"
+            class="route-list"
+            (cdkDropListDropped)="drop($event)">
+            <div class="route-box" *ngFor="let item of addresses" cdkDrag>
+              <img src="{{this.getPhotoInRoute(item)}}" class="img-thumbnail rounded-circle" style="width:50px;height:50px;">
+              <span>{{item}}</span>
+            </div>
+          </div>
+          <p></p>
+          <p><span class="emphasized">* Drag to reorder the addresses.</span></p>
+        </div>
+      </div>
+      <button [hidden]="!this.isDriver || this.carpoolObj.hasStarted" class="btn btn-warning btn-block" (click)="onTheWay()">
+        ON MY WAY!
+      </button>
+      <button class="btn btn-primary btn-block" (click)="onShowRoute()">
+        Show route
+      </button>
+      <button class="btn btn-primary btn-block" (click)="navBack()">
+        Back to Dashboard
+      </button>
+    </div>
+  </div>
 </div>
+<br><br><br>
 <div class="fixed-bottom" style="width:100%">
   <app-navbar></app-navbar>
 </div>

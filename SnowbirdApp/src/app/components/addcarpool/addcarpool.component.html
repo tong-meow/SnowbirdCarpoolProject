@@ -1,3 +1,61 @@
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <label>Create a New Carpool</label>
+        <br>
+    </div>
+    <div class="panel-body">
+        <form>
+            <div class="form-row">
+                <p><label for="nickname">Direction:</label></p>
+                <mat-radio-group [(ngModel)]="selectedDirection">
+                    <mat-radio-button value="To Snowbird" color="primary">
+                        To Snowbird
+                    </mat-radio-button>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <mat-radio-button value="From Snowbird" color="primary">
+                        From Snowbird
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <br>
+            <div class="form-row">
+                <label for="nickname">Start Time:</label>
+                <input type="time" class="form-control" #startTime>
+            </div>
+            <br>
+            <div class="form-row">
+                <label for="nickname">Arrival Time:</label>
+                <input type="time" class="form-control" #arrivalTime>
+            </div>
+            <br>
+            <div class="form-row">
+                <label for="nickname">Vehicle:</label>
+                <select #vehicleOptions class="form-select form-select-lg"
+                (change)="onOptionsSelected(vehicleOptions.value)" aria-label="vehicle selection"
+                [disabled]="this.vehicles.length == 0">
+                    <option selected [value]="">Select a car</option>
+                    <option *ngFor="let v of this.vehicles" [value]="v.license">{{v.nickname}}</option>
+                </select>
+            </div>
+            <br>
+            <div class="form-row">
+                <label for="nickname">Total Seats Available:</label>
+                <input type="number" class="form-control" [value]="getSeats(vehicleOptions.value)" #seatsAvailable>
+            </div>
+            <br>
+            <button class="btn btn-primary btn-block" (click)="onCreateCarpool(startTime, arrivalTime, seatsAvailable)">
+                Add
+            </button>
+            <button class="btn btn-primary btn-block" (click)="onCancelCreating()">
+                Cancel
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<!-- 
 <div class="row">
     <div class="col-xs-12">
         <p>Direction: </p>
@@ -9,12 +67,6 @@
                 From Snowbird
             </mat-radio-button><br><br>
         </mat-radio-group>
-        <!-- <p>Driver: </p>
-        <input
-            type="text"
-            class="form-control"
-            #driverName>
-        <br> -->
         <p>Start Time: </p>
         <input
             type="time"
@@ -47,11 +99,5 @@
             class="btn btn-primary"
             (click)="onCreateCarpool(startTime, arrivalTime, seatsAvailable)">Add</button>
         <p></p>
-        <!-- <p *ngIf="carpoolCreated; else noCarpool">A carpool was created!</p>
-        <ng-template #noCarpool>
-            <p>
-                There are no carpools today!
-            </p>
-        </ng-template> -->
     </div>
-</div>
+</div> -->

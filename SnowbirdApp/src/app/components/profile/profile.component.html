@@ -1,23 +1,24 @@
 <div class="col-sm-10 justify-content-center">
     <div class="text-center">
-        <br>
         <img src="{{photoURL}}" class="rounded-circle">
         <br>
     </div>
     
     <br>
 
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title"><b>My Profile</b></h4>
+    <div class="panel panel-default" >
+        <div class="panel-heading">
+            <b>My Profile</b>
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Name: </b>{{nameText}}</li>
-            <li class="list-group-item"><b>Phone: </b>{{phoneText}}</li>
-            <li class="list-group-item"><b>E-mail: </b>{{emailText}}</li>
-            <li class="list-group-item"><b>Address: </b>{{addressText}}</li>
-        </ul>
-        <div class="card-body">
+        <div clss="panel-body">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>Name: </b>{{nameText}}</li>
+                <li class="list-group-item"><b>Phone: </b>{{phoneText}}</li>
+                <li class="list-group-item"><b>E-mail: </b>{{emailText}}</li>
+                <li class="list-group-item"><b>Address: </b>{{addressText}}</li>
+            </ul>
+        </div>
+        <div class="panel-body">
             <button type="button" class="btn btn-primary btn-block" (click)="onEdit()">Edit</button>
             <button type="button" class="btn btn-secondary btn-block" (click)="onLogout()">Logout</button>
             <button [hidden]="this.noPermission" type="button" class="btn btn-warning btn-block" (click)="onAprroveUserReg()">
@@ -28,17 +29,21 @@
 
     <br>
 
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">
-                <b>My Vehicles </b>
-                <button type="button" class="btn btn-default" (click)="addVehicle()">
-                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
-                </button>
-            </h4>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>My Vehicles</b>
+            <!-- <button type="button" class="btn btn-default" (click)="addVehicle()">
+                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+            </button> -->
+            <span style="float: right;">
+                <svg (click)="addVehicle()" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                </svg>
+            </span>
         </div>
+        <div clss="panel-body">
         <ul class="list-group list-group-flush">
-            <div class="card-body" [hidden]="this.creatingVehicle != true">
+            <div class="panel-body" [hidden]="this.creatingVehicle != true">
                 <app-add-vehicle [uid]="this.uid"
                     (vehicleAdded)="onVehicleAdded($event)"
                     (vehicleUpdated)="onVehicleUpdated($event)">
@@ -48,8 +53,10 @@
             <app-vehicle *ngFor="let vehicle of vehicles" [vehicleObj]="vehicle"
             (vehicleDeleted)="onVehicleDeleted($event)"> </app-vehicle>
         </ul>
+        </div>
     </div>
 </div>
+<br><br><br>
 <div class="fixed-bottom" style="width:100%">
     <app-navbar></app-navbar>
 </div>

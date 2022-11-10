@@ -67,7 +67,8 @@ export class CpdataService {
                       arrivalTime: doc["arrivalTime"],
                       direction: doc["direction"],
                       vehicle: doc["vehicle"],
-                      totalSeats: doc["totalSeats"]
+                      totalSeats: doc["totalSeats"],
+                      hasStarted: doc["hasStarted"]
                   };
                   console.log("[CPDATA SERVICE] Carpool found.");
                   cps.push(cp)
@@ -125,24 +126,35 @@ export class CpdataService {
     console.log("[CPDATA SERVICE] Removed passenger from : " + carpool.id);
   }
 
-  
-
   // Firestore data converter
   carpoolConverter = {
     toFirestore: (cp: Carpool) => {
         return {
-            driver: cp.driver,
             id: cp.id,
+            driver: cp.driver,
             passengers: cp.passengers,
+            date: cp.date,
             startTime: cp.startTime,
             arrivalTime: cp.arrivalTime,
+            direction: cp.direction,
             vehicle: cp.vehicle,
             totalSeats: cp.totalSeats,
+            hasStarted: cp.hasStarted
             };
     },
     fromFirestore: (snapshot, options) => {
         const data = snapshot.data(options);
-        return new Carpool(data.id, data.driver, data.passengers, data.date, data.startTime, data.arrivalTime, data.direction, data.license, data.totalSeats);
+        var date = new Date(data.date.seconds * 1000);
+        return new Carpool(data.id,
+                           data.driver, 
+                           data.passengers, 
+                           date, 
+                           data.startTime, 
+                           data.arrivalTime, 
+                           data.direction, 
+                           data.vehicle,
+                           data.totalSeats,
+                           data.hasStarted);
     }
   };
 
@@ -154,7 +166,7 @@ export class CpdataService {
 
     if (docSnap.exists()) {
       // Convert to Carpool object
-      console.log(docSnap.data());
+      // console.log(docSnap.data());
       return docSnap.data();
     } else {
       // doc.data() is undefined in this case
@@ -179,5 +191,9 @@ export class CpdataService {
 
   async checkUserStatus(uid: string, date: Date){
     var cps: Carpool[] = [];
+  }
+
+  async updateCarpoolStatus(id: string, status: boolean){
+    await this.afs.doc('/Carpools/'+id).update({hasStarted: status});
   }
 }

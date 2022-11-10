@@ -1,57 +1,60 @@
-<!-- <div class="row" 
-          [hidden]="productID == category.Lane || productID == category.Val">
-    </div> -->
-<div class="row">
-    <div class="col-xs-12">
-        <div class="text-center">
+<div class="col-sm-10 justify-content-center">
+    <div class="text-center">
+        <div>
             <img src="{{photoURL}}" class="rounded-circle">
-            <br>
-            <label >Edit My Profile</label>
-            <br>
         </div>
-        <form>
-            <div class="form-row">
-                <label for="name">Name</label>
-                <input class="form-control" id="name" type="text" [value]="nameText" #username required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="phone">Phone Number</label>
-                <input class="form-control" id="phone" type="text" [value]="phoneText" #phone required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="email">E-mail</label>
-                <input class="form-control" id="email" type="text" [value]="emailText" #email required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="add">Home Address</label>
-                <input class="form-control" id="add" type="text" [value]="addText" #add required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="city">City</label>
-                <input class="form-control" id="city" type="text" [value]="cityText" #city required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="state">State</label>
-                <input class="form-control" id="state" type="text" [value]="stateText" #state required>
-            </div>
-            <br>
-            <div class="form-row">
-                <label for="zip">Zip Code</label>
-                <input class="form-control" id="zip" type="text" length="5" [value]="zipText" #zip required>
-            </div>
-            <br>
-            <button
-                class="btn btn-primary btn-block"
-                (click)="onSaveUser(username, phone, email, add, city, state, zip)">Save
-            </button>
-        </form>
+        <br>
+        <div>
+            <h4><label >Edit My Profile</label></h4>
+        </div>
+    </div>
+    <div class="col-sm-10">
+            <form>
+                <div class="form-row">
+                    <label for="name">Name</label>
+                    <input class="form-control" id="name" type="text" [value]="nameText" #username required>
+                </div>
+                <p>* This carpool app works better if you set your name the same as the one in the working schedule!</p>
+                <!-- <br> -->
+                <div class="form-row">
+                    <label for="phone">Phone Number</label>
+                    <input class="form-control" id="phone" type="text" [value]="phoneText" #phone required>
+                </div>
+                <br>
+                <div class="form-row">
+                    <label for="email">E-mail</label>
+                    <input class="form-control" id="email" type="text" [value]="emailText" #email required>
+                </div>
+                <br>
+                <div class="form-row">
+                    <label for="add">Home Address</label>
+                    <input class="form-control" id="add" type="text" [value]="addText" #add required>
+                </div>
+                <br>
+                <div class="form-row">
+                    <label for="city">City</label>
+                    <input class="form-control" id="city" type="text" [value]="cityText" #city required>
+                </div>
+                <br>
+                <div class="form-row">
+                    <label for="state">State</label>
+                    <input class="form-control" id="state" type="text" [value]="stateText" #state required>
+                </div>
+                <br>
+                <div class="form-row">
+                    <label for="zip">Zip Code</label>
+                    <input class="form-control" id="zip" type="text" length="5" [value]="zipText" #zip required>
+                </div>
+                <br>
+                <button
+                    class="btn btn-primary btn-block"
+                    (click)="onSaveUser(username, phone, email, add, city, state, zip)">Save
+                </button>
+            </form>
     </div>
 </div>
+<br>
+<br>
 <div class="fixed-bottom" style="width:100%" [hidden]="noPermission == true">
     <app-navbar></app-navbar>
 </div>
