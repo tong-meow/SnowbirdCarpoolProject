@@ -209,14 +209,14 @@ export class CarpoolDetailsComponent implements OnInit {
   }
 
   onTheWay(){
-    window.alert("You started the carpool!");
+    // window.alert("You started the carpool!");
     this.cpdataService.updateCarpoolStatus(this.carpoolId, true).then(res =>{
       window.location.reload();
     });
   }
 
   pause(){
-    if (window.confirm("Do you want to pause this carpool? The data will not lost.")){
+    if (window.confirm("Do you want to stop this carpool? The data will not lost.")){
       this.cpdataService.updateCarpoolStatus(this.carpoolId, false).then(res => {
         window.location.reload();
       });

@@ -14,15 +14,15 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toCarpools(){
+  navToCarpools(){
     this.router.navigate(['carpools']);
   }
 
-  toEditProfile(){
+  navToProfile(){
     this.router.navigate(['profile']);
   }
 
-  toCalendar(){
+  navToCalendar(){
     this.router.navigate(['calendar']);
   }
 }
