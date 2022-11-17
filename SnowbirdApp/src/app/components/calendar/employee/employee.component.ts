@@ -4,6 +4,7 @@ import { Employee } from 'src/app/model/employee';
 import { Carpool } from 'src/app/model/carpool';
 // services
 import { CpdataService } from 'src/app/shared/cpdata.service';
+import { UdataService } from 'src/app/shared/udata.service';
 import { TransferService } from 'src/app/shared/transfer.service';
 
 @Component({
@@ -23,22 +24,39 @@ export class EmployeeComponent implements OnInit {
   status: number = 0;
 
   constructor(private cpdataService: CpdataService,
+              private udataService: UdataService,
               private transferService: TransferService) { }
 
   ngOnInit(): void {
-    var cps: Carpool[] = [];
-    this.cpdataService.getAllCarpoolsFromDate(this.date).then(res => {
-      /*
-          driver: string;
-          passengers: string[];
-      */
-      cps = this.transferService.getData();
-      this.transferService.clearData();
-      this.findStatus(cps);
-    })
-    .catch(error => {
-      console.log(error);
-    })
+    this.checkUserUpdate().then(res => {
+      var cps: Carpool[] = [];
+      this.cpdataService.getAllCarpoolsFromDate(this.date).then(res => {
+        /*
+            driver: string;
+            passengers: string[];
+        */
+        cps = this.transferService.getData();
+        this.transferService.clearData();
+        this.findStatus(cps);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    });
+  }
+
+  async checkUserUpdate(){
+    if (this.employeeObj.uid == "") {
+      await this.udataService.getUidAndPhotoByName(this.employeeObj.nameDisplayed).then(res =>{
+        var result = this.transferService.getData();
+        this.transferService.clearData();
+        if (result != undefined) {
+          this.employeeObj.uid = result.uid;
+          this.employeeObj.photoURL = result.photoURL;
+          console.log("Updated: " + this.employeeObj.uid);
+        }
+      });
+    }
   }
 
   getPhoto(url: string){

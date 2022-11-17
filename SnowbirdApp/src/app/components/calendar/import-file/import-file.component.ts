@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as XLSX from 'xlsx';
 
 import { UdataService } from 'src/app/shared/udata.service';
@@ -18,12 +18,16 @@ type AOA = any[][];
 
 export class ImportFileComponent implements OnInit {
 
+  @Output() canceled = new EventEmitter<{canceled: boolean}>();
+
   event: any;
   // uploadPressed: boolean = false;
-  data: AOA = [];
+  allData: AOA[] = [];
+  // data: AOA = [];
+
+  allSchedules: DailySchedule[];
 
   weekMap = new Map<number, string>([[2, "Saturday"], [4, "Sunday"], [6, "Monday"],[8, "Tuesday"], [10, "Wednesday"], [12, "Thursday"], [14, "Friday"]]);
-  positionMap = new Map<number, string>([[3, "Nurse"], [5, "Athletic Trainer"], [6, "EMT"], [8, "Rad Tech"], [10, "Front Desk"], [12, "Attending"], [13, "Resident"], [14, "Fellow"]]);
   
   constructor(private udataService: UdataService,
               private transferService: TransferService,
@@ -40,7 +44,7 @@ export class ImportFileComponent implements OnInit {
     this.event = event;
   }
 
-readFile(event: any){
+async readFile(event: any){
     /* wire up file reader */
     const target: DataTransfer = <DataTransfer>(event.target);
     if (target.files.length !== 1) throw new Error('Cannot use multiple files');
@@ -55,17 +59,28 @@ readFile(event: any){
         const wsname: string = wb.SheetNames[i];
         const ws: XLSX.WorkSheet = wb.Sheets[wsname];
         /* save data */
-        this.data = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-        console.log("Got data from sheet #" + i);
+        this.allData[i] = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+        // console.log("Got data from sheet #" + i);
         // console.log(this.data);
-        this.processData(this.data);
+        var positionMap = this.getPositionMap(this.allData[i]);
+
+        this.processData(this.allData[i], positionMap);
       }
     };
     reader.readAsBinaryString(target.files[0]);
   }
 
+  getPositionMap(data: AOA) {
+    var map = new Map<number, string>()
+    for (var row = 3; row < data.length; row++) {
+      if (data[row][0] == undefined) continue;
+      map.set(row, data[row][0]);
+    }
+    return map;
+  }
+
   // process 1 sheet (7 days)
-  async processData(data: AOA){
+  async processData(data: AOA, positionMap: Map<number, string>){
     // foreach column (one single day)
     for (var col = 2; col < data[0].length; col+=2) {
 
@@ -73,7 +88,7 @@ readFile(event: any){
       var excelDate = data[1][col];
       if (excelDate == undefined) continue;
       var tsDate = this.excelDateToJSDate(excelDate);
-      // console.log(tsDate);
+      console.log(tsDate);
 
       // employees
       var attenders: Employee[] = [];
@@ -83,29 +98,31 @@ readFile(event: any){
         if (nameData.includes("/")){
           var names = nameData.split("/");
           names.forEach(n => {
-            var e = this.processEmployeeInfo(n, row);
+            var e = this.processEmployeeInfo(n, positionMap.get(row));
             attenders.push(e);
           });
         }
         else if (nameData.includes("&")){
           var names = nameData.split(" & ");
           names.forEach(n => {
-            var e = this.processEmployeeInfo(n, row);
+            var e = this.processEmployeeInfo(n, positionMap.get(row));
             attenders.push(e);
           });
         }
         else if (nameData.includes("'o'")){
           var names = nameData.split(" 'o' ");
           names.forEach(n => {
-            var e = this.processEmployeeInfo(n, row);
+            var e = this.processEmployeeInfo(n, positionMap.get(row));
             attenders.push(e);
           });
         }
         else {
-          var e = this.processEmployeeInfo(nameData, row);
+          var e = this.processEmployeeInfo(nameData, positionMap.get(row));
           attenders.push(e);
         }
       }
+
+      var docTitle = this.makeDocTitle(tsDate);
 
       await this.processAttenders(attenders).then(res => {
         var ds: DailySchedule = {
@@ -113,20 +130,30 @@ readFile(event: any){
           attenders: attenders
         };
         // save to db
-        this.scheduleService.addSchedule(ds);
+        this.scheduleService.addSchedule(ds, docTitle);
       });
     }
   }
 
-  excelDateToJSDate(date) {
-    return new Date(Math.round((date - 25568.70833) * 86400 * 1000));
+  makeDocTitle(date: Date) {
+    var title = date.getFullYear().toString() + "-"
+              + (date.getMonth() + 1).toString() + "-"
+              + date.getDate().toString();
+    return title;
   }
 
-  processEmployeeInfo(name: string, row: number){
+  excelDateToJSDate(date) {
+    var tsDate = new Date(Math.round((date - 25568.70833) * 86400 * 1000));
+    return new Date(tsDate.getFullYear(),
+                    tsDate.getMonth(),
+                    tsDate.getDate());
+  }
+
+  processEmployeeInfo(name: string, position: string){
     var e: Employee = {
       uid: "",
       nameDisplayed: name,
-      position: this.positionMap.get(row),
+      position: position,
       photoURL: ""
     };
     return e;
@@ -146,5 +173,9 @@ readFile(event: any){
         console.log(error);
       })
     }
+  }
+
+  onCancel(){
+    this.canceled.emit({canceled: true});
   }
 }

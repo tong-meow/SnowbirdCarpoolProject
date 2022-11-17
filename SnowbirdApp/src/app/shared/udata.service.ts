@@ -227,4 +227,41 @@ export class UdataService {
             }
         }
     }
+
+    async getAllUsers(){
+        var users: User[] = [];
+        var u: User;
+        const acRef = collection(this.db, "Users");
+        const q = query(acRef);
+        await getDocs(q).then(res => {
+            if (res.size == 0) {
+                console.log("[UDATA SERVICE] No users found.");
+            }
+            else {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    u = {
+                        uid: doc["uid"],
+                        email: doc["email"],
+                        photoURL: doc["photoURL"],
+                        type: doc["type"],
+                        name: doc["name"],
+                        phone: doc["phone"],
+                        address: doc["address"],
+                        add: doc['add'],
+                        city: doc['city'],
+                        state: doc['state'],
+                        zip: doc['zip'],
+                        initialized: doc['initialized']
+                    }
+                    users.push(u);
+                }
+                this.transferService.setData(users);
+            }
+        })
+        .catch(error => {
+            console.log("[UDATA SERVICE] " + error);
+        });
+    }
 }

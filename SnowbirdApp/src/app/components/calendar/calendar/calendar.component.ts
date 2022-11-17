@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 // models
 import { DailySchedule } from 'src/app/model/dailySchedule';
+import { Employee } from 'src/app/model/employee';
+import { User } from 'src/app/model/user';
 // services
 import { ScheduleService } from 'src/app/shared/schedule.service';
 import { TransferService } from 'src/app/shared/transfer.service';
@@ -24,7 +26,8 @@ export class CalendarComponent implements OnInit {
   dateWithPipe: string;
   pipe = new DatePipe('en-US');
 
-  onUploading: boolean = false;
+  isUploading: boolean = false;
+  isCreating: boolean = false;
 
   constructor(private scheduleService: ScheduleService,
               private transferService: TransferService,
@@ -54,21 +57,39 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  formatDate(date: Date){
-    var str = date.toString().split(" ");
-    return str[0] + " " + str[1] + " " + str[2] + " " + str[3];
-  }
-
   async onDateSelected(dateSelected) {
     this.date = dateSelected;
     await this.getDataForAWeek(this.date);
   }
 
   startUpload(){
-    this.onUploading = true;
+    this.isUploading = true;
   }
 
   stopUpload(){
-    this.onUploading = false;
+    this.isUploading = false;
+  }
+
+  startCreating(){
+    this.isCreating = true;
+  }
+
+  onCreatingCanceled(canceld){
+    if (canceld) {
+      this.isCreating = false;
+    }
+  }
+
+  onUploadingCanceled(canceld){
+    if (canceld) {
+      this.isUploading = false;
+    }
+  }
+
+  onAdded(ds){
+    if (ds != undefined) {
+      this.isCreating = false;
+      this.getDataForAWeek(this.date);
+    }
   }
 }

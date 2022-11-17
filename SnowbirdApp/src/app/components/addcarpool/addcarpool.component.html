@@ -7,7 +7,7 @@
     <div class="panel-body">
         <form>
             <div class="form-row">
-                <p><label for="nickname">Direction:</label></p>
+                <p><label for="direction">Direction:</label></p>
                 <mat-radio-group [(ngModel)]="selectedDirection">
                     <mat-radio-button value="To Snowbird" color="primary">
                         To Snowbird
@@ -20,17 +20,17 @@
             </div>
             <br>
             <div class="form-row">
-                <label for="nickname">Start Time:</label>
+                <label for="startTime">Start Time:</label>
                 <input type="time" class="form-control" #startTime>
             </div>
             <br>
             <div class="form-row">
-                <label for="nickname">Arrival Time:</label>
+                <label for="arrivalTime">Arrival Time:</label>
                 <input type="time" class="form-control" #arrivalTime>
             </div>
             <br>
             <div class="form-row">
-                <label for="nickname">Vehicle:</label>
+                <label for="vehicle">Vehicle:</label>
                 <select #vehicleOptions class="form-select form-select-lg"
                 (change)="onOptionsSelected(vehicleOptions.value)" aria-label="vehicle selection"
                 [disabled]="this.vehicles.length == 0">
@@ -40,7 +40,7 @@
             </div>
             <br>
             <div class="form-row">
-                <label for="nickname">Total Seats Available:</label>
+                <label for="seatsAvailable">Total Seats Available:</label>
                 <input type="number" class="form-control" [value]="getSeats(vehicleOptions.value)" #seatsAvailable>
             </div>
             <br>

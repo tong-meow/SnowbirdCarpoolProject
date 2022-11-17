@@ -1,0 +1,79 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <label>Create a Wroking Schedule</label>
+        <br>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div class="form-row">
+                <label for="date">Date</label>
+                <div [formGroup]="formGroup">
+                    <mat-form-field appearance="outline">
+                        <input (dateInput)="onDateSelected($event.value)"
+                                matInput formControlName="releasedAt" 
+                                [placeholder]="today"
+                                [matDatepicker]="releasedAtPicker" (click)="releasedAtPicker.open()">
+                        <mat-datepicker-toggle matPrefix [for]="releasedAtPicker">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #releasedAtPicker 
+                                        [touchUi]="true"
+                                        [startAt]="date" > 
+                        </mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="form-row">
+                <label for="worker">Employees Added</label>
+                <div [hidden]="this.employees.length != 0">
+                    No employees yet!
+                </div>
+                <div class="form-row" *ngFor="let e of this.employees">
+                    <br>
+                    <img src="{{this.getPhoto(e)}}" class="img-thumbnail rounded-circle" style="width:50px;height:50px;"> 
+                    {{e.nameDisplayed}} ({{e.position}})
+                    <span style="float: right;" class="align-middle" (click)="this.onDeleteUser(e)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+            <br>
+            <div class="form-row">
+                <!-- <label for="worker">Employees</label> -->
+                <select #positionOptions class="form-select form-select-lg" aria-label="vehicle selection"
+                (change)="onPositionSelected(positionOptions.value)">
+                    <option selected [value]="">Select a position</option>
+                    <option *ngFor="let p of this.positions" [value]="p">{{p}}</option>
+                </select>
+                <br>
+                <select #userOptions class="form-select form-select-lg" aria-label="vehicle selection"
+                (change)="onUserSelected(userOptions.value)">
+                    <option selected [value]="">Select a user</option>
+                    <option *ngFor="let u of this.usernames" [value]="u">{{u}}</option>
+                </select>
+                <div class="input-group" [hidden]="!this.enterANewName">
+                    <br>
+                    <input class="form-control" id="name" type="text" placeholder="Enter a name" #name required>
+                    <!-- <span class="input-group-btn">
+                        <button class="btn btn-primary">Add to this Schedule</button>
+                    </span> -->
+                </div>
+                <br>
+                <button class="btn btn-primary btn-block" (click)="addEmployee(name, positionOptions, userOptions)">
+                    Add Employee to this Schedule
+                </button>
+            </div>
+            <br>
+            <button
+                class="btn btn-primary btn-block"
+                (click)="this.onSaveSchedule()"
+                >Save this Schedule
+            </button>
+            <button
+                class="btn btn-primary btn-block"
+                (click)="this.onCancel()">Cancel
+            </button>
+        </form>
+    </div>
+</div>

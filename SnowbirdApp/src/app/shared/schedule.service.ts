@@ -22,15 +22,15 @@ export class ScheduleService {
                 private udataService: UdataService,
                 private transferService: TransferService) { }
 
-    async addSchedule(ds: DailySchedule) {
-        var dateStr = ds.date.toString();
-        return this.afs.collection('/Schedule').doc(dateStr)
+    async addSchedule(ds: DailySchedule, docTitle: string) {
+        // console.log("START ADDING: " + docTitle + " " + ds.date);
+        return this.afs.collection('/Schedule').doc(docTitle)
             .set({ 
                 date: ds.date,
                 attenders: ds.attenders
             })
             .then(res => {
-                console.log("Daily Schedule added: " + dateStr);
+                console.log("Daily Schedule added: " + docTitle);
             })
             .catch(error => {
                 console.log("[SCHEDULE SERVICE] " + error);
