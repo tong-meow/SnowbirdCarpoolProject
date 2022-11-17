@@ -75,9 +75,14 @@ export class AddcarpoolComponent implements OnInit {
   // }
 
   onOptionsSelected(value: string){
-    for(var i = 0; i < this.vehicles.length; i++){
-      if (this.vehicles[i].license == value){
-        this.selectedVehicle = this.vehicles[i];
+    if (value == "Select a car"){
+      this.selectedVehicle = undefined;
+    }
+    else {
+      for(var i = 0; i < this.vehicles.length; i++){
+        if (this.vehicles[i].license == value){
+          this.selectedVehicle = this.vehicles[i];
+        }
       }
     }
   }
@@ -106,8 +111,13 @@ export class AddcarpoolComponent implements OnInit {
       this.carpoolObj.startTime = startTimeInput.value;
       this.carpoolObj.arrivalTime = arrivalTimeInput.value;
       this.carpoolObj.direction = this.selectedDirection; 
-      this.selectedVehicle.seatsAvail = Number(seatsInput.value);
-      this.carpoolObj.vehicle = this.selectedVehicle;
+      if (this.selectedVehicle != undefined) {
+        this.selectedVehicle.seatsAvail = Number(seatsInput.value);
+        this.carpoolObj.vehicle = this.selectedVehicle;
+      }
+      else {
+        this.carpoolObj.vehicle = this.blankVehicle(Number(seatsInput.value));
+      }
       this.carpoolObj.totalSeats = Number(seatsInput.value);
 
       await this.cpdataService.addCarpool(this.carpoolObj)
@@ -123,6 +133,18 @@ export class AddcarpoolComponent implements OnInit {
       seatsInput.value = '';
       this.selectedDirection = '';
     }
+  }
+
+  blankVehicle(seats: number) {
+    var v: Vehicle = {
+      license: "",
+      uid: "",
+      nickname: "",
+      make: "",
+      model: "",
+      seatsAvail: seats
+    };
+    return v;
   }
 
   onCancelCreating(){

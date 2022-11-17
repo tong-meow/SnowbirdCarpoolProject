@@ -30,9 +30,7 @@ export class CarpoolComponent implements OnInit {
     constructor(private cpdataService: CpdataService,
                 private udataService: UdataService,
                 private gudataService: GudataService,
-                private transferService: TransferService,
-                private vdataService: VdataService,
-                private router: Router){}
+                private transferService: TransferService){}
 
     ngOnInit(): void {
         // if the user hasn't logged in, nav to login page

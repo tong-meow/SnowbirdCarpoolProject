@@ -2,7 +2,15 @@
   <!--<div class="panel-heading">{{ element.name }}</div>-->
   <div class="panel-heading" [routerLink]="['/carpools', carpoolObj.id]" #heading><b>Driver: {{ driverName }}</b></div>
   <div class="panel-body">
-    <p><b>Vehicle: </b>{{this.carpoolObj.vehicle.license}} ({{this.carpoolObj.vehicle.make}} {{this.carpoolObj.vehicle.model}})</p>
+    <p>
+      <b>Vehicle: </b>
+      <span [hidden]="this.carpoolObj.vehicle.license == ''">
+        {{this.carpoolObj.vehicle.license}} 
+        <span [hidden]="this.carpoolObj.vehicle.make == '' && this.carpoolObj.vehicle.model == ''">
+          ({{this.carpoolObj.vehicle.make}} {{this.carpoolObj.vehicle.model}})
+        </span>
+      </span>
+    </p>
     <p><b>Passengers: </b></p>
     <div *ngFor="let passenger of passengerObjs">
       <img src="{{this.getPhoto(passenger.photoURL)}}" class="img-thumbnail rounded-circle" style="width:50px;height:50px;"> 
