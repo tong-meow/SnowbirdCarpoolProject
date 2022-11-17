@@ -87,8 +87,13 @@ async readFile(event: any){
       // date
       var excelDate = data[1][col];
       if (excelDate == undefined) continue;
-      var tsDate = this.excelDateToJSDate(excelDate);
-      console.log(tsDate);
+      var tsDate: Date;
+      if (typeof(excelDate) == "string") {
+        tsDate = this.stringDateToJSDate(excelDate);
+      }
+      else {
+        tsDate = this.excelDateToJSDate(excelDate);
+      }
 
       // employees
       var attenders: Employee[] = [];
@@ -147,6 +152,14 @@ async readFile(event: any){
     return new Date(tsDate.getFullYear(),
                     tsDate.getMonth(),
                     tsDate.getDate());
+  }
+
+  stringDateToJSDate(date) {
+    // 2/19/2022- TNCC
+    var strArray = date.split("-");
+    var dateStr = strArray[0].split("/");
+    var d = dateStr[2]+"-"+dateStr[0]+"-"+dateStr[1];
+    return new Date(d);
   }
 
   processEmployeeInfo(name: string, position: string){
