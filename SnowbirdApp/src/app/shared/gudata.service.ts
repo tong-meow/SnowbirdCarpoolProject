@@ -48,9 +48,9 @@ export class GudataService {
         // found the current account, get it and assign the ACCOUNT
         // update the db if necessary
         if (res.size > 0) {
-            console.log("[GUDATA SERVICE] Google account found: " + ac.displayName);
+            // console.log("[GUDATA SERVICE] Google account found: " + ac.displayName);
             this.account = ac;
-            console.log("[GUDATA SERVICE] ACCOUNT is set.");
+            // console.log("[GUDATA SERVICE] ACCOUNT is set.");
             await this.updateAccountPhoto(ac).then()
             .catch(error => {
                 console.log("[GUDATA SERVICE] " + error);
@@ -58,7 +58,7 @@ export class GudataService {
         }
         // account not found (new user), add to db
         else {
-            console.log("[GUDATA SERVICE] New user, account not found.");
+            // console.log("[GUDATA SERVICE] New user, account not found.");
             await this.addGoogleAccount(ac).then()
             .catch(error => {
                 console.log("[GUDATA SERVICE] " + error);
@@ -73,7 +73,7 @@ export class GudataService {
             photoURL: account.photoURL
         })
         .then(res => {
-            console.log("[GUDATA SERVICE] Google account photo updated.");
+            // console.log("[GUDATA SERVICE] Google account photo updated.");
         })
         .catch(error => {
             console.log("[GUDATA SERVICE] " + error);
@@ -92,9 +92,9 @@ export class GudataService {
                 photoURL: ac.photoURL
             })
             .then(res => {
-                console.log("[GUDATA SERVICE] New account added: " + ac.displayName);
+                // console.log("[GUDATA SERVICE] New account added: " + ac.displayName);
                 this.account = ac;
-                console.log("[GUDATA SERVICE] ACCOUNT is set.");
+                // console.log("[GUDATA SERVICE] ACCOUNT is set.");
             })
             .catch(error => {
                 console.log("[GUDATA SERVICE] " + error);
@@ -106,7 +106,7 @@ export class GudataService {
     async deleteAccount(account: GoogleAccount) {
         await this.afs.doc('/GoogleAccounts/'+account.uid).delete()
         .then(() => {
-            console.log("[GUDATA SERVICE] Google account deleted.");
+            // console.log("[GUDATA SERVICE] Google account deleted.");
         });
     }
 
@@ -119,7 +119,7 @@ export class GudataService {
         const q = query(acRef);
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[GUDATA SERVICE] No accounts found.");
+                // console.log("[GUDATA SERVICE] No accounts found.");
             }
             else {
                 const docSnapshots = res.docs;
@@ -132,7 +132,7 @@ export class GudataService {
                         photoURL: doc["photoURL"],
                         emailVerified: doc["emailVerified"]
                     };
-                    console.log("[GUDATA SERVICE] Account found: " + ac.displayName);
+                    // console.log("[GUDATA SERVICE] Account found: " + ac.displayName);
                     acs.push(ac);
                 }
                 this.transferService.setData(acs);
@@ -150,7 +150,7 @@ export class GudataService {
         const q = query(usersRef, where("uid", "==", uid));
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[GUDATA SERVICE] Account not found.");
+                // console.log("[GUDATA SERVICE] Account not found.");
             }
             else {
                 const docSnapshots = res.docs;
@@ -163,7 +163,7 @@ export class GudataService {
                         photoURL: doc["photoURL"],
                         emailVerified: doc["emailVerified"],
                     };
-                    console.log("[GUDATA SERVICE] User found.");
+                    // console.log("[GUDATA SERVICE] User found.");
                 }
                 this.transferService.setData(account);
             }
@@ -185,7 +185,7 @@ export class GudataService {
                 })
             }
             else {
-                console.log("[GUDATA SERVICE] " + "This user's data is not saved in local cache.");
+                // console.log("[GUDATA SERVICE] " + "This user's data is not saved in local cache.");
                 this.router.navigate(['login']);
             }
         }

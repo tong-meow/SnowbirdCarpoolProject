@@ -28,6 +28,8 @@ export class CalendarComponent implements OnInit {
 
   isUploading: boolean = false;
   isCreating: boolean = false;
+  isAddingMySchedule: boolean = false;
+  notAdmin: boolean = true;
 
   constructor(private scheduleService: ScheduleService,
               private transferService: TransferService,
@@ -37,14 +39,16 @@ export class CalendarComponent implements OnInit {
   ngOnInit(): void {
 
     this.gudataService.checkAccountStatus();
-    this.udataService.checkLoginStatus();
-
-    this.date = new Date(); 
-    this.date.setHours(0,0,0,0);
-    this.dateWithPipe = this.pipe.transform(this.date, 'M/d/yy');
-    this.today = this.dateWithPipe;
-
-    this.getDataForAWeek(this.date);
+    this.udataService.checkLoginStatus().then(res => {
+      this.date = new Date(); 
+      this.date.setHours(0,0,0,0);
+      this.dateWithPipe = this.pipe.transform(this.date, 'M/d/yy');
+      this.today = this.dateWithPipe;
+  
+      this.getDataForAWeek(this.date);
+  
+      this.notAdmin = (this.udataService.user.type != 0);
+    });
   }
 
   async getDataForAWeek(date: Date){
@@ -74,15 +78,22 @@ export class CalendarComponent implements OnInit {
     this.isCreating = true;
   }
 
-  onCreatingCanceled(canceld){
-    if (canceld) {
+  onCreatingCanceled(canceled){
+    if (canceled) {
       this.isCreating = false;
     }
   }
 
-  onUploadingCanceled(canceld){
-    if (canceld) {
+  onUploadingCanceled(canceled){
+    if (canceled) {
       this.isUploading = false;
+    }
+  }
+
+  onUpdate(updated) {
+    if (updated) {
+      this.isAddingMySchedule = false;
+      this.getDataForAWeek(this.date);
     }
   }
 
@@ -90,6 +101,16 @@ export class CalendarComponent implements OnInit {
     if (ds != undefined) {
       this.isCreating = false;
       this.getDataForAWeek(this.date);
+    }
+  }
+
+  addMySchedule(){
+    this.isAddingMySchedule = true;
+  }
+
+  onAddingCanceled(canceled){
+    if (canceled) {
+      this.isAddingMySchedule = false;
     }
   }
 }

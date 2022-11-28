@@ -34,7 +34,7 @@ export class VdataService {
             seatsAvail: v.seatsAvail
         })
         .then(res => {
-            console.log("Vehicle added: " + v.nickname);
+            // console.log("Vehicle added: " + v.nickname);
         })
         .catch(error => {
             console.log("[VDATA SERVICE] " + error);
@@ -73,7 +73,7 @@ export class VdataService {
                         model: doc['model'],
                         seatsAvail: doc['seatsAvail']
                     };
-                    console.log("[VDATA SERVICE] Vehicle found.");
+                    // console.log("[VDATA SERVICE] Vehicle found.");
                 }
                 this.transferService.setData(v);
             }
@@ -86,7 +86,7 @@ export class VdataService {
     async deleteVehicle(v: Vehicle){
         await this.afs.doc('/Vehicles/' + v.license).delete()
         .then(() => {
-            console.log("[VDATA SERVICE] Vehicle deleted.");
+            // console.log("[VDATA SERVICE] Vehicle deleted.");
         })
         .catch(error => {
             console.log(error);
@@ -101,7 +101,7 @@ export class VdataService {
         const q = query(acRef, where("uid", "==", this.udataService.user.uid));
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[VDATA SERVICE] No vehicles found.");
+                // console.log("[VDATA SERVICE] No vehicles found.");
             }
             else {
                 const docSnapshots = res.docs;
@@ -115,7 +115,7 @@ export class VdataService {
                         model: doc['model'],
                         seatsAvail: doc['seatsAvail']
                     };
-                    console.log("[VDATA SERVICE] Vehicle found: " + v.nickname);
+                    // console.log("[VDATA SERVICE] Vehicle found: " + v.nickname);
                     vehicles.push(v);
                 }
                 this.transferService.setData(vehicles);

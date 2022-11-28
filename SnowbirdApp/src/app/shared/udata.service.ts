@@ -50,7 +50,7 @@ export class UdataService {
         const res = await getDocs(q);
         // if the user already exists in the db
         if (res.size > 0) {
-            console.log("[UDATA SERVICE] User found.");
+            // console.log("[UDATA SERVICE] User found.");
             // assign the USER member variable
             await this.assignUser(uid).then(
                 // res => { this.userExists = true; }
@@ -61,7 +61,7 @@ export class UdataService {
         }
         // if the user doesnt exist, set userExists to false
         else {
-            console.log("[UDATA SERVICE] User not found.");
+            // console.log("[UDATA SERVICE] User not found.");
             // this.userExists = false;
         }
     }
@@ -72,7 +72,7 @@ export class UdataService {
         const q = query(usersRef, where("uid", "==", uid));
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[UDATA SERVICE] User not found.");
+                // console.log("[UDATA SERVICE] User not found.");
             }
             else {
                 const docSnapshots = res.docs;
@@ -93,7 +93,7 @@ export class UdataService {
                         initialized: doc['initialized']
                     };
                     this.user = user;
-                    console.log("[UDATA SERVICE] USER is set.");
+                    // console.log("[UDATA SERVICE] USER is set.");
                 }
             }
         })
@@ -120,8 +120,8 @@ export class UdataService {
                 initialized: user.initialized
             })
             .then(res => {
-                console.log("User added: " + user.name);
-                console.log("[UDATA SERVICE] USER is set.");
+                // console.log("User added: " + user.name);
+                // console.log("[UDATA SERVICE] USER is set.");
             })
             .catch(error => {
                 console.log("[UDATA SERVICE] " + error);
@@ -144,7 +144,7 @@ export class UdataService {
         }).then(res => {
             this.user = user;
             this.localService.saveLocalData("uid", this.user.uid);
-            console.log("[UDATA SERVICE] USER is set.");
+            // console.log("[UDATA SERVICE] USER is set.");
         }).catch(error => {
             console.log("[UDATA SERVICE] " + error);
         });
@@ -157,7 +157,7 @@ export class UdataService {
         const q = query(usersRef, where("uid", "==", uid));
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[UDATA SERVICE] User not found.");
+                // console.log("[UDATA SERVICE] User not found.");
             }
             else {
                 const docSnapshots = res.docs;
@@ -177,7 +177,7 @@ export class UdataService {
                         zip: doc['zip'],
                         initialized: doc['initialized']
                     };
-                    console.log("[UDATA SERVICE] User found.");
+                    // console.log("[UDATA SERVICE] User found.");
                 }
                 this.transferService.setData(u);
             }
@@ -193,7 +193,7 @@ export class UdataService {
         const q = query(usersRef, where("name", "==", name));
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[UDATA SERVICE] User not found.");
+                // console.log("[UDATA SERVICE] User not found.");
             }
             else {
                 const docSnapshots = res.docs;
@@ -222,7 +222,7 @@ export class UdataService {
                 })
             }
             else {
-                console.log("[UDATA SERVICE] " + "This user's data is not saved in local cache.");
+                // console.log("[UDATA SERVICE] " + "This user's data is not saved in local cache.");
                 this.router.navigate(['login']);
             }
         }
@@ -235,7 +235,7 @@ export class UdataService {
         const q = query(acRef);
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[UDATA SERVICE] No users found.");
+                // console.log("[UDATA SERVICE] No users found.");
             }
             else {
                 const docSnapshots = res.docs;

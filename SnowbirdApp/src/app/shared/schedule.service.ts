@@ -8,6 +8,7 @@ import { DailySchedule } from '../model/dailySchedule';
 // services
 import { UdataService } from './udata.service';
 import { TransferService } from './transfer.service';
+import { Employee } from '../model/employee';
 
 @Injectable({
     providedIn: 'root'
@@ -30,7 +31,7 @@ export class ScheduleService {
                 attenders: ds.attenders
             })
             .then(res => {
-                console.log("Daily Schedule added: " + docTitle);
+                // console.log("Daily Schedule added: " + docTitle);
             })
             .catch(error => {
                 console.log("[SCHEDULE SERVICE] " + error);
@@ -44,7 +45,7 @@ export class ScheduleService {
         const q = query(schRef, where("date", "==", date));
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[SCHEDULE SERVICE] No data found.");
+                // console.log("[SCHEDULE SERVICE] No data found.");
             }
             else {
                 const docSnapshots = res.docs;
@@ -54,13 +55,13 @@ export class ScheduleService {
                         date: doc["date"],
                         attenders: doc["attenders"]
                     };
-                    console.log("[SCHEDULE SERVICE] Schedule found: " + ds.date);
+                    // console.log("[SCHEDULE SERVICE] Schedule found: " + ds.date);
                 }
                 this.transferService.setData(ds);
             }
         })
         .catch(error => {
-            console.log("[GUDATA SERVICE] " + error);
+            console.log("[SCHEDULE SERVICE] " + error);
         });
     }
 
@@ -72,7 +73,7 @@ export class ScheduleService {
 
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[SCHEDULE SERVICE] No data found.");
+                // console.log("[SCHEDULE SERVICE] No data found.");
             }
             else {
                 const docSnapshots = res.docs;
@@ -84,13 +85,108 @@ export class ScheduleService {
                         attenders: doc["attenders"]
                     };
                     schedule.push(ds);
-                    console.log("[SCHEDULE SERVICE] Schedule found: " + ds.date);
+                    // console.log("[SCHEDULE SERVICE] Schedule found: " + ds.date);
                 }
                 this.transferService.setData(schedule);
             }
         })
         .catch(error => {
-            console.log("[GUDATA SERVICE] " + error);
+            console.log("[SCHEDULE SERVICE] " + error);
         });
+    }
+
+    async updateMySchedule(today: Date, picked: boolean[], e: Employee){
+        for (var i = 0; i < 7; i++) {
+            var date = new Date(today);
+            date.setDate(today.getDate() + i);
+            var addMe = picked[i];
+            const title = this.makeDocTitle(date);
+            if (addMe) {
+                await this.updateToOneSchedule(date, e, title);
+            }
+            else {
+                await this.removeFromOneSchedule(date, e, title);
+            }
+        }
+    }
+
+    makeDocTitle(date: Date) {
+        var title = date.getFullYear().toString() + "-"
+                  + (date.getMonth() + 1).toString() + "-"
+                  + date.getDate().toString();
+        return title;
+    }
+
+    async updateToOneSchedule(date: Date, e: Employee, title: string){
+        var ds: DailySchedule;
+        const schRef = collection(this.db, "Schedule");
+        const q = query(schRef, where("date", "==", date));
+        await getDocs(q).then(res => {
+            if (res.size == 0) {
+                var att: Employee[] = [];
+                att.push(e);
+                ds = {
+                    date: date,
+                    attenders: att
+                };
+            }
+            else {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    ds = {
+                        date: doc["date"],
+                        attenders: doc["attenders"]
+                    };
+                }
+                var index = this.getIndex(ds.attenders, e);
+                if (index == -1) {
+                    ds.attenders.push(e);
+                }
+                else {
+                    ds.attenders[index] = e;
+                }
+            }
+            this.addSchedule(ds, title);
+        })
+        .catch(error => {
+            console.log("[SCHEDULE SERVICE] " + error);
+        });
+    }
+
+    async removeFromOneSchedule(date: Date, e: Employee, title: string){
+        var ds: DailySchedule;
+        const schRef = collection(this.db, "Schedule");
+        const q = query(schRef, where("date", "==", date));
+        await getDocs(q).then(res => {
+            if (res.size != 0) {
+                const docSnapshots = res.docs;
+                for (var i in docSnapshots) {
+                    const doc = docSnapshots[i].data();
+                    ds = {
+                        date: doc["date"],
+                        attenders: doc["attenders"]
+                    };
+                }
+                var index = this.getIndex(ds.attenders, e);
+                if (index != -1) {
+                    ds.attenders.splice(index, 1);
+                    this.addSchedule(ds, title);
+                }
+            }
+        })
+        .catch(error => {
+            console.log("[SCHEDULE SERVICE] " + error);
+        });
+    }
+
+    getIndex(attenders: Employee[], e: Employee) {
+        for (var i = 0; i < attenders.length; i++) {
+            if (attenders[i].nameDisplayed == e.nameDisplayed || 
+                attenders[i].uid == e.uid) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

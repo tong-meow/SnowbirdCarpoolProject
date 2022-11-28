@@ -39,6 +39,7 @@ import { ImportFileComponent } from './components/calendar/import-file/import-fi
 import { EmployeeComponent } from './components/calendar/employee/employee.component';
 import { AddScheduleComponent } from './components/calendar/add-schedule/add-schedule.component';
 import { ScheduleComponent } from './components/calendar/schedule/schedule.component';
+import { AddMyScheduleComponent } from './components/calendar/add-my-schedule/add-my-schedule.component';
 
 // routes are stored as an array, each element is a JS object
 const appRoutes: Routes = [
@@ -74,7 +75,8 @@ const appRoutes: Routes = [
     ImportFileComponent,
     EmployeeComponent,
     AddScheduleComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    AddMyScheduleComponent
   ],
   imports: [
     BrowserModule,

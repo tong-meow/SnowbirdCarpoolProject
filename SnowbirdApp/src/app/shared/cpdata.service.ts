@@ -31,7 +31,7 @@ export class CpdataService {
     var cpID = "";
     await this.afs.collection('/Carpools').add(carpool)
       .then(function(docRef) {
-        console.log("Carpool doc created with ID: ", docRef.id);
+        // console.log("Carpool doc created with ID: ", docRef.id);
         cpID = docRef.id;
       })
       .then(() => {
@@ -52,7 +52,7 @@ export class CpdataService {
         const q = query(cpRef, where("date", "==", date));
         await getDocs(q).then(res => {
             if (res.size == 0) {
-                console.log("[CPDATA SERVICE] No carpools on " + date + ".");
+                // console.log("[CPDATA SERVICE] No carpools on " + date + ".");
             }
             else {
                 const docSnapshots = res.docs;
@@ -70,7 +70,7 @@ export class CpdataService {
                       totalSeats: doc["totalSeats"],
                       hasStarted: doc["hasStarted"]
                   };
-                  console.log("[CPDATA SERVICE] Carpool found.");
+                  // console.log("[CPDATA SERVICE] Carpool found.");
                   cps.push(cp)
               }
               this.transferService.setData(cps);
@@ -84,7 +84,7 @@ export class CpdataService {
   // Delete carpool
   async deleteCarpool(carpool: Carpool) {
     await this.afs.doc('/Carpools/'+carpool.id).delete();
-    console.log("Carpool deleted: " + carpool.id);
+    // console.log("Carpool deleted: " + carpool.id);
   }
 
   // Update carpool time
@@ -100,7 +100,7 @@ export class CpdataService {
     // await this.afs.doc('Carpools/'+carpool.id).set({
     //   passengers: newVal,   
     //   });
-    console.log("[CPDATA SERVICE] Updated carpool with id: " + carpool.id);
+    // console.log("[CPDATA SERVICE] Updated carpool with id: " + carpool.id);
 
   }
 
@@ -112,7 +112,7 @@ export class CpdataService {
     await updateDoc(cpRef, {
       passengers: arrayUnion(newPassengerId)
     });
-    console.log("[CPDATA SERVICE] Added passenger to : " + carpoolId);
+    // console.log("[CPDATA SERVICE] Added passenger to : " + carpoolId);
   }
 
   // Add carpool passenger
@@ -123,7 +123,7 @@ export class CpdataService {
     await updateDoc(cpRef, {
       passengers: arrayRemove(newPassengerId)
     });
-    console.log("[CPDATA SERVICE] Removed passenger from : " + carpool.id);
+    // console.log("[CPDATA SERVICE] Removed passenger from : " + carpool.id);
   }
 
   // Firestore data converter
@@ -168,9 +168,6 @@ export class CpdataService {
       // Convert to Carpool object
       // console.log(docSnap.data());
       return docSnap.data();
-    } else {
-      // doc.data() is undefined in this case
-      console.log("No such document!");
     }
   }
 

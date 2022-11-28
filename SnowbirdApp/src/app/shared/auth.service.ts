@@ -52,7 +52,7 @@ export class AuthService {
     SigninWithGoogle() {
         return this.OAuthProvider(new GoogleAuthProvider())
             .then(res => {
-                console.log('[AUTH SERVICE] Successfully logged in!')
+                // console.log('[AUTH SERVICE] Successfully logged in!')
             }).catch(error => {
                 console.log(error)
             });
@@ -87,7 +87,7 @@ export class AuthService {
                 else {
                     // add to local cache
                     this.localService.saveLocalData("uid", this.udataService.user.uid);
-                    console.log('[AUTH SERVICE] ' + "The user data has been added to local cache.");
+                    // console.log('[AUTH SERVICE] ' + "The user data has been added to local cache.");
                     // nav to carpools
                     this.router.navigate(['carpools']);
                 }

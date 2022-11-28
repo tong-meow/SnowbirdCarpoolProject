@@ -95,7 +95,7 @@ export class CarpoolsComponent implements OnInit {
         await this.getAllCarpoolsFromDate(this.date);
         this.onCreating = false;
         console.log("Carpools[] length after adding new carpool: " + this.carpools.length);
-        window.location.reload()
+        window.location.reload();
         // this.router.navigate([this.router.url]);
       
     }

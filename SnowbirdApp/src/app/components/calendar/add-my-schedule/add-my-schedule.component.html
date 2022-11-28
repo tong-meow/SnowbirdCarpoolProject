@@ -1,0 +1,105 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <label>Update My Future 7-Day Work Schedule</label>
+        <br>
+    </div>
+    <div class="panel-body">
+        <form class="form-horizontal">
+            <div class="form-row">
+                <label>Days I work:</label>
+            </div>
+            <div class="form-row">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDay0" (change)="this.dateChange($event, 0)">
+                    <label class="form-check-label" for="flexCheckDay0">
+                      {{this.datesString[0]}}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDay1" (change)="this.dateChange($event, 1)">
+                    <label class="form-check-label" for="flexCheckDay1">
+                        {{this.datesString[1]}}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDay2" (change)="this.dateChange($event, 2)">
+                    <label class="form-check-label" for="flexCheckDay2">
+                        {{this.datesString[2]}}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDay3" (change)="this.dateChange($event, 3)">
+                    <label class="form-check-label" for="flexCheckDay3">
+                        {{this.datesString[3]}}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDay4" (change)="this.dateChange($event, 4)">
+                    <label class="form-check-label" for="flexCheckDay4">
+                        {{this.datesString[4]}}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDay5" (change)="this.dateChange($event, 5)">
+                    <label class="form-check-label" for="flexCheckDay5">
+                        {{this.datesString[5]}}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="flexCheckDay6" (change)="this.dateChange($event, 6)">
+                    <label class="form-check-label" for="flexCheckDay6">
+                        {{this.datesString[6]}}
+                    </label>
+                </div>
+            </div>
+            <br>
+            <div class="form-row">
+                <label>My position:</label>
+            </div>
+            <mat-radio-group [(ngModel)]="selectedPosition">
+                <div>
+                <mat-radio-button value="Nurse" color="primary">
+                    Nurse
+                </mat-radio-button></div>
+                <div>
+                <mat-radio-button value="Athletic Trainer" color="primary">
+                    Athletic Trainer
+                </mat-radio-button></div>
+                <div>
+                <mat-radio-button value="EMT" color="primary">
+                    EMT
+                </mat-radio-button></div>
+                <div>
+                <mat-radio-button value="Rad Tech" color="primary">
+                    Rad Tech
+                </mat-radio-button></div>
+                <div>
+                <mat-radio-button value="Front Desk" color="primary">
+                    Front Desk
+                </mat-radio-button></div>
+                <div>
+                <mat-radio-button value="Attending" color="primary">
+                    Attending
+                </mat-radio-button></div>
+                <div>
+                <mat-radio-button value="Resident" color="primary">
+                    Resident
+                </mat-radio-button></div>
+                <div>
+                <mat-radio-button value="Fellow" color="primary">
+                    Fellow
+                </mat-radio-button></div>
+            </mat-radio-group>
+            <br>
+            <button
+                class="btn btn-primary btn-block"
+                (click)="this.onSaveSchedule()"
+                >Save My Schedule
+            </button>
+            <button
+                class="btn btn-primary btn-block"
+                (click)="this.onCancel()">Cancel
+            </button>
+        </form>
+    </div>
+</div>

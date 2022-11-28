@@ -17,6 +17,7 @@ export class ScheduleComponent implements OnInit {
 
   @Input() dsObj: DailySchedule;
 
+  notAdmin: boolean = true;
   isEditing: boolean = false;
   positions = ["Nurse", "Athletic Trainer", "EMT", "Rad Tech", "Front Desk", "Attending", "Resident", "Fellow"];
   enterANewName: boolean = false;
@@ -42,6 +43,7 @@ export class ScheduleComponent implements OnInit {
       });
       this.usernames.sort();
       this.usernames.push("Other");
+      this.notAdmin = (this.udataService.user.type != 0);
     });
   }
 
