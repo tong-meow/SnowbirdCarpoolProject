@@ -144,7 +144,7 @@ export class CarpoolDetailsComponent implements OnInit {
                     + "&destination=" + encodeURIComponent(dest) 
                     + "&travelmode=driving"
         // console.log(this.addresses)
-        console.log("***** URI *****" + uri)
+        // console.log("***** URI *****" + uri)
         window.open(uri)
       }
       else if (this.platform.ANDROID) {

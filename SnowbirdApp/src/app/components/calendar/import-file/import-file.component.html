@@ -6,7 +6,7 @@
     <div class="panel-body">
         <input type="file" (change)="onFileChange($event)" multiple="false" />
         <br>
-        <p>* Notice: upload duplicate files will replace the data stored in database.</p>
+        <p>* Notice: upload duplicate files will replace the exist schedule cards.</p>
         <button type="button" class="btn btn-primary btn-block" (click)="onUpload()">Upload</button>
         <button class="btn btn-primary btn-block" (click)="this.onCancel()">Cancel</button>
     </div>

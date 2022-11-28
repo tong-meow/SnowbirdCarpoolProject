@@ -64,7 +64,7 @@ export class AddScheduleComponent implements OnInit {
     // console.log(date)
     // console.log(typeof(date))
     this.date = dateSelected;
-    console.log("New date selected: " + this.date);
+    // console.log("New date selected: " + this.date);
   }
 
   onCancel(){
@@ -151,7 +151,7 @@ export class AddScheduleComponent implements OnInit {
       var schedule = this.transferService.getData();
       this.transferService.clearData();
       if (schedule != undefined) {
-        if (window.confirm('A schedule of the selected date already exists. Do you want to overwrite it?')) {
+        if (window.confirm('A schedule card of the selected date already exists. Do you want to overwrite it?')) {
           this.saveSchedule();
         }
       }

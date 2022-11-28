@@ -48,7 +48,7 @@ export class CarpoolComponent implements OnInit {
         this.udataService.getUser(this.carpoolObj.driver)
             .then(() => {
                 this.driver = this.transferService.getData();
-                console.log("this.driver.name:" + this.driver.name);
+                // console.log("this.driver.name:" + this.driver.name);
                 this.driverName = this.driver.name;
                 this.transferService.clearData();
                 if (this.driver.uid == this.udataService.user.uid) {
@@ -57,9 +57,9 @@ export class CarpoolComponent implements OnInit {
              })
              .then(() => {
                 // Get Passengers Users array
-                console.log("[CARPOOL]: getting passengers")
+                // console.log("[CARPOOL]: getting passengers")
                 this.getPassengerObjs(this.carpoolObj.passengers)
-                console.log("[CARPOOL]: Passengers are " + this.passengerObjs)
+                // console.log("[CARPOOL]: Passengers are " + this.passengerObjs)
                 // disable Join button if user is already in passengers
                 this.carpoolObj.passengers.forEach((pasId, index)=>{
                     if (pasId == this.udataService.user.uid) {
@@ -122,16 +122,16 @@ export class CarpoolComponent implements OnInit {
         for (var pas of passengerIds) {
           await this.udataService.getUser(pas)
             .then(() => {
-              console.log(this.passengerObjs)
-              console.log("Passenger id: " + pas);
+            //   console.log(this.passengerObjs)
+            //   console.log("Passenger id: " + pas);
               var tempPas = this.transferService.getData();
-              console.log("tempPas variable: " + tempPas)
+            //   console.log("tempPas variable: " + tempPas)
               
               this.passengerObjs.push(tempPas);
-              console.log(this.passengerObjs);
-              console.log("loading passenger: " + tempPas.name);
+            //   console.log(this.passengerObjs);
+            //   console.log("loading passenger: " + tempPas.name);
               this.transferService.clearData();
-              console.log("cleared transfer service data")
+            //   console.log("cleared transfer service data")
               })
             .catch(errorHandlerPas)
         }

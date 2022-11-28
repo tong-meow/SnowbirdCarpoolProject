@@ -63,7 +63,7 @@ export class CarpoolsComponent implements OnInit {
       await this.cpdataService.getAllCarpoolsFromDate(date)
         .then(() => {
           this.carpools = this.transferService.getData();
-          console.log("showing carpools on: " + date)
+          // console.log("showing carpools on: " + date)
           this.transferService.clearData();
         })
     }
@@ -85,23 +85,23 @@ export class CarpoolsComponent implements OnInit {
       // console.log(date)
       // console.log(typeof(date))
       this.date = dateSelected;
-      console.log("New date selected: " + this.date);
+      // console.log("New date selected: " + this.date);
       await this.getAllCarpoolsFromDate(this.date);
     }
 
     // Receive event emitted from AddCarpool child component and update carpools
     async onCarpoolAdded(dateFromAddCarpool) {
-        console.log("Parent received new carpool event for: ", dateFromAddCarpool)
+        // console.log("Parent received new carpool event for: ", dateFromAddCarpool)
         await this.getAllCarpoolsFromDate(this.date);
         this.onCreating = false;
-        console.log("Carpools[] length after adding new carpool: " + this.carpools.length);
+        // console.log("Carpools[] length after adding new carpool: " + this.carpools.length);
         window.location.reload();
         // this.router.navigate([this.router.url]);
       
     }
 
     async onCarpoolRemoved(carpoolId) {
-      console.log("Parent received removed carpool event for carpool: " + carpoolId);
+      // console.log("Parent received removed carpool event for carpool: " + carpoolId);
       await this.getAllCarpoolsFromDate(this.date)
     }
 
