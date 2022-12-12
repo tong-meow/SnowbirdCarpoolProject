@@ -34,7 +34,7 @@ export class CarpoolDetailsComponent implements OnInit {
   driverAddress: string = undefined;
   snowbirdAddress = "9385 Snowbird Center Dr, Sandy, UT 84092";
 
-  vehicle: Vehicle = new Vehicle("", "", "", "", "", undefined);
+  vehicle: Vehicle = new Vehicle("", "", "", "", "", "", undefined);
 
   passengerObjs: User[] = [];
   addresses: string[] = [];

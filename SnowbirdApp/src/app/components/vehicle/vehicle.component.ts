@@ -48,7 +48,7 @@ export class VehicleComponent implements OnInit {
 
   async onSave(nickname: HTMLInputElement, make: HTMLInputElement, 
          model: HTMLInputElement, license: HTMLInputElement,
-         seats: HTMLInputElement){
+         color: HTMLInputElement, seats: HTMLInputElement){
     
     if (license.value == '' || seats.value == '') {
       alert('Please fill in the car license and number of seats available.');
@@ -59,6 +59,7 @@ export class VehicleComponent implements OnInit {
     this.vehicleObj.make = make.value.toUpperCase();
     this.vehicleObj.model = model.value;
     this.vehicleObj.license = license.value.toUpperCase();
+    this.vehicleObj.color = color.value;
     this.vehicleObj.seatsAvail = Number(seats.value);
     // add to db
     await this.vdataService.updateVehicle(this.vehicleObj).then(res => {

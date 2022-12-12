@@ -26,13 +26,18 @@
         </div>
         <br>
         <div class="form-row">
+            <label for="color">Color</label>
+            <input class="form-control" id="color" type="text" #color required>
+        </div>
+        <br>
+        <div class="form-row">
             <label for="seats">Seats Available</label>
             <input class="form-control" id="seats" type="number" #seats required>
         </div>
         <br>
         <button
             class="btn btn-primary btn-block"
-            (click)="onSaveCar(nickname, make, model, license, seats)">Save This Vehicle
+            (click)="onSaveCar(nickname, make, model, license, color, seats)">Save This Vehicle
         </button>
         <button
             class="btn btn-primary btn-block"

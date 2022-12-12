@@ -27,7 +27,7 @@ export class AddVehicleComponent implements OnInit {
   ngOnInit(): void { }
 
   async onSaveCar(nickname: HTMLInputElement, make: HTMLInputElement, model: HTMLInputElement, 
-            license: HTMLInputElement, seats: HTMLInputElement){
+            license: HTMLInputElement, color: HTMLInputElement, seats: HTMLInputElement){
     if (license.value == '' || seats.value == '') {
       alert('Please fill in the car license and number of seats available.');
       return;
@@ -47,6 +47,7 @@ export class AddVehicleComponent implements OnInit {
         make : make.value.toUpperCase(),
         model : model.value,
         license : license.value.toUpperCase(),
+        color: color.value,
         seatsAvail : Number(seats.value)
       }
 

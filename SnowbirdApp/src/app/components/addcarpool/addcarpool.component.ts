@@ -34,7 +34,7 @@ export class AddcarpoolComponent implements OnInit {
     startTime: '',
     arrivalTime: '',
     direction: '',
-    vehicle: new Vehicle("", "", "", "", "", 0),
+    vehicle: new Vehicle("", "", "", "", "", "", 0),
     totalSeats: 0,
     hasStarted: false
   }
@@ -142,6 +142,7 @@ export class AddcarpoolComponent implements OnInit {
       nickname: "",
       make: "",
       model: "",
+      color: "",
       seatsAvail: seats
     };
     return v;

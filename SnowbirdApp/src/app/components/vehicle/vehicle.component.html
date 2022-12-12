@@ -14,7 +14,7 @@
         <!-- <button type="button" class="btn btn-default" (click)="onSave(nickname, make, model, license, seats)" [hidden]="!this.isEditing">
             <span class="glyphicon glyphicon-floppy-saved" aria-hidden="true"></span>
         </button> -->
-        <span (click)="onSave(nickname, make, model, license, seats)" [hidden]="!this.isEditing">
+        <span (click)="onSave(nickname, make, model, license, color, seats)" [hidden]="!this.isEditing">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-square" viewBox="0 0 16 16">
                 <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
                 <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
@@ -38,6 +38,7 @@
     <li class="list-group-item"><b>Car Make:  </b>{{this.vehicleObj.make}}</li>
     <li class="list-group-item"><b>Car Model:  </b>{{this.vehicleObj.model}}</li>
     <li class="list-group-item"><b>License:  </b>{{this.vehicleObj.license}}</li>
+    <li class="list-group-item"><b>Color:  </b>{{this.vehicleObj.color}}</li>
     <li class="list-group-item"><b>Seats Available:  </b>{{this.vehicleObj.seatsAvail}}</li>
     </p>
 
@@ -72,6 +73,13 @@
                 <label for="license" class="col-sm-3 col-form-label">License:</label>
                 <div class="col-sm-9">
                     <input [disabled]="true" type="input" class="form-control" id="license" [value]="this.vehicleObj.license" #license>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="color" class="col-sm-3 col-form-label">Color:</label>
+                <div class="col-sm-9">
+                    <input type="input" class="form-control" id="color" [value]="this.vehicleObj.color" #color>
                 </div>
             </div>
 

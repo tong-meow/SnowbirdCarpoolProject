@@ -31,6 +31,7 @@ export class VdataService {
             nickname: v.nickname,
             make: v.make,
             model: v.model,
+            color: v.color,
             seatsAvail: v.seatsAvail
         })
         .then(res => {
@@ -48,6 +49,7 @@ export class VdataService {
             nickname: v.nickname,
             make: v.make,
             model: v.model,
+            color: v.color,
             seatsAvail: v.seatsAvail
         }).then(res => {
 
@@ -71,6 +73,7 @@ export class VdataService {
                         nickname: doc['nickname'],
                         make: doc['make'],
                         model: doc['model'],
+                        color: doc['color'],
                         seatsAvail: doc['seatsAvail']
                     };
                     // console.log("[VDATA SERVICE] Vehicle found.");
@@ -113,6 +116,7 @@ export class VdataService {
                         nickname: doc['nickname'],
                         make: doc['make'],
                         model: doc['model'],
+                        color: doc['color'],
                         seatsAvail: doc['seatsAvail']
                     };
                     // console.log("[VDATA SERVICE] Vehicle found: " + v.nickname);
